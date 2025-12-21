@@ -49,8 +49,8 @@ export const ChangePasswordPage = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            currentPassword: form.currentPassword,
-            newPassword: form.newPassword,
+            OldPassword: form.currentPassword,
+            NewPassword: form.newPassword,
           }),
         }
       )

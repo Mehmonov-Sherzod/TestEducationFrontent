@@ -1,16 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { FiPlus, FiCreditCard, FiCopy, FiCheck } from 'react-icons/fi'
+import { FiPlus, FiCreditCard, FiCopy, FiX } from 'react-icons/fi'
 import { FaTelegram } from 'react-icons/fa'
 import { useAuth } from '@hooks/useAuth'
 import { useTheme } from '@contexts/ThemeContext'
 import { cn } from '@utils/cn'
 
 interface TopUpInfo {
-  id: number
-  cardNumber: string
-  userAdmin: string
-  fullName: string
+  id?: number
+  Id?: string
+  cardNumber?: string
+  CardNumber?: string
+  userAdmin?: string
+  UserAdmin?: string
+  fullName?: string
+  FullName?: string
+}
+
+interface UserBalance {
+  Amout?: number
+  BalanceCode?: string
 }
 
 export const MyBalancePage = () => {
@@ -18,10 +27,42 @@ export const MyBalancePage = () => {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
 
+  const [balanceData, setBalanceData] = useState<UserBalance | null>(null)
+  const [isLoadingBalance, setIsLoadingBalance] = useState(true)
   const [isTopUpModalOpen, setIsTopUpModalOpen] = useState(false)
   const [topUpInfo, setTopUpInfo] = useState<TopUpInfo | null>(null)
   const [isLoadingTopUp, setIsLoadingTopUp] = useState(false)
   const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    fetchUserBalance()
+  }, [])
+
+  const fetchUserBalance = async () => {
+    try {
+      const response = await fetch('https://localhost:5001/api/UserBalance', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+      if (response.ok) {
+        const data = await response.json()
+        console.log('UserBalance API response:', data)
+        // API returns { Succeeded, Result, Errors } format
+        if (data.Succeeded && data.Result) {
+          setBalanceData(data.Result)
+        } else {
+          setBalanceData(data)
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching balance:', error)
+    } finally {
+      setIsLoadingBalance(false)
+    }
+  }
 
   const fetchTopUpInfo = async () => {
     setIsLoadingTopUp(true)
@@ -35,7 +76,13 @@ export const MyBalancePage = () => {
       })
       if (response.ok) {
         const data = await response.json()
-        setTopUpInfo(data)
+        console.log('BalanceTransaction API response:', data)
+        // API returns { Succeeded, Result, Errors } format
+        if (data.Succeeded && data.Result) {
+          setTopUpInfo(data.Result)
+        } else {
+          setTopUpInfo(data)
+        }
         setIsTopUpModalOpen(true)
       }
     } catch (error) {
@@ -65,15 +112,15 @@ export const MyBalancePage = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-80 rounded-2xl p-5 bg-gradient-to-br from-cyan-500 via-blue-500 to-blue-600 shadow-xl shadow-blue-500/20"
+        className="w-96 rounded-2xl p-6 bg-gradient-to-br from-cyan-500 via-blue-500 to-blue-600 shadow-xl shadow-blue-500/20"
       >
         <div className="flex items-start justify-between mb-4">
           <div>
             <p className="text-white/80 text-sm font-medium mb-1">Balans</p>
             <p className="text-white text-3xl font-bold">
-              {formatBalance(user?.balance || 0)} <span className="text-xl font-normal">so'm</span>
+              {isLoadingBalance ? '...' : formatBalance(balanceData?.Amout ?? 0)} <span className="text-xl font-normal">so'm</span>
             </p>
-            <p className="text-white/60 text-sm mt-1">ID: {user?.id}</p>
+            <p className="text-white/60 text-sm mt-1">ID: {balanceData?.BalanceCode}</p>
           </div>
           <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
             <FiCreditCard className="text-white" size={24} />
@@ -92,12 +139,12 @@ export const MyBalancePage = () => {
       </motion.div>
 
       {/* Top Up Modal */}
-      {isTopUpModalOpen && topUpInfo && (
+      {isTopUpModalOpen && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
           onClick={() => setIsTopUpModalOpen(false)}
         >
           <motion.div
@@ -106,90 +153,120 @@ export const MyBalancePage = () => {
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
             className={cn(
-              'w-full max-w-md rounded-2xl p-6 shadow-2xl',
-              isDark
-                ? 'bg-gray-800 border border-gray-700'
-                : 'bg-white border border-gray-200'
+              'w-full max-w-md rounded-2xl p-6 border shadow-xl',
+              isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
             )}
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div
-                className={cn(
-                  'w-10 h-10 rounded-xl flex items-center justify-center',
-                  isDark ? 'bg-green-500/20' : 'bg-green-100'
-                )}
-              >
-                <FiCreditCard className={isDark ? 'text-green-400' : 'text-green-600'} size={20} />
-              </div>
-              <h3 className={cn('text-lg font-bold', isDark ? 'text-white' : 'text-gray-900')}>
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className={cn('text-xl font-bold flex items-center gap-2', isDark ? 'text-white' : 'text-gray-900')}>
+                <FiCreditCard className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
                 Balansni to'ldirish
-              </h3>
+              </h2>
+              <button
+                onClick={() => setIsTopUpModalOpen(false)}
+                className={cn('p-2 rounded-lg transition-colors', isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500')}
+              >
+                <FiX className="w-5 h-5" />
+              </button>
             </div>
 
-            {/* Card Number */}
-            <div className={cn(
-              'p-4 rounded-xl mb-4',
-              isDark ? 'bg-gray-700/50' : 'bg-gray-100'
-            )}>
-              <p className={cn('text-xs mb-1', isDark ? 'text-gray-400' : 'text-gray-500')}>
-                Karta raqami
-              </p>
-              <div className="flex items-center justify-between gap-2">
-                <p className={cn('text-lg font-mono font-bold', isDark ? 'text-white' : 'text-gray-900')}>
-                  {topUpInfo.cardNumber}
+            {isLoadingTopUp ? (
+              <div className="flex items-center justify-center py-12">
+                <div className={cn(
+                  'w-10 h-10 border-4 rounded-full animate-spin',
+                  isDark ? 'border-cyan-500 border-t-transparent' : 'border-blue-500 border-t-transparent'
+                )} />
+              </div>
+            ) : topUpInfo ? (
+              <div className="space-y-4">
+                {/* Info Text */}
+                <p className={cn('text-sm', isDark ? 'text-gray-400' : 'text-gray-600')}>
+                  Balansni to'ldirish uchun quyidagi karta raqamiga pul o'tkazing va admin bilan bog'laning.
                 </p>
-                <button
-                  onClick={() => copyToClipboard(topUpInfo.cardNumber)}
+
+                {/* Card Number */}
+                <div className={cn('p-4 rounded-xl', isDark ? 'bg-gray-900' : 'bg-gray-50')}>
+                  <p className={cn('text-xs mb-2', isDark ? 'text-gray-500' : 'text-gray-500')}>
+                    Karta raqami
+                  </p>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className={cn('text-xl font-mono font-bold tracking-wider', isDark ? 'text-white' : 'text-gray-900')}>
+                      {topUpInfo.CardNumber || topUpInfo.cardNumber}
+                    </p>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => copyToClipboard(topUpInfo.CardNumber || topUpInfo.cardNumber || '')}
+                      className={cn(
+                        'p-2 rounded-lg transition-colors',
+                        isDark ? 'bg-gray-800 hover:bg-gray-700 text-cyan-400' : 'bg-gray-200 hover:bg-gray-300 text-blue-600'
+                      )}
+                    >
+                      <FiCopy className="w-5 h-5" />
+                    </motion.button>
+                  </div>
+                  <p className={cn('text-sm mt-2', isDark ? 'text-gray-400' : 'text-gray-600')}>
+                    {topUpInfo.FullName || topUpInfo.fullName}
+                  </p>
+                </div>
+
+                {/* Admin Info */}
+                <div className={cn('p-4 rounded-xl', isDark ? 'bg-gray-900' : 'bg-gray-50')}>
+                  <p className={cn('text-xs mb-2', isDark ? 'text-gray-500' : 'text-gray-500')}>
+                    Admin ma'lumotlari
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className={cn(
+                      'w-12 h-12 rounded-full flex items-center justify-center',
+                      isDark ? 'bg-blue-500/20' : 'bg-blue-100'
+                    )}>
+                      <FaTelegram className={cn('w-6 h-6', isDark ? 'text-blue-400' : 'text-blue-500')} />
+                    </div>
+                    <div>
+                      <p className={cn('font-semibold', isDark ? 'text-white' : 'text-gray-900')}>
+                        {topUpInfo.FullName || topUpInfo.fullName}
+                      </p>
+                      <a
+                        href={`https://t.me/${(topUpInfo.UserAdmin || topUpInfo.userAdmin || '').replace('@', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn('text-sm', isDark ? 'text-cyan-400 hover:text-cyan-300' : 'text-blue-600 hover:text-blue-700')}
+                      >
+                        {topUpInfo.UserAdmin || topUpInfo.userAdmin}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Telegram Button */}
+                <a
+                  href={`https://t.me/${(topUpInfo.UserAdmin || topUpInfo.userAdmin || '').replace('@', '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={cn(
-                    'p-2 rounded-lg transition-colors',
-                    isDark ? 'hover:bg-gray-600' : 'hover:bg-gray-200',
-                    copied ? 'text-green-500' : isDark ? 'text-gray-400' : 'text-gray-500'
+                    'w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-colors',
+                    isDark
+                      ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600'
+                      : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700'
                   )}
                 >
-                  {copied ? <FiCheck size={18} /> : <FiCopy size={18} />}
-                </button>
-              </div>
-              <p className={cn('text-sm mt-1', isDark ? 'text-gray-400' : 'text-gray-600')}>
-                {topUpInfo.fullName}
-              </p>
-            </div>
-
-            {/* Admin Contact */}
-            <a
-              href={`https://t.me/${topUpInfo.userAdmin.replace('@', '')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                'flex items-center gap-3 p-4 rounded-xl transition-colors mb-4',
-                isDark
-                  ? 'bg-blue-500/10 hover:bg-blue-500/20 text-blue-400'
-                  : 'bg-blue-50 hover:bg-blue-100 text-blue-600'
-              )}
-            >
-              <FaTelegram size={24} />
-              <div>
-                <p className="font-medium">{topUpInfo.userAdmin}</p>
-                <p className={cn('text-xs', isDark ? 'text-blue-300/70' : 'text-blue-500')}>
+                  <FaTelegram className="w-5 h-5" />
                   Telegram orqali bog'lanish
+                </a>
+
+                {/* Note */}
+                <p className={cn('text-xs text-center', isDark ? 'text-gray-500' : 'text-gray-400')}>
+                  To'lov chekini adminga yuboring
                 </p>
               </div>
-            </a>
-
-            <p className={cn('text-sm text-center', isDark ? 'text-gray-400' : 'text-gray-500')}>
-              To'lov chekini adminga yuboring
-            </p>
-
-            <button
-              onClick={() => setIsTopUpModalOpen(false)}
-              className={cn(
-                'w-full mt-4 py-3 rounded-xl font-medium transition-colors',
-                isDark
-                  ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                  : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-              )}
-            >
-              Yopish
-            </button>
+            ) : (
+              <div className="text-center py-8">
+                <p className={cn(isDark ? 'text-gray-400' : 'text-gray-600')}>
+                  Ma'lumotlarni yuklashda xatolik yuz berdi
+                </p>
+              </div>
+            )}
           </motion.div>
         </motion.div>
       )}
