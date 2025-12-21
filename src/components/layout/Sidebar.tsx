@@ -125,10 +125,14 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
       ],
     },
     {
-      path: ROUTES.PROFILE,
-      label: 'Profil',
+      label: 'Profil sozlamalari',
       icon: <FiUser size={20} />,
       category: 'user',
+      children: [
+        { path: ROUTES.PROFILE, label: 'Profil' },
+        { path: ROUTES.CHANGE_PASSWORD, label: 'Parolni o\'zgartirish' },
+        { path: ROUTES.MY_BALANCE, label: 'Balans' },
+      ],
     },
   ]
 

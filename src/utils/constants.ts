@@ -82,4 +82,6 @@ export const ROUTES = {
   LIBRARY: '/library',
   USER_BALANCES: '/user-balances',
   BALANCE_SETTINGS: '/balance-settings',
+  CHANGE_PASSWORD: '/change-password',
+  MY_BALANCE: '/my-balance',
 } as const
