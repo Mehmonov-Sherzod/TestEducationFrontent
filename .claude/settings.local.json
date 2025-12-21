@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\Visual Studio\\TestEducation\\src\\TestEducation.Aplication\\Models\\Users\" /b)",
+      "Bash(npx create-vite@latest . --template react-ts)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(npm run dev:*)",
+      "Bash(dir:*)",
+      "Bash(cd:*)",
+      "Bash(cat:*)",
+      "Bash(dotnet build:*)",
+      "Bash(ls:*)",
+      "Bash(npm run build:*)",
+      "Bash(powershell -Command \"(Get-Content ''src/pages/TopicsPage.tsx'') -replace \"\"theme === ''dark'' \\? ''text-white'' : ''text-gray-900''\"\", \"\"''text-black''\"\" -replace \"\"theme === ''dark'' \\? ''text-gray-300'' : ''text-gray-600''\"\", \"\"''text-gray-600''\"\" -replace \"\"theme === ''dark'' \\? ''text-cyan-400'' : ''text-purple-600''\"\", \"\"''text-red-500''\"\" -replace \"\"theme === ''dark'' \\? ''text-gray-400'' : ''text-gray-500''\"\", \"\"''text-gray-500''\"\" -replace \"\"theme === ''dark'' \\? ''text-gray-500'' : ''text-gray-400''\"\", \"\"''text-gray-400''\"\" | Set-Content ''src/pages/TopicsPage.tsx''\")",
+      "Bash(powershell -Command \"(Get-Content ''src/pages/TopicsPage.tsx'') -replace \"\"theme === ''dark''\\s*\\?\\s*''bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-cyan-500 focus:border-cyan-500''\\s*:\\s*''bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-purple-500 focus:border-purple-500''\"\", \"\"''bg-white border-gray-200 text-black placeholder-gray-400 focus:ring-red-500 focus:border-red-500''\"\" | Set-Content ''src/pages/TopicsPage.tsx''\")",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File update-theme.ps1)"
+    ]
+  }
+}
