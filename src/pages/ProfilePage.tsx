@@ -144,38 +144,40 @@ export const ProfilePage = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-3 sm:p-6">
       <div className="max-w-md mx-auto">
         {/* Profile Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className={cn(
-            'rounded-2xl p-8 shadow-lg',
+            'rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-lg',
             isDark ? 'bg-gray-800' : 'bg-white'
           )}
         >
-          {/* Avatar */}
-          <div className="flex justify-center mb-6">
+          {/* Header with icon */}
+          <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
             <motion.div
               onHoverStart={() => setAvatarHover(true)}
               onHoverEnd={() => setAvatarHover(false)}
               onClick={handleAvatarClick}
-              className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center cursor-pointer relative overflow-hidden shadow-lg"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={cn(
+                'w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center cursor-pointer relative overflow-hidden',
+                isDark ? 'bg-blue-600' : 'bg-blue-100'
+              )}
             >
-              <span className="text-3xl font-bold text-white">
-                {getInitials(user?.fullName)}
-              </span>
-
+              <FiUser className={isDark ? 'text-white' : 'text-blue-600'} size={20} />
               <AnimatePresence>
                 {avatarHover && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-black/50 flex items-center justify-center"
+                    className="absolute inset-0 bg-black/40 flex items-center justify-center"
                   >
-                    <FiCamera className="w-6 h-6 text-white" />
+                    <FiCamera className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -187,142 +189,166 @@ export const ProfilePage = () => {
               onChange={handleAvatarUpload}
               className="hidden"
             />
-          </div>
-
-          {/* Title */}
-          <div className="text-center mb-8">
-            <h1 className={cn(
-              'text-2xl font-bold',
-              isDark ? 'text-white' : 'text-gray-900'
-            )}>
-              {user?.fullName || 'Foydalanuvchi'}
-            </h1>
-            <p className={cn(
-              'text-sm mt-1',
-              isDark ? 'text-gray-400' : 'text-gray-500'
-            )}>
-              {user?.role || 'User'}
-            </p>
+            <div className="min-w-0 flex-1">
+              <h1 className={cn(
+                'text-lg sm:text-xl font-semibold truncate',
+                isDark ? 'text-white' : 'text-gray-800'
+              )}>
+                {user?.fullName || 'Profil'}
+              </h1>
+              <p className={cn(
+                'text-xs sm:text-sm',
+                isDark ? 'text-gray-400' : 'text-gray-500'
+              )}>
+                {user?.role || 'Ma\'lumotlarni tahrirlash'}
+              </p>
+            </div>
           </div>
 
           <AnimatePresence mode="wait">
             {!isEditingProfile ? (
               <motion.div
                 key="view"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="space-y-4"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-3 sm:space-y-5"
               >
                 {/* Email Field */}
-                <div className={cn(
-                  'flex items-center gap-3 px-4 py-4 rounded-xl',
-                  isDark ? 'bg-gray-700/50' : 'bg-gray-50'
-                )}>
-                  <FiMail className={isDark ? 'text-gray-400' : 'text-gray-400'} size={20} />
-                  <span className={cn(
-                    'flex-1',
-                    isDark ? 'text-white' : 'text-gray-700'
+                <div>
+                  <label className={cn(
+                    'block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2',
+                    isDark ? 'text-gray-300' : 'text-gray-700'
                   )}>
-                    {user?.email || 'Email kiritilmagan'}
-                  </span>
+                    Email
+                  </label>
+                  <div className={cn(
+                    'px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl border',
+                    isDark
+                      ? 'bg-gray-700/50 border-gray-600'
+                      : 'bg-gray-50 border-gray-200'
+                  )}>
+                    <p className={cn(
+                      'text-xs sm:text-sm truncate',
+                      isDark ? 'text-gray-300' : 'text-gray-600'
+                    )}>
+                      {user?.email || 'Email kiritilmagan'}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Phone Field */}
-                <div className={cn(
-                  'flex items-center gap-3 px-4 py-4 rounded-xl',
-                  isDark ? 'bg-gray-700/50' : 'bg-gray-50'
-                )}>
-                  <FiPhone className={isDark ? 'text-gray-400' : 'text-gray-400'} size={20} />
-                  <span className={cn(
-                    'flex-1',
-                    isDark ? 'text-white' : 'text-gray-700'
+                <div>
+                  <label className={cn(
+                    'block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2',
+                    isDark ? 'text-gray-300' : 'text-gray-700'
                   )}>
-                    {user?.phoneNumber || 'Telefon kiritilmagan'}
-                  </span>
+                    Telefon raqam
+                  </label>
+                  <div className={cn(
+                    'px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl border',
+                    isDark
+                      ? 'bg-gray-700/50 border-gray-600'
+                      : 'bg-gray-50 border-gray-200'
+                  )}>
+                    <p className={cn(
+                      'text-xs sm:text-sm',
+                      isDark ? 'text-gray-300' : 'text-gray-600'
+                    )}>
+                      {user?.phoneNumber || 'Telefon kiritilmagan'}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Edit Button */}
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => setIsEditingProfile(true)}
-                  className="w-full py-4 rounded-xl font-semibold bg-blue-500 hover:bg-blue-600 text-white transition-colors flex items-center justify-center gap-2 mt-6"
+                  className="w-full py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 transition-all mt-2 text-sm sm:text-base"
                 >
-                  <FiEdit2 size={18} />
                   Tahrirlash
-                </button>
+                </motion.button>
               </motion.div>
             ) : (
               <motion.div
                 key="edit"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="space-y-4"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-3 sm:space-y-5"
               >
                 {/* Full Name Input */}
-                <div className={cn(
-                  'flex items-center gap-3 px-4 py-4 rounded-xl',
-                  isDark ? 'bg-gray-700/50' : 'bg-gray-50'
-                )}>
-                  <FiUser className={isDark ? 'text-gray-400' : 'text-gray-400'} size={20} />
+                <div>
+                  <label className={cn(
+                    'block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2',
+                    isDark ? 'text-gray-300' : 'text-gray-700'
+                  )}>
+                    To'liq ism
+                  </label>
                   <input
                     type="text"
                     value={profileForm.fullName}
                     onChange={(e) => setProfileForm({ ...profileForm, fullName: e.target.value })}
                     className={cn(
-                      'flex-1 bg-transparent outline-none',
-                      isDark ? 'text-white placeholder-gray-500' : 'text-gray-700 placeholder-gray-400'
+                      'w-full px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl border outline-none transition-colors text-sm sm:text-base',
+                      isDark
+                        ? 'bg-gray-700/50 border-gray-600 text-white placeholder-gray-500 focus:border-blue-500'
+                        : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-blue-400'
                     )}
                     placeholder="To'liq ismingiz"
                   />
                 </div>
 
                 {/* Email Input */}
-                <div className={cn(
-                  'flex items-center gap-3 px-4 py-4 rounded-xl',
-                  isDark ? 'bg-gray-700/50' : 'bg-gray-50'
-                )}>
-                  <FiMail className={isDark ? 'text-gray-400' : 'text-gray-400'} size={20} />
+                <div>
+                  <label className={cn(
+                    'block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2',
+                    isDark ? 'text-gray-300' : 'text-gray-700'
+                  )}>
+                    Email
+                  </label>
                   <input
                     type="email"
                     value={profileForm.email}
                     onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
                     className={cn(
-                      'flex-1 bg-transparent outline-none',
-                      isDark ? 'text-white placeholder-gray-500' : 'text-gray-700 placeholder-gray-400'
+                      'w-full px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl border outline-none transition-colors text-sm sm:text-base',
+                      isDark
+                        ? 'bg-gray-700/50 border-gray-600 text-white placeholder-gray-500 focus:border-blue-500'
+                        : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-blue-400'
                     )}
                     placeholder="Email manzilingiz"
                   />
                 </div>
 
                 {/* Phone Input */}
-                <div className={cn(
-                  'flex items-center gap-3 px-4 py-4 rounded-xl',
-                  isDark ? 'bg-gray-700/50' : 'bg-gray-50'
-                )}>
-                  <FiPhone className={isDark ? 'text-gray-400' : 'text-gray-400'} size={20} />
+                <div>
+                  <label className={cn(
+                    'block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2',
+                    isDark ? 'text-gray-300' : 'text-gray-700'
+                  )}>
+                    Telefon raqam
+                  </label>
                   <input
                     type="tel"
                     value={profileForm.phoneNumber}
                     onChange={(e) => setProfileForm({ ...profileForm, phoneNumber: e.target.value })}
                     className={cn(
-                      'flex-1 bg-transparent outline-none',
-                      isDark ? 'text-white placeholder-gray-500' : 'text-gray-700 placeholder-gray-400'
+                      'w-full px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl border outline-none transition-colors text-sm sm:text-base',
+                      isDark
+                        ? 'bg-gray-700/50 border-gray-600 text-white placeholder-gray-500 focus:border-blue-500'
+                        : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-blue-400'
                     )}
                     placeholder="+998 XX XXX XX XX"
                   />
                 </div>
 
                 {/* Action Buttons */}
-                <div className="space-y-3 pt-4">
-                  <button
-                    onClick={handleUpdateProfile}
-                    className="w-full py-4 rounded-xl font-semibold bg-blue-500 hover:bg-blue-600 text-white transition-colors flex items-center justify-center gap-2"
-                  >
-                    <FiSave size={18} />
-                    Saqlash
-                  </button>
-                  <button
+                <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => {
                       setIsEditingProfile(false)
                       setProfileForm({
@@ -332,15 +358,22 @@ export const ProfilePage = () => {
                       })
                     }}
                     className={cn(
-                      'w-full py-4 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2',
+                      'flex-1 py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold transition-colors text-sm sm:text-base',
                       isDark
-                        ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                        ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
                     )}
                   >
-                    <FiX size={18} />
                     Bekor qilish
-                  </button>
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleUpdateProfile}
+                    className="flex-1 py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 transition-all text-sm sm:text-base"
+                  >
+                    Saqlash
+                  </motion.button>
                 </div>
               </motion.div>
             )}

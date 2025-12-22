@@ -278,47 +278,49 @@ export const UsersPage = () => {
   const totalPages = Math.ceil(totalCount / pageSize)
 
   return (
-    <div className="py-8 px-4 max-w-7xl mx-auto">
+    <div className="py-4 sm:py-8 px-2 sm:px-4 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className={`text-4xl font-bold mb-2 flex items-center gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            <FiUsers className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
-            User Management
+          <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 flex items-center gap-2 sm:gap-3 flex-wrap ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <FiUsers className={`w-6 h-6 sm:w-8 sm:h-8 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
+            <span className="hidden sm:inline">User Management</span>
+            <span className="sm:hidden">Foydalanuvchilar</span>
             {isSuperAdmin && (
-              <span className="text-xs px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full font-normal flex items-center gap-1">
-                <FiShield className="w-3 h-3" />
+              <span className="text-[10px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 bg-purple-500/20 text-purple-300 rounded-full font-normal flex items-center gap-1">
+                <FiShield className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                 SuperAdmin
               </span>
             )}
             {isAdmin && !isSuperAdmin && (
-              <span className="text-xs px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full font-normal flex items-center gap-1">
-                <FiKey className="w-3 h-3" />
+              <span className="text-[10px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 bg-blue-500/20 text-blue-300 rounded-full font-normal flex items-center gap-1">
+                <FiKey className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                 Admin
               </span>
             )}
           </h1>
-          <p className={isDark ? 'text-gray-300' : 'text-gray-600'}>
+          <p className={`text-sm sm:text-base ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
             {isSuperAdmin ? 'Full system user management' : 'Manage student users'}
           </p>
         </div>
         {isSuperAdmin && (
           <button
             onClick={() => setIsCreating(true)}
-            className={`flex items-center gap-2 px-6 py-3 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all ${
+            className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all text-sm sm:text-base w-full sm:w-auto ${
               isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gradient-to-r from-blue-600 to-blue-700'
             }`}
           >
-            <FiPlus className="w-5 h-5" />
-            Create User
+            <FiPlus className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Create User</span>
+            <span className="sm:hidden">Yangi foydalanuvchi</span>
           </button>
         )}
       </div>
 
       {/* Search */}
-      <div className="mb-6">
-        <div className="relative max-w-md">
-          <FiSearch className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
+      <div className="mb-4 sm:mb-6">
+        <div className="relative w-full sm:max-w-md">
+          <FiSearch className={`absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
           <input
             type="text"
             value={searchQuery}
@@ -326,47 +328,48 @@ export const UsersPage = () => {
               setSearchQuery(e.target.value)
               setCurrentPage(1)
             }}
-            placeholder="Search users by name or email..."
-            className={`w-full pl-12 pr-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+            placeholder="Qidirish..."
+            className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
           />
         </div>
       </div>
 
       {/* Users Table */}
-      <div className={`rounded-2xl shadow-lg overflow-hidden border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+      <div className={`rounded-xl sm:rounded-2xl shadow-lg overflow-hidden border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
         {isLoading ? (
-          <div className="flex items-center justify-center py-20">
+          <div className="flex items-center justify-center py-12 sm:py-20">
             <div className="text-center">
-              <div className={`w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4 ${isDark ? 'border-cyan-500' : 'border-blue-500'}`}></div>
-              <p className={`text-lg ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>Loading users...</p>
+              <div className={`w-10 h-10 sm:w-16 sm:h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-3 sm:mb-4 ${isDark ? 'border-cyan-500' : 'border-blue-500'}`}></div>
+              <p className={`text-sm sm:text-lg ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>Yuklanmoqda...</p>
             </div>
           </div>
         ) : users.length === 0 ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="text-center">
-              <FiUsers className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
-              <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>No users found</p>
+          <div className="flex items-center justify-center py-12 sm:py-20">
+            <div className="text-center px-4">
+              <FiUsers className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
+              <p className={`text-sm sm:text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Foydalanuvchilar topilmadi</p>
             </div>
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            {/* Desktop Table */}
+            <div className="hidden sm:block overflow-x-auto">
               <table className="w-full">
                 <thead className={`border-b ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-gray-50 border-gray-200'}`}>
                   <tr>
-                    <th className={`px-6 py-4 text-left text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
                       #
                     </th>
-                    <th className={`px-6 py-4 text-left text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
                       Full Name
                     </th>
-                    <th className={`px-6 py-4 text-left text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
                       Email
                     </th>
-                    <th className={`px-6 py-4 text-left text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
                       Phone
                     </th>
-                    <th className={`px-6 py-4 text-right text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-right text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
                       Actions
                     </th>
                   </tr>
@@ -379,18 +382,18 @@ export const UsersPage = () => {
                       animate={{ opacity: 1 }}
                       className={`transition-colors ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}
                     >
-                      <td className={`px-6 py-4 ${isDark ? 'text-white' : 'text-gray-700'}`}>{(currentPage - 1) * pageSize + index + 1}</td>
-                      <td className={`px-6 py-4 font-medium ${isDark ? 'text-white' : 'text-gray-700'}`}>
+                      <td className={`px-4 lg:px-6 py-3 lg:py-4 text-sm ${isDark ? 'text-white' : 'text-gray-700'}`}>{(currentPage - 1) * pageSize + index + 1}</td>
+                      <td className={`px-4 lg:px-6 py-3 lg:py-4 font-medium text-sm ${isDark ? 'text-white' : 'text-gray-700'}`}>
                         {u.FullName}
                       </td>
-                      <td className={`px-6 py-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>{u.Email}</td>
-                      <td className={`px-6 py-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      <td className={`px-4 lg:px-6 py-3 lg:py-4 text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>{u.Email}</td>
+                      <td className={`px-4 lg:px-6 py-3 lg:py-4 text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                         {u.PhoneNumber || 'N/A'}
                       </td>
-                      <td className="px-6 py-4 text-right">
+                      <td className="px-4 lg:px-6 py-3 lg:py-4 text-right">
                         <button
                           onClick={() => handleDeleteUser(u.Id, u.FullName)}
-                          className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${isDark ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' : 'bg-red-100 hover:bg-red-200 text-red-600'}`}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm ${isDark ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' : 'bg-red-100 hover:bg-red-200 text-red-600'}`}
                         >
                           <FiTrash2 className="w-4 h-4" />
                           Delete
@@ -402,30 +405,70 @@ export const UsersPage = () => {
               </table>
             </div>
 
+            {/* Mobile Cards */}
+            <div className={`sm:hidden divide-y ${isDark ? 'divide-gray-700' : 'divide-gray-200'}`}>
+              {users.map((u, index) => (
+                <motion.div
+                  key={u.Id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className={`p-3 ${isDark ? 'hover:bg-gray-700/50' : 'hover:bg-gray-50'}`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className={`text-xs px-1.5 py-0.5 rounded ${isDark ? 'bg-gray-700 text-gray-400' : 'bg-gray-100 text-gray-500'}`}>
+                          #{(currentPage - 1) * pageSize + index + 1}
+                        </span>
+                        <h3 className={`font-medium text-sm truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                          {u.FullName}
+                        </h3>
+                      </div>
+                      <div className="space-y-0.5">
+                        <p className={`text-xs flex items-center gap-1.5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                          <FiMail className="w-3 h-3 flex-shrink-0" />
+                          <span className="truncate">{u.Email}</span>
+                        </p>
+                        <p className={`text-xs flex items-center gap-1.5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                          <FiPhone className="w-3 h-3 flex-shrink-0" />
+                          <span>{u.PhoneNumber || 'N/A'}</span>
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleDeleteUser(u.Id, u.FullName)}
+                      className={`p-2 rounded-lg transition-colors flex-shrink-0 ${isDark ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' : 'bg-red-100 hover:bg-red-200 text-red-600'}`}
+                    >
+                      <FiTrash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
             {/* Pagination (All users) */}
             {totalPages > 1 && (
-              <div className={`flex items-center justify-between px-6 py-4 border-t ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-gray-50 border-gray-200'}`}>
-                <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                  Showing {(currentPage - 1) * pageSize + 1} to{' '}
-                  {Math.min(currentPage * pageSize, totalCount)} of {totalCount} users
+              <div className={`flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-6 py-3 sm:py-4 border-t ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-gray-50 border-gray-200'}`}>
+                <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  {(currentPage - 1) * pageSize + 1}-{Math.min(currentPage * pageSize, totalCount)} / {totalCount}
                 </p>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setCurrentPage((prev) => prev - 1)}
                     disabled={!hasPrevious}
-                    className={`p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                   >
-                    <FiChevronLeft className="w-5 h-5" />
+                    <FiChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
-                  <span className={`px-4 py-2 ${isDark ? 'text-white' : 'text-gray-700'}`}>
-                    Page {currentPage} of {totalPages}
+                  <span className={`text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2 ${isDark ? 'text-white' : 'text-gray-700'}`}>
+                    {currentPage} / {totalPages}
                   </span>
                   <button
                     onClick={() => setCurrentPage((prev) => prev + 1)}
                     disabled={!hasNext}
-                    className={`p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                   >
-                    <FiChevronRight className="w-5 h-5" />
+                    <FiChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
               </div>
@@ -441,7 +484,7 @@ export const UsersPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4"
             onClick={() => setIsCreating(false)}
           >
             <motion.div
@@ -449,39 +492,40 @@ export const UsersPage = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-2xl shadow-2xl border p-8 max-w-md w-full ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
+              className={`rounded-xl sm:rounded-2xl shadow-2xl border p-4 sm:p-6 lg:p-8 max-w-md w-full max-h-[90vh] overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
             >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className={`text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  <FiShield className={isDark ? 'text-cyan-400' : 'text-purple-600'} />
-                  Create New User
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <FiShield className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-cyan-400' : 'text-purple-600'}`} />
+                  <span className="hidden sm:inline">Create New User</span>
+                  <span className="sm:hidden">Yangi foydalanuvchi</span>
                 </h2>
                 <button
                   onClick={() => setIsCreating(false)}
-                  className={`p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-white/10' : 'hover:bg-gray-100'}`}
+                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-white/10' : 'hover:bg-gray-100'}`}
                 >
-                  <FiX className={`w-6 h-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
+                  <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div>
-                  <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Full Name *</label>
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>To'liq ism *</label>
                   <input
                     type="text"
                     value={createForm.fullName}
                     onChange={(e) =>
                       setCreateForm({ ...createForm, fullName: e.target.value })
                     }
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
-                    placeholder="Enter full name"
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                    placeholder="To'liq ismni kiriting"
                   />
                 </div>
 
                 <div>
-                  <label className={`block text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                    <FiMail className="w-4 h-4" />
-                    Email Address *
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <FiMail className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    Email *
                   </label>
                   <input
                     type="email"
@@ -489,15 +533,15 @@ export const UsersPage = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, email: e.target.value })
                     }
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
                     placeholder="user@example.com"
                   />
                 </div>
 
                 <div>
-                  <label className={`block text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                    <FiLock className="w-4 h-4" />
-                    Password *
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <FiLock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    Parol *
                   </label>
                   <input
                     type="password"
@@ -505,15 +549,15 @@ export const UsersPage = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, password: e.target.value })
                     }
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
-                    placeholder="Enter password"
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                    placeholder="Parolni kiriting"
                   />
                 </div>
 
                 <div>
-                  <label className={`block text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                    <FiPhone className="w-4 h-4" />
-                    Phone Number
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <FiPhone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    Telefon raqam
                   </label>
                   <input
                     type="tel"
@@ -521,19 +565,19 @@ export const UsersPage = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, phoneNumber: e.target.value })
                     }
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
                     placeholder="+998 XX XXX XX XX"
                   />
                 </div>
 
                 <div>
-                  <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Role</label>
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Rol</label>
                   <select
                     value={createForm.roleIds[0]}
                     onChange={(e) =>
                       setCreateForm({ ...createForm, roleIds: [parseInt(e.target.value)] })
                     }
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
                   >
                     <option value={3} className={isDark ? 'bg-gray-800' : 'bg-white'}>Student</option>
                     <option value={2} className={isDark ? 'bg-gray-800' : 'bg-white'}>Admin</option>
@@ -541,21 +585,21 @@ export const UsersPage = () => {
                   </select>
                 </div>
 
-                <div className="flex gap-3 mt-6">
+                <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
+                  <button
+                    onClick={() => setIsCreating(false)}
+                    className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-700' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                  >
+                    Bekor qilish
+                  </button>
                   <button
                     onClick={handleCreateUser}
-                    className={`flex-1 py-3 px-6 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 ${
+                    className={`flex-1 py-2.5 sm:py-3 px-4 sm:px-6 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
                       isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gradient-to-r from-blue-600 to-blue-700'
                     }`}
                   >
-                    <FiSave className="w-5 h-5" />
-                    Create User
-                  </button>
-                  <button
-                    onClick={() => setIsCreating(false)}
-                    className={`py-3 px-6 rounded-lg font-semibold transition-colors ${isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-700' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
-                  >
-                    Cancel
+                    <FiSave className="w-4 h-4 sm:w-5 sm:h-5" />
+                    Yaratish
                   </button>
                 </div>
               </div>

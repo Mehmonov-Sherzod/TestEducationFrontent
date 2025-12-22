@@ -19,7 +19,7 @@ export const Card = ({ children, className, hoverable = false }: CardProps) => {
       transition={{ duration: 0.3 }}
       whileHover={hoverable ? { scale: 1.02 } : {}}
       className={cn(
-        'rounded-3xl px-14 py-8 transition-all duration-300 relative',
+        'rounded-2xl sm:rounded-3xl px-5 sm:px-8 lg:px-14 py-6 sm:py-8 transition-all duration-300 relative',
         isDark
           ? 'bg-gray-800 border border-gray-700 shadow-black/20'
           : '',

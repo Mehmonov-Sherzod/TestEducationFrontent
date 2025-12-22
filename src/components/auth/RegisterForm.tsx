@@ -63,7 +63,7 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
       initial="hidden"
       animate="visible"
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
+      className="space-y-4 sm:space-y-5"
     >
       <motion.div variants={itemVariants}>
         <Input
@@ -155,14 +155,14 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
 
       <motion.p
         variants={itemVariants}
-        className={`text-xs text-center mt-3 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}
+        className={`text-[10px] sm:text-xs text-center mt-3 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}
       >
         By signing up, you agree to our Terms & Conditions
       </motion.p>
 
       {/* Login Link */}
       <motion.div variants={itemVariants} className="pt-4 text-center">
-        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+        <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
           Already have an account?{' '}
           <button
             type="button"

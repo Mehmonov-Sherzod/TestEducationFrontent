@@ -87,7 +87,7 @@ export const AuthPage = () => {
         {!showLoginForm && (
           <motion.button
             onClick={() => setShowLoginForm(true)}
-            className={`px-6 py-2 rounded-xl font-medium transition-all ${
+            className={`px-4 sm:px-6 py-2 rounded-xl font-medium transition-all text-sm sm:text-base ${
               isDark
                 ? 'bg-blue-600 hover:bg-blue-700 text-white'
                 : 'bg-blue-500 hover:bg-blue-600 text-white'
@@ -113,23 +113,25 @@ export const AuthPage = () => {
       {/* Animated Background */}
       <AnimatedBackground />
 
-      {/* Left Side Text - Always visible */}
+      {/* Left Side Text - Hidden on mobile when form is shown */}
       <motion.div
-        className="absolute left-8 lg:left-16 top-24 max-w-2xl z-10"
+        className={`absolute left-4 sm:left-8 lg:left-16 right-4 sm:right-auto top-20 sm:top-24 sm:max-w-xl lg:max-w-2xl z-10 ${
+          showLoginForm ? 'hidden lg:block' : 'block'
+        }`}
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        <h1 className={`text-5xl lg:text-7xl font-bold mb-8 leading-tight ${isDark ? 'text-white' : 'text-gray-800'}`}>
+        <h1 className={`text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-bold mb-3 sm:mb-6 lg:mb-8 leading-tight ${isDark ? 'text-white' : 'text-gray-800'}`}>
           Muvaffaqiyat yo'lida har kuni o'sish
         </h1>
-        <p className={`text-xl lg:text-2xl leading-relaxed mb-10 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+        <p className={`text-sm sm:text-lg lg:text-xl xl:text-2xl leading-relaxed mb-4 sm:mb-8 lg:mb-10 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
           Kitoblardan tanlangan savollar, professional tayyorlangan testlar, tezkor natijalar. Bilimingizni sinab, kelajagingizni quring!
         </p>
 
         {/* 3 Stacked Images */}
         <motion.div
-          className="mt-12 flex -space-x-16"
+          className="mt-6 sm:mt-8 lg:mt-12 flex justify-center sm:justify-start -space-x-8 sm:-space-x-8 lg:-space-x-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
@@ -137,37 +139,99 @@ export const AuthPage = () => {
           <motion.img
             src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=90"
             alt="Online test"
-            className="w-64 h-80 object-cover rounded-2xl shadow-2xl border-4 border-white -rotate-6"
+            className="w-32 sm:w-40 lg:w-64 h-44 sm:h-52 lg:h-80 object-cover rounded-xl sm:rounded-2xl shadow-2xl border-2 sm:border-4 border-white -rotate-6"
             whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
             style={{ zIndex: 1 }}
           />
           <motion.img
             src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=90"
             alt="Books"
-            className="w-64 h-80 object-cover rounded-2xl shadow-2xl border-4 border-white rotate-3"
+            className="w-32 sm:w-40 lg:w-64 h-44 sm:h-52 lg:h-80 object-cover rounded-xl sm:rounded-2xl shadow-2xl border-2 sm:border-4 border-white rotate-3"
             whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
             style={{ zIndex: 2 }}
           />
           <motion.img
             src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=600&q=90"
             alt="Student taking online test"
-            className="w-64 h-80 object-cover rounded-2xl shadow-2xl border-4 border-white -rotate-3"
+            className="w-32 sm:w-40 lg:w-64 h-44 sm:h-52 lg:h-80 object-cover rounded-xl sm:rounded-2xl shadow-2xl border-2 sm:border-4 border-white -rotate-3"
             whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
             style={{ zIndex: 3 }}
           />
         </motion.div>
       </motion.div>
 
+      {/* 3D Rotating Subjects */}
+      {!showLoginForm && (
+        <div
+          className="absolute left-1/2 -translate-x-1/2 bottom-24 sm:bottom-auto sm:left-auto sm:translate-x-0 sm:right-4 lg:right-12 xl:right-20 sm:top-1/2 sm:-translate-y-1/2 z-10"
+          style={{ perspective: '1000px' }}
+        >
+          <div
+            className="relative overflow-hidden w-[300px] sm:w-[500px] lg:w-[650px] xl:w-[750px] h-12 sm:h-20 lg:h-20 xl:h-24"
+            style={{
+              transformStyle: 'preserve-3d',
+              transform: 'rotateX(8deg)'
+            }}
+          >
+            <div
+              className="flex items-center gap-6 sm:gap-12 lg:gap-16 xl:gap-20 absolute left-0"
+              style={{
+                animation: 'smoothScroll 20s linear infinite'
+              }}
+            >
+              {[
+                'Matematika',
+                'Fizika',
+                'Kimyo',
+                'Biologiya',
+                'Tarix',
+                'Ingliz tili',
+                'Ona tili',
+                'Geografiya',
+                'Matematika',
+                'Fizika',
+                'Kimyo',
+                'Biologiya',
+                'Tarix',
+                'Ingliz tili',
+              ].map((subject, index) => (
+                <div
+                  key={index}
+                  className={`font-bold text-lg sm:text-2xl lg:text-4xl xl:text-5xl whitespace-nowrap ${isDark ? 'text-gray-300' : 'text-gray-700'}`}
+                >
+                  {subject}
+                </div>
+              ))}
+            </div>
+          </div>
+          <style>{`
+            @keyframes smoothScroll {
+              0% {
+                transform: translateX(0);
+              }
+              100% {
+                transform: translateX(-50%);
+              }
+            }
+          `}</style>
+        </div>
+      )}
+
       {/* Main Content - Login Form */}
       <AnimatePresence>
         {showLoginForm && (
           <motion.div
-            className="absolute right-20 lg:right-40 top-20 z-10 w-full max-w-2xl"
+            className="fixed inset-0 lg:absolute lg:inset-auto lg:right-20 xl:right-40 lg:top-20 z-10 w-full lg:max-w-2xl flex items-center justify-center lg:block p-4 lg:p-0"
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 30 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
           >
+            {/* Mobile Background Overlay */}
+            <div className={`absolute inset-0 lg:hidden ${isDark ? 'bg-gray-900/95' : 'bg-white/95'} backdrop-blur-sm`} />
+
+            {/* Form Content Container */}
+            <div className="relative w-full max-w-md lg:max-w-2xl max-h-[90vh] lg:max-h-none overflow-y-auto">
         {/* Logo with Frame */}
         <motion.div
           className="text-center mb-4"
@@ -177,13 +241,13 @@ export const AuthPage = () => {
         >
           {/* Logo with Cap */}
           <motion.div
-            className="relative inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-500/30"
+            className="relative inline-flex items-center justify-center w-14 sm:w-16 h-14 sm:h-16 rounded-2xl mb-4 shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-500/30"
             whileHover={{ scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 400, damping: 15 }}
           >
-            {/* Graduation Cap */}
+            {/* Graduation Cap - hidden on mobile */}
             <svg
-              className="absolute -top-7 left-1/2 -translate-x-1/2 w-16 h-14"
+              className="absolute -top-7 left-1/2 -translate-x-1/2 w-16 h-14 hidden sm:block"
               viewBox="0 0 100 90"
               fill="none"
             >
@@ -240,10 +304,10 @@ export const AuthPage = () => {
               <path d="M20,85 L20,90" stroke="#c49000" strokeWidth="1.5" />
               <path d="M22,85 L22,90" stroke="#c49000" strokeWidth="1.5" />
             </svg>
-            <span className="text-2xl font-bold text-white">P</span>
+            <span className="text-xl sm:text-2xl font-bold text-white">P</span>
           </motion.div>
 
-          <h1 className={`text-3xl font-bold mb-1 ${isDark ? 'text-white' : 'text-black'}`}>
+          <h1 className={`text-2xl sm:text-3xl font-bold mb-1 ${isDark ? 'text-white' : 'text-black'}`}>
             ProExam
           </h1>
           <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -272,10 +336,10 @@ export const AuthPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <h2 className={`text-2xl font-bold mb-1 ${isDark ? 'text-white' : 'text-black'}`}>
+            <h2 className={`text-xl sm:text-2xl font-bold mb-1 ${isDark ? 'text-white' : 'text-black'}`}>
               {getTitle()}
             </h2>
-            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+            <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
               {getSubtitle()}
             </p>
           </motion.div>
@@ -328,13 +392,14 @@ export const AuthPage = () => {
 
         {/* Footer */}
         <motion.p
-          className={`text-center text-xs mt-6 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}
+          className={`text-center text-xs mt-4 sm:mt-6 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           &copy; 2025 ProExam. Barcha huquqlar himoyalangan.
         </motion.p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

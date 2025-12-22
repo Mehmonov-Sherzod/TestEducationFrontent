@@ -51,9 +51,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               type={inputType}
               placeholder={label}
               className={cn(
-                'w-full h-14 px-4 rounded-xl',
+                'w-full h-12 sm:h-14 px-4 rounded-xl',
                 'border transition-all duration-200',
-                'text-base',
+                'text-sm sm:text-base',
                 'focus:outline-none',
                 // Theme styles
                 isDark
@@ -106,7 +106,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-              'text-sm mt-2 ml-1',
+              'text-xs sm:text-sm mt-1.5 sm:mt-2 ml-1',
               isDark ? 'text-red-400' : 'text-red-500'
             )}
           >

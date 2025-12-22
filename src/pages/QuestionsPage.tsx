@@ -390,47 +390,48 @@ export const QuestionsPage = () => {
   }
 
   return (
-    <div className="py-8 px-4 max-w-7xl mx-auto">
+    <div className="py-4 sm:py-8 px-2 sm:px-4 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className={`text-4xl font-bold mb-2 flex items-center gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 flex items-center gap-2 sm:gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
             <FiHelpCircle className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
-            Questions Management
+            <span className="hidden sm:inline">Questions Management</span>
+            <span className="sm:hidden">Savollar</span>
           </h1>
-          <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+          <p className={`text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             Manage your question bank
           </p>
         </div>
         {canManageQuestions && (
           <button
             onClick={() => setIsCreating(true)}
-            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all ${
+            className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all text-sm sm:text-base w-full sm:w-auto ${
               isDark
                 ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
                 : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white'
             }`}
           >
-            <FiPlus className="w-5 h-5" />
+            <FiPlus className="w-4 h-4 sm:w-5 sm:h-5" />
             Add Question
           </button>
         )}
       </div>
 
       {/* Filters */}
-      <div className={`p-4 rounded-xl mb-6 border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-        <div className="flex items-center gap-2 mb-4">
+      <div className={`p-3 sm:p-4 rounded-xl mb-4 sm:mb-6 border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+        <div className="flex items-center gap-2 mb-3 sm:mb-4">
           <FiFilter className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
-          <span className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Filters</span>
+          <span className={`font-semibold text-sm sm:text-base ${isDark ? 'text-white' : 'text-gray-900'}`}>Filters</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
           {/* Subject Select */}
-          <div>
-            <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Subject *</label>
+          <div className="col-span-2 sm:col-span-1">
+            <label className={`block text-xs sm:text-sm mb-1 sm:mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Subject *</label>
             <select
               value={selectedSubjectId}
               onChange={(e) => setSelectedSubjectId(e.target.value)}
-              className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+              className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
             >
               <option value="">Select Subject</option>
               {subjects.map((subject) => (
@@ -442,13 +443,13 @@ export const QuestionsPage = () => {
           </div>
 
           {/* Topic Select */}
-          <div>
-            <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Topic</label>
+          <div className="col-span-2 sm:col-span-1">
+            <label className={`block text-xs sm:text-sm mb-1 sm:mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Topic</label>
             <select
               value={selectedTopicId}
               onChange={(e) => setSelectedTopicId(e.target.value)}
               disabled={!selectedSubjectId}
-              className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-red-500'} disabled:opacity-50`}
+              className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-red-500'} disabled:opacity-50`}
             >
               <option value="">All Topics</option>
               {topics.map((topic) => (
@@ -461,13 +462,13 @@ export const QuestionsPage = () => {
 
           {/* Language Select */}
           <div>
-            <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Language</label>
+            <label className={`block text-xs sm:text-sm mb-1 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Language</label>
             <select
               value={selectedLanguage}
               onChange={(e) => setSelectedLanguage(e.target.value)}
-              className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+              className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
             >
-              <option value="uz">O'zbekcha</option>
+              <option value="uz">O'zbek</option>
               <option value="rus">Русский</option>
               <option value="eng">English</option>
             </select>
@@ -475,15 +476,15 @@ export const QuestionsPage = () => {
 
           {/* Search */}
           <div>
-            <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Search</label>
+            <label className={`block text-xs sm:text-sm mb-1 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Search</label>
             <div className="relative">
-              <FiSearch className={`absolute left-3 top-1/2 -translate-y-1/2 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
+              <FiSearch className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search questions..."
-                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                placeholder="Search..."
+                className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
               />
             </div>
           </div>
@@ -491,26 +492,26 @@ export const QuestionsPage = () => {
       </div>
 
       {/* Questions List */}
-      <div className={`rounded-2xl shadow-lg overflow-hidden border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+      <div className={`rounded-xl sm:rounded-2xl shadow-lg overflow-hidden border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
         {!selectedSubjectId ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="text-center">
-              <FiFilter className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
-              <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Please select a subject to view questions</p>
+          <div className="flex items-center justify-center py-12 sm:py-20">
+            <div className="text-center px-4">
+              <FiFilter className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
+              <p className={`text-sm sm:text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Please select a subject to view questions</p>
             </div>
           </div>
         ) : isLoading ? (
-          <div className="flex items-center justify-center py-20">
+          <div className="flex items-center justify-center py-12 sm:py-20">
             <div className="text-center">
-              <div className={`w-16 h-16 border-4 ${isDark ? 'border-cyan-500' : 'border-blue-500'} border-t-transparent rounded-full animate-spin mx-auto mb-4`}></div>
-              <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Loading questions...</p>
+              <div className={`w-12 h-12 sm:w-16 sm:h-16 border-4 ${isDark ? 'border-cyan-500' : 'border-blue-500'} border-t-transparent rounded-full animate-spin mx-auto mb-3 sm:mb-4`}></div>
+              <p className={`text-sm sm:text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Loading questions...</p>
             </div>
           </div>
         ) : questions.length === 0 ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="text-center">
-              <FiHelpCircle className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
-              <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>No questions found</p>
+          <div className="flex items-center justify-center py-12 sm:py-20">
+            <div className="text-center px-4">
+              <FiHelpCircle className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
+              <p className={`text-sm sm:text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>No questions found</p>
             </div>
           </div>
         ) : (
@@ -526,28 +527,29 @@ export const QuestionsPage = () => {
                   {/* Question Header - Clickable */}
                   <button
                     onClick={() => setExpandedQuestion(expandedQuestion === index ? null : index)}
-                    className={`w-full p-4 text-left flex items-center justify-between gap-4 transition-colors ${
+                    className={`w-full p-3 sm:p-4 text-left flex items-center justify-between gap-2 sm:gap-4 transition-colors ${
                       isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
                     } ${expandedQuestion === index ? (isDark ? 'bg-gray-700/50' : 'bg-gray-50') : ''}`}
                   >
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <span className={`px-2 py-0.5 rounded text-xs font-medium ${getLevelColor(question.QuestionLevel)}`}>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 sm:gap-3 mb-1">
+                        <span className={`px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium ${getLevelColor(question.QuestionLevel)}`}>
                           {question.QuestionLevel}
                         </span>
-                        <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                          {question.Answers.length} ta javob
+                        <span className={`text-[10px] sm:text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                          {question.Answers.length} javob
                         </span>
                       </div>
-                      <h3 className={`text-base font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <h3 className={`text-sm sm:text-base font-medium line-clamp-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {question.QuestionText}
                       </h3>
                     </div>
                     <motion.div
                       animate={{ rotate: expandedQuestion === index ? 180 : 0 }}
                       transition={{ duration: 0.2 }}
+                      className="flex-shrink-0"
                     >
-                      <FiChevronDown className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
+                      <FiChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                     </motion.div>
                   </button>
 
@@ -561,10 +563,10 @@ export const QuestionsPage = () => {
                         transition={{ duration: 0.2 }}
                         className={`overflow-hidden ${isDark ? 'bg-gray-800/50' : 'bg-gray-50/50'}`}
                       >
-                        <div className="px-4 pb-4">
+                        <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                           {question.Image && (
-                            <div className="mb-4">
-                              <p className={`text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                            <div className="mb-3 sm:mb-4">
+                              <p className={`text-xs sm:text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                                 Rasm:
                               </p>
                               <a
@@ -576,42 +578,42 @@ export const QuestionsPage = () => {
                                 <img
                                   src={questionService.getImageUrl(question.Image)}
                                   alt="Question"
-                                  className={`max-h-60 rounded-xl border-2 shadow-lg hover:scale-105 transition-transform cursor-pointer ${isDark ? 'border-gray-700' : 'border-gray-200'}`}
+                                  className={`max-h-40 sm:max-h-60 rounded-lg sm:rounded-xl border-2 shadow-lg hover:scale-105 transition-transform cursor-pointer ${isDark ? 'border-gray-700' : 'border-gray-200'}`}
                                 />
                               </a>
                             </div>
                           )}
                           {/* Edit Button */}
                           {canManageQuestions && (
-                            <div className="flex justify-end mb-3">
+                            <div className="flex justify-end mb-2 sm:mb-3">
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   handleStartEdit(question)
                                 }}
-                                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                                className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
                                   isDark
                                     ? 'bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30'
                                     : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
                                 }`}
                               >
-                                <FiEdit2 className="w-4 h-4" />
+                                <FiEdit2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                 Edit
                               </button>
                             </div>
                           )}
-                          <p className={`text-sm mb-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                          <p className={`text-xs sm:text-sm mb-2 sm:mb-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                             Javob variantlari:
                           </p>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          <div className="grid grid-cols-1 gap-2">
                             {question.Answers.map((answer, aIndex) => (
                               <div
                                 key={aIndex}
-                                className={`p-3 rounded-lg text-sm flex items-start gap-2 border ${
+                                className={`p-2 sm:p-3 rounded-lg text-xs sm:text-sm flex items-start gap-2 border ${
                                   isDark ? 'bg-gray-900/50 text-gray-200 border-gray-700' : 'bg-white text-gray-700 border-gray-200'
                                 }`}
                               >
-                                <span className={`font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                                <span className={`font-semibold flex-shrink-0 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
                                   {String.fromCharCode(65 + aIndex)}.
                                 </span>
                                 <span>{answer.AnswerText}</span>
@@ -628,27 +630,27 @@ export const QuestionsPage = () => {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className={`flex items-center justify-between px-6 py-4 border-t ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-gray-50 border-gray-200'}`}>
-                <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                  Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount}
+              <div className={`flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4 border-t ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-gray-50 border-gray-200'}`}>
+                <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  {(currentPage - 1) * pageSize + 1}-{Math.min(currentPage * pageSize, totalCount)} / {totalCount}
                 </p>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setCurrentPage(p => p - 1)}
                     disabled={currentPage === 1}
-                    className={`p-2 rounded-lg disabled:opacity-50 transition-colors ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 transition-colors ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                   >
-                    <FiChevronLeft className="w-5 h-5" />
+                    <FiChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
-                  <span className={isDark ? 'text-white' : 'text-gray-700'}>
-                    Page {currentPage} of {totalPages}
+                  <span className={`text-xs sm:text-sm ${isDark ? 'text-white' : 'text-gray-700'}`}>
+                    {currentPage} / {totalPages}
                   </span>
                   <button
                     onClick={() => setCurrentPage(p => p + 1)}
                     disabled={currentPage === totalPages}
-                    className={`p-2 rounded-lg disabled:opacity-50 transition-colors ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 transition-colors ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                   >
-                    <FiChevronRight className="w-5 h-5" />
+                    <FiChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
               </div>
@@ -664,7 +666,7 @@ export const QuestionsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4"
             onClick={() => setIsCreating(false)}
           >
             <motion.div
@@ -672,27 +674,28 @@ export const QuestionsPage = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-2xl shadow-2xl border p-8 max-w-5xl w-full max-h-[90vh] overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
+              className={`rounded-xl sm:rounded-2xl shadow-2xl border p-4 sm:p-6 lg:p-8 max-w-5xl w-full max-h-[95vh] overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
             >
-              <div className="flex items-center justify-between mb-8">
-                <h2 className={`text-3xl font-bold flex items-center gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  <FiHelpCircle className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
-                  Create New Question
+              <div className="flex items-center justify-between mb-4 sm:mb-6 lg:mb-8">
+                <h2 className={`text-xl sm:text-2xl lg:text-3xl font-bold flex items-center gap-2 sm:gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <FiHelpCircle className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
+                  <span className="hidden sm:inline">Create New Question</span>
+                  <span className="sm:hidden">Yangi savol</span>
                 </h2>
                 <button
                   onClick={() => setIsCreating(false)}
-                  className={`p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100'}`}
+                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100'}`}
                 >
-                  <FiX className={`w-6 h-6 ${isDark ? 'text-gray-300' : 'text-gray-500'}`} />
+                  <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-gray-300' : 'text-gray-500'}`} />
                 </button>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Subject and Topic in grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
                 {/* Subject Select */}
                 <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Subject *</label>
+                  <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Subject *</label>
                   <select
                     value={questionForm.subjectId}
                     onChange={(e) => {
@@ -700,7 +703,7 @@ export const QuestionsPage = () => {
                       setQuestionForm({ ...questionForm, subjectId: newSubjectId, topicId: '' })
                       fetchModalTopics(newSubjectId)
                     }}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
                   >
                     <option value="">Select Subject</option>
                     {subjects.map((subject) => (
@@ -713,12 +716,12 @@ export const QuestionsPage = () => {
 
                 {/* Topic Select */}
                 <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Topic *</label>
+                  <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Topic *</label>
                   <select
                     value={questionForm.topicId}
                     onChange={(e) => setQuestionForm({ ...questionForm, topicId: e.target.value })}
                     disabled={!questionForm.subjectId}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-red-500'} disabled:opacity-50`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-red-500'} disabled:opacity-50`}
                   >
                     <option value="">Select Topic</option>
                     {modalTopics.map((topic) => (
@@ -732,25 +735,25 @@ export const QuestionsPage = () => {
 
                 {/* Question Text */}
                 <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Question Text *</label>
+                  <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Question Text *</label>
                   <textarea
                     value={questionForm.questionText}
                     onChange={(e) => setQuestionForm({ ...questionForm, questionText: e.target.value })}
-                    rows={4}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                    rows={3}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
                     placeholder="Enter your question..."
                   />
                 </div>
 
                 {/* Level and Image in grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
                 {/* Level Select */}
                 <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Difficulty Level</label>
+                  <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Difficulty Level</label>
                   <select
                     value={questionForm.level}
                     onChange={(e) => setQuestionForm({ ...questionForm, level: e.target.value as QuestionLevel })}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
                   >
                     <option value={QuestionLevel.Easy}>Easy</option>
                     <option value={QuestionLevel.Medium}>Medium</option>
@@ -760,18 +763,18 @@ export const QuestionsPage = () => {
 
                 {/* Image Upload */}
                 <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Image (Optional)</label>
-                  <label className={`flex items-center justify-center w-full h-full min-h-[80px] rounded-lg border-2 border-dashed cursor-pointer transition-all ${isDark ? 'border-gray-700 hover:border-cyan-500/50 bg-gray-900' : 'border-gray-300 hover:border-blue-400 bg-gray-50'}`}>
+                  <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Image (Optional)</label>
+                  <label className={`flex items-center justify-center w-full min-h-[60px] sm:min-h-[80px] rounded-lg border-2 border-dashed cursor-pointer transition-all ${isDark ? 'border-gray-700 hover:border-cyan-500/50 bg-gray-900' : 'border-gray-300 hover:border-blue-400 bg-gray-50'}`}>
                     <input
                       type="file"
                       accept="image/*"
                       onChange={(e) => setQuestionForm({ ...questionForm, image: e.target.files?.[0] || null })}
                       className="hidden"
                     />
-                    <div className="text-center py-4">
-                      <FiImage className={`w-8 h-8 mx-auto mb-2 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
-                      <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-400'}`}>
-                        {questionForm.image ? questionForm.image.name : 'Click to upload image'}
+                    <div className="text-center py-2 sm:py-4 px-2">
+                      <FiImage className={`w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-1 sm:mb-2 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
+                      <span className={`text-xs sm:text-sm truncate block ${isDark ? 'text-gray-400' : 'text-gray-400'}`}>
+                        {questionForm.image ? questionForm.image.name : 'Upload image'}
                       </span>
                     </div>
                   </label>
@@ -780,14 +783,14 @@ export const QuestionsPage = () => {
 
                 {/* Answers */}
                 <div>
-                  <label className={`block text-sm font-medium mb-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Answers * (Select correct answer)</label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <label className={`block text-xs sm:text-sm font-medium mb-2 sm:mb-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Answers * (Select correct answer)</label>
+                  <div className="space-y-2 sm:space-y-3">
                     {questionForm.answers.map((answer, index) => (
-                      <div key={index} className="flex items-center gap-3">
+                      <div key={index} className="flex items-center gap-2 sm:gap-3">
                         <button
                           type="button"
                           onClick={() => handleAnswerChange(index, 'isCorrect', true)}
-                          className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0 ${
+                          className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0 ${
                             answer.isCorrect
                               ? isDark
                                 ? 'border-green-500 bg-green-500 text-white'
@@ -797,11 +800,11 @@ export const QuestionsPage = () => {
                                 : 'border-gray-300 hover:border-green-500'
                           }`}
                         >
-                          {answer.isCorrect && <FiCheck className="w-5 h-5" />}
+                          {answer.isCorrect && <FiCheck className="w-3 h-3 sm:w-5 sm:h-5" />}
                         </button>
-                        <div className={`flex items-center gap-2 px-3 py-1 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                          <span className={`font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
-                            {String.fromCharCode(65 + index)}.
+                        <div className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 rounded-lg flex-shrink-0 ${isDark ? 'bg-gray-700' : 'bg-gray-100'}`}>
+                          <span className={`font-semibold text-xs sm:text-sm ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                            {String.fromCharCode(65 + index)}
                           </span>
                         </div>
                         <input
@@ -809,7 +812,7 @@ export const QuestionsPage = () => {
                           value={answer.text}
                           onChange={(e) => handleAnswerChange(index, 'text', e.target.value)}
                           placeholder={`Answer ${String.fromCharCode(65 + index)}`}
-                          className={`flex-1 px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                          className={`flex-1 min-w-0 px-3 sm:px-4 py-2 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
                         />
                       </div>
                     ))}
@@ -817,23 +820,23 @@ export const QuestionsPage = () => {
                 </div>
 
                 {/* Buttons */}
-                <div className={`flex gap-4 mt-8 pt-6 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+                <div className={`flex flex-col-reverse sm:flex-row gap-2 sm:gap-4 mt-4 sm:mt-8 pt-4 sm:pt-6 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+                  <button
+                    onClick={() => setIsCreating(false)}
+                    className={`py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 lg:px-8 rounded-xl font-semibold transition-colors text-sm sm:text-base lg:text-lg ${isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-600' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                  >
+                    Cancel
+                  </button>
                   <button
                     onClick={handleCreateQuestion}
-                    className={`flex-1 py-4 px-8 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3 text-lg ${
+                    className={`flex-1 py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 lg:px-8 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base lg:text-lg ${
                       isDark
                         ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700'
                         : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800'
                     }`}
                   >
-                    <FiSave className="w-6 h-6" />
-                    Create Question
-                  </button>
-                  <button
-                    onClick={() => setIsCreating(false)}
-                    className={`py-4 px-8 rounded-xl font-semibold transition-colors text-lg ${isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-600' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
-                  >
-                    Cancel
+                    <FiSave className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+                    Create
                   </button>
                 </div>
               </div>
@@ -849,7 +852,7 @@ export const QuestionsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4"
             onClick={() => setIsEditing(false)}
           >
             <motion.div
@@ -857,41 +860,41 @@ export const QuestionsPage = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-2xl shadow-2xl border p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
+              className={`rounded-xl sm:rounded-2xl shadow-2xl border p-4 sm:p-6 max-w-2xl w-full max-h-[95vh] overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
             >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className={`text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  <FiEdit2 className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 className={`text-lg sm:text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <FiEdit2 className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
                   Edit Question
                 </h2>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className={`p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100'}`}
+                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100'}`}
                 >
-                  <FiX className={`w-6 h-6 ${isDark ? 'text-gray-300' : 'text-gray-500'}`} />
+                  <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-gray-300' : 'text-gray-500'}`} />
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {/* Question Text */}
                 <div>
-                  <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Question Text *</label>
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Question Text *</label>
                   <textarea
                     value={editForm.questionText}
                     onChange={(e) => setEditForm({ ...editForm, questionText: e.target.value })}
                     rows={3}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
                     placeholder="Enter your question..."
                   />
                 </div>
 
                 {/* Level Select */}
                 <div>
-                  <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Difficulty Level</label>
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Difficulty Level</label>
                   <select
                     value={editForm.level}
                     onChange={(e) => setEditForm({ ...editForm, level: e.target.value as QuestionLevel })}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
                   >
                     <option value={QuestionLevel.Easy}>Easy</option>
                     <option value={QuestionLevel.Medium}>Medium</option>
@@ -901,14 +904,14 @@ export const QuestionsPage = () => {
 
                 {/* Answers */}
                 <div>
-                  <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Answers * (Select correct answer)</label>
-                  <div className="space-y-3">
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Answers * (Select correct answer)</label>
+                  <div className="space-y-2 sm:space-y-3">
                     {editForm.answers.map((answer, index) => (
-                      <div key={index} className="flex items-center gap-3">
+                      <div key={index} className="flex items-center gap-2 sm:gap-3">
                         <button
                           type="button"
                           onClick={() => handleEditAnswerChange(index, 'isCorrect', true)}
-                          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                          className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0 ${
                             answer.isCorrect
                               ? isDark
                                 ? 'border-green-500 bg-green-500 text-white'
@@ -918,14 +921,14 @@ export const QuestionsPage = () => {
                                 : 'border-gray-300 hover:border-green-500'
                           }`}
                         >
-                          {answer.isCorrect && <FiCheck className="w-4 h-4" />}
+                          {answer.isCorrect && <FiCheck className="w-3 h-3 sm:w-4 sm:h-4" />}
                         </button>
                         <input
                           type="text"
                           value={answer.text}
                           onChange={(e) => handleEditAnswerChange(index, 'text', e.target.value)}
                           placeholder={`Answer ${index + 1}`}
-                          className={`flex-1 px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                          className={`flex-1 min-w-0 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
                         />
                       </div>
                     ))}
@@ -933,23 +936,23 @@ export const QuestionsPage = () => {
                 </div>
 
                 {/* Buttons */}
-                <div className="flex gap-3 mt-6">
+                <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
+                  <button
+                    onClick={() => setIsEditing(false)}
+                    className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-700' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                  >
+                    Cancel
+                  </button>
                   <button
                     onClick={handleUpdateQuestion}
-                    className={`flex-1 py-3 px-6 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 ${
+                    className={`flex-1 py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
                       isDark
                         ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
                         : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white'
                     }`}
                   >
-                    <FiSave className="w-5 h-5" />
-                    Update Question
-                  </button>
-                  <button
-                    onClick={() => setIsEditing(false)}
-                    className={`py-3 px-6 rounded-lg font-semibold transition-colors ${isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-700' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
-                  >
-                    Cancel
+                    <FiSave className="w-4 h-4 sm:w-5 sm:h-5" />
+                    Update
                   </button>
                 </div>
               </div>

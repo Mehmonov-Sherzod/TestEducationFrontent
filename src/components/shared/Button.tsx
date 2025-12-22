@@ -48,7 +48,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         whileHover={!disabled && !isLoading ? { scale: 1.01, y: -1 } : {}}
         whileTap={!disabled && !isLoading ? { scale: 0.99 } : {}}
         className={cn(
-          'relative px-6 py-4 rounded-xl font-semibold text-base',
+          'relative px-5 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base',
           'transition-all duration-200',
           isDark
             ? 'focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:ring-offset-2 focus:ring-offset-gray-900'

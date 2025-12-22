@@ -93,7 +93,7 @@ export const ThemeToggleIcon = () => {
   return (
     <motion.button
       onClick={toggleTheme}
-      className={`relative p-2.5 rounded-xl transition-all duration-300 ${
+      className={`relative p-2 sm:p-2.5 rounded-xl transition-all duration-300 ${
         isDark
           ? 'bg-slate-800 hover:bg-slate-700 text-yellow-300'
           : 'bg-gray-100 hover:bg-gray-200 text-yellow-500'
@@ -106,8 +106,9 @@ export const ThemeToggleIcon = () => {
         initial={false}
         animate={{ rotate: isDark ? 0 : 180 }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
+        className="w-4 h-4 sm:w-[18px] sm:h-[18px] flex items-center justify-center"
       >
-        {isDark ? <FiMoon size={18} /> : <FiSun size={18} />}
+        {isDark ? <FiMoon className="w-full h-full" /> : <FiSun className="w-full h-full" />}
       </motion.div>
 
       {/* Glow effect */}

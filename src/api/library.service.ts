@@ -17,7 +17,7 @@ export interface SharedSource {
 
 export interface CreateSharedSourceData {
   description: string
-  image: File
+  file: File
   subjectId: string
 }
 
@@ -49,7 +49,7 @@ export const libraryService = {
   create: async (data: CreateSharedSourceData): Promise<ApiResponse<CreateSharedSourceResponse>> => {
     const formData = new FormData()
     formData.append('Description', data.description)
-    formData.append('Image', data.image)
+    formData.append('File', data.file)
     formData.append('SubjectId', data.subjectId.toString())
 
     return api.post('/api/SharedSource/create-source', formData, {

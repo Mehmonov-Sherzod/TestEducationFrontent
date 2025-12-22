@@ -77,7 +77,7 @@ export const SubjectsPage = () => {
   const fetchSubjects = async () => {
     try {
       setIsLoading(true)
-      const response = await fetch('https://localhost:5001/api/Subject/get-all', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Subject/get-all`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ export const SubjectsPage = () => {
     }
 
     try {
-      const response = await fetch('https://localhost:5001/api/Subject', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Subject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ export const SubjectsPage = () => {
     }
 
     try {
-      const response = await fetch(`https://localhost:5001/api/Subject/${editingSubject.Id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Subject/${editingSubject.Id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -230,7 +230,7 @@ export const SubjectsPage = () => {
     if (!deletingSubject) return
 
     try {
-      const response = await fetch(`https://localhost:5001/api/Subject/${deletingSubject.Id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Subject/${deletingSubject.Id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -264,15 +264,15 @@ export const SubjectsPage = () => {
   const totalPages = Math.ceil(totalCount / pageSize)
 
   return (
-    <div className="py-8 px-4 max-w-7xl mx-auto">
+    <div className="py-4 sm:py-8 px-2 sm:px-4 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className={`text-4xl font-bold mb-2 flex items-center gap-3 ${isDark ? 'text-white' : 'text-gray-700'}`}>
+          <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 flex flex-wrap items-center gap-2 sm:gap-3 ${isDark ? 'text-white' : 'text-gray-700'}`}>
             <FiBook className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
-            Subjects
+            <span>Subjects</span>
             {isSuperAdmin && (
-              <span className={`text-xs px-3 py-1 rounded-full font-normal flex items-center gap-1 ${
+              <span className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full font-normal flex items-center gap-1 ${
                 isDark ? 'bg-cyan-500/20 text-cyan-400' : 'bg-blue-100 text-blue-600'
               }`}>
                 <FiShield className="w-3 h-3" />
@@ -280,7 +280,7 @@ export const SubjectsPage = () => {
               </span>
             )}
             {isAdmin && (
-              <span className={`text-xs px-3 py-1 rounded-full font-normal flex items-center gap-1 ${
+              <span className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full font-normal flex items-center gap-1 ${
                 isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-600'
               }`}>
                 <FiKey className="w-3 h-3" />
@@ -288,7 +288,7 @@ export const SubjectsPage = () => {
               </span>
             )}
             {isStudent && (
-              <span className={`text-xs px-3 py-1 rounded-full font-normal flex items-center gap-1 ${
+              <span className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full font-normal flex items-center gap-1 ${
                 isDark ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-600'
               }`}>
                 <FiUser className="w-3 h-3" />
@@ -296,35 +296,35 @@ export const SubjectsPage = () => {
               </span>
             )}
           </h1>
-          <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+          <p className={`text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             {canManageSubjects ? 'Manage subjects' : 'Browse available subjects'}
           </p>
         </div>
         {canManageSubjects && (
           <button
             onClick={() => setIsCreating(true)}
-            className={`flex items-center gap-2 px-6 py-3 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all ${
+            className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all text-sm sm:text-base w-full sm:w-auto ${
               isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-blue-600 hover:bg-blue-700'
             }`}
           >
-            <FiPlus className="w-5 h-5" />
+            <FiPlus className="w-4 h-4 sm:w-5 sm:h-5" />
             Create Subject
           </button>
         )}
       </div>
 
       {/* Language Selector */}
-      <div className="mb-6 flex items-center gap-4">
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
         <div className="flex items-center gap-2">
           <FiGlobe className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
-          <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-700'}`}>Language:</span>
+          <span className={`font-medium text-sm sm:text-base ${isDark ? 'text-white' : 'text-gray-700'}`}>Language:</span>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-1">
           {LANGUAGES.map((lang) => (
             <button
               key={lang.code}
               onClick={() => setSelectedLanguage(lang.code)}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+              className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm whitespace-nowrap ${
                 selectedLanguage === lang.code
                   ? isDark
                     ? 'bg-cyan-500 text-white shadow-lg'
@@ -334,22 +334,22 @@ export const SubjectsPage = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              {lang.flag} {lang.label}
+              {lang.flag} <span className="hidden sm:inline">{lang.label}</span>
             </button>
           ))}
         </div>
       </div>
 
       {/* Search */}
-      <div className="mb-6">
-        <div className="relative max-w-md">
-          <FiSearch className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
+      <div className="mb-4 sm:mb-6">
+        <div className="relative w-full sm:max-w-md">
+          <FiSearch className={`absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search subjects..."
-            className={`w-full pl-12 pr-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all ${
+            className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${
               isDark
                 ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500'
                 : 'bg-white/70 border-cyan-100 text-black placeholder-gray-400 focus:ring-blue-500'
@@ -375,7 +375,8 @@ export const SubjectsPage = () => {
         </div>
       ) : (
         <>
-          <div className={`rounded-xl overflow-hidden border ${
+          {/* Desktop Table View */}
+          <div className={`hidden sm:block rounded-xl overflow-hidden border ${
             isDark ? 'bg-gray-800/50 border-gray-700' : 'bg-white/60 border-cyan-100 shadow-sm'
           }`}>
             {/* Table Header */}
@@ -451,25 +452,121 @@ export const SubjectsPage = () => {
             </div>
           </div>
 
+          {/* Mobile Card View */}
+          <div className="sm:hidden space-y-3">
+            {subjects.map((subject, index) => (
+              <motion.div
+                key={subject.Id || index}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.03 }}
+                className={`rounded-xl p-4 border ${
+                  isDark ? 'bg-gray-800/50 border-gray-700' : 'bg-white/60 border-cyan-100 shadow-sm'
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                        isDark ? 'bg-cyan-500/20 text-cyan-400' : 'bg-blue-100 text-blue-600'
+                      }`}>
+                        #{(currentPage - 1) * pageSize + index + 1}
+                      </span>
+                    </div>
+                    <h3 className={`font-semibold text-base truncate ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                      {subject.SubjectName}
+                    </h3>
+                  </div>
+                </div>
+                {canManageSubjects && (
+                  <div className={`flex items-center gap-2 mt-3 pt-3 border-t ${isDark ? 'border-gray-700/30' : 'border-gray-200'}`}>
+                    <button
+                      onClick={() => {
+                        setEditingSubject(subject)
+                        setSubjectForm({
+                          name_uz: subject.SubjectName,
+                          name_rus: subject.SubjectName,
+                          name_eng: subject.SubjectName,
+                        })
+                      }}
+                      className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                        isDark
+                          ? 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30'
+                          : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                      }`}
+                    >
+                      <FiEdit2 className="w-3.5 h-3.5" />
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => openDeleteConfirmation(subject.Id!, subject.SubjectName)}
+                      className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                        isDark
+                          ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
+                          : 'bg-red-100 text-red-600 hover:bg-red-200'
+                      }`}
+                    >
+                      <FiTrash2 className="w-3.5 h-3.5" />
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className={`flex items-center justify-between mt-6 p-4 rounded-xl ${
+            <div className={`flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 sm:mt-6 p-3 sm:p-4 rounded-xl ${
               isDark ? 'bg-gray-800/50' : 'bg-cyan-50/50 shadow-sm'
             }`}>
-              <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Showing {(currentPage - 1) * pageSize + 1} - {Math.min(currentPage * pageSize, totalCount)} of {totalCount}
+              <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                {(currentPage - 1) * pageSize + 1} - {Math.min(currentPage * pageSize, totalCount)} / {totalCount}
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 <button
                   onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className={`px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                  className={`px-3 sm:px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm ${
                     isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
                   ←
                 </button>
-                <div className="flex items-center gap-1">
+                {/* Mobile: Show only 3 page numbers */}
+                <div className="flex sm:hidden items-center gap-1">
+                  {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
+                    let pageNum
+                    if (totalPages <= 3) {
+                      pageNum = i + 1
+                    } else if (currentPage === 1) {
+                      pageNum = i + 1
+                    } else if (currentPage === totalPages) {
+                      pageNum = totalPages - 2 + i
+                    } else {
+                      pageNum = currentPage - 1 + i
+                    }
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`w-8 h-8 rounded-lg text-sm font-medium transition-all ${
+                          currentPage === pageNum
+                            ? isDark
+                              ? 'bg-cyan-500 text-white'
+                              : 'bg-blue-600 text-white'
+                            : isDark
+                            ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    )
+                  })}
+                </div>
+                {/* Desktop: Show 5 page numbers */}
+                <div className="hidden sm:flex items-center gap-1">
                   {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                     let pageNum
                     if (totalPages <= 5) {
@@ -503,7 +600,7 @@ export const SubjectsPage = () => {
                 <button
                   onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className={`px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                  className={`px-3 sm:px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm ${
                     isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -522,7 +619,7 @@ export const SubjectsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4"
             onClick={() => setIsCreating(false)}
           >
             <motion.div
@@ -530,33 +627,34 @@ export const SubjectsPage = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-2xl shadow-2xl p-8 max-w-md w-full border ${
+              className={`rounded-2xl shadow-2xl p-4 sm:p-8 max-w-md w-full border max-h-[90vh] overflow-y-auto ${
                 isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
               }`}
             >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className={`text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-700'}`}>
-                  <FiBook className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
-                  Create New Subject
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 className={`text-lg sm:text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-700'}`}>
+                  <FiBook className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
+                  <span className="hidden sm:inline">Create New Subject</span>
+                  <span className="sm:hidden">New Subject</span>
                 </h2>
                 <button
                   onClick={() => setIsCreating(false)}
-                  className={`p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
+                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
                 >
-                  <FiX className={`w-6 h-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
+                  <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div>
-                  <label className={`block text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇺🇿 Subject Name (O'zbekcha) *
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    🇺🇿 O'zbekcha *
                   </label>
                   <input
                     type="text"
                     value={subjectForm.name_uz}
                     onChange={(e) => setSubjectForm({ ...subjectForm, name_uz: e.target.value })}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
                       isDark
                         ? 'bg-gray-700 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500'
                         : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
@@ -566,14 +664,14 @@ export const SubjectsPage = () => {
                 </div>
 
                 <div>
-                  <label className={`block text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇷🇺 Subject Name (Русский) *
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    🇷🇺 Русский *
                   </label>
                   <input
                     type="text"
                     value={subjectForm.name_rus}
                     onChange={(e) => setSubjectForm({ ...subjectForm, name_rus: e.target.value })}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
                       isDark
                         ? 'bg-gray-700 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500'
                         : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
@@ -583,14 +681,14 @@ export const SubjectsPage = () => {
                 </div>
 
                 <div>
-                  <label className={`block text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇬🇧 Subject Name (English) *
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    🇬🇧 English *
                   </label>
                   <input
                     type="text"
                     value={subjectForm.name_eng}
                     onChange={(e) => setSubjectForm({ ...subjectForm, name_eng: e.target.value })}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
                       isDark
                         ? 'bg-gray-700 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500'
                         : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
@@ -599,23 +697,23 @@ export const SubjectsPage = () => {
                   />
                 </div>
 
-                <div className="flex gap-3 mt-6">
-                  <button
-                    onClick={handleCreateSubject}
-                    className={`flex-1 py-3 px-6 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 ${
-                      isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-blue-600 hover:bg-blue-700'
-                    }`}
-                  >
-                    <FiSave className="w-5 h-5" />
-                    Create Subject
-                  </button>
+                <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <button
                     onClick={() => setIsCreating(false)}
-                    className={`py-3 px-6 rounded-lg font-semibold transition-colors ${
+                    className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
                       isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
                     Cancel
+                  </button>
+                  <button
+                    onClick={handleCreateSubject}
+                    className={`flex-1 py-2.5 sm:py-3 px-4 sm:px-6 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
+                      isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-blue-600 hover:bg-blue-700'
+                    }`}
+                  >
+                    <FiSave className="w-4 h-4 sm:w-5 sm:h-5" />
+                    Create
                   </button>
                 </div>
               </div>
@@ -631,7 +729,7 @@ export const SubjectsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4"
             onClick={() => setDeletingSubject(null)}
           >
             <motion.div
@@ -639,36 +737,36 @@ export const SubjectsPage = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className={`p-8 rounded-2xl shadow-2xl max-w-md w-full border ${
+              className={`p-4 sm:p-8 rounded-2xl shadow-2xl max-w-md w-full border ${
                 isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
               }`}
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className={`p-3 rounded-full ${isDark ? 'bg-red-500/20' : 'bg-red-100'}`}>
-                  <FiAlertTriangle className={`w-8 h-8 ${isDark ? 'text-red-400' : 'text-blue-600'}`} />
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <div className={`p-2 sm:p-3 rounded-full ${isDark ? 'bg-red-500/20' : 'bg-red-100'}`}>
+                  <FiAlertTriangle className={`w-6 h-6 sm:w-8 sm:h-8 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
                 </div>
                 <div>
-                  <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-700'}`}>Delete Subject</h2>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>This action cannot be undone</p>
+                  <h2 className={`text-lg sm:text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-700'}`}>Delete Subject</h2>
+                  <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>This action cannot be undone</p>
                 </div>
               </div>
 
-              <div className={`mb-6 p-4 rounded-lg border ${
+              <div className={`mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg border ${
                 isDark ? 'bg-red-500/10 border-red-500/30' : 'bg-red-50 border-red-200'
               }`}>
-                <p className={isDark ? 'text-gray-300' : 'text-gray-700'}>
-                  Are you sure you want to delete the subject{' '}
+                <p className={`text-sm sm:text-base ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                  Are you sure you want to delete{' '}
                   <span className={`font-bold ${isDark ? 'text-white' : 'text-gray-700'}`}>"{deletingSubject.Name}"</span>?
                 </p>
-                <p className={`text-sm mt-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`text-xs sm:text-sm mt-1.5 sm:mt-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                   All associated data will be permanently removed.
                 </p>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3">
                 <button
                   onClick={() => setDeletingSubject(null)}
-                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
+                  className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium transition-colors text-sm sm:text-base ${
                     isDark ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                   }`}
                 >
@@ -676,7 +774,7 @@ export const SubjectsPage = () => {
                 </button>
                 <button
                   onClick={handleDeleteSubject}
-                  className="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors inline-flex items-center justify-center gap-2"
+                  className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
                 >
                   <FiTrash2 className="w-4 h-4" />
                   Delete
@@ -694,7 +792,7 @@ export const SubjectsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4"
             onClick={() => setEditingSubject(null)}
           >
             <motion.div
@@ -702,33 +800,33 @@ export const SubjectsPage = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-2xl shadow-2xl p-8 max-w-md w-full border ${
+              className={`rounded-2xl shadow-2xl p-4 sm:p-8 max-w-md w-full border max-h-[90vh] overflow-y-auto ${
                 isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
               }`}
             >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className={`text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-700'}`}>
-                  <FiEdit2 className={isDark ? 'text-cyan-400' : 'text-blue-500'} />
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 className={`text-lg sm:text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-700'}`}>
+                  <FiEdit2 className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-cyan-400' : 'text-blue-500'}`} />
                   Edit Subject
                 </h2>
                 <button
                   onClick={() => setEditingSubject(null)}
-                  className={`p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100'}`}
+                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100'}`}
                 >
-                  <FiX className={`w-6 h-6 ${isDark ? 'text-gray-300' : 'text-gray-500'}`} />
+                  <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-gray-300' : 'text-gray-500'}`} />
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div>
-                  <label className={`block text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇺🇿 Subject Name (O'zbekcha) *
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    🇺🇿 O'zbekcha *
                   </label>
                   <input
                     type="text"
                     value={subjectForm.name_uz}
                     onChange={(e) => setSubjectForm({ ...subjectForm, name_uz: e.target.value })}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
                       isDark
                         ? 'bg-gray-700 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500'
                         : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
@@ -738,14 +836,14 @@ export const SubjectsPage = () => {
                 </div>
 
                 <div>
-                  <label className={`block text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇷🇺 Subject Name (Русский) *
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    🇷🇺 Русский *
                   </label>
                   <input
                     type="text"
                     value={subjectForm.name_rus}
                     onChange={(e) => setSubjectForm({ ...subjectForm, name_rus: e.target.value })}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
                       isDark
                         ? 'bg-gray-700 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500'
                         : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
@@ -755,14 +853,14 @@ export const SubjectsPage = () => {
                 </div>
 
                 <div>
-                  <label className={`block text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇬🇧 Subject Name (English) *
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    🇬🇧 English *
                   </label>
                   <input
                     type="text"
                     value={subjectForm.name_eng}
                     onChange={(e) => setSubjectForm({ ...subjectForm, name_eng: e.target.value })}
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
                       isDark
                         ? 'bg-gray-700 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500'
                         : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
@@ -771,23 +869,23 @@ export const SubjectsPage = () => {
                   />
                 </div>
 
-                <div className="flex gap-3 mt-6">
-                  <button
-                    onClick={handleUpdateSubject}
-                    className={`flex-1 py-3 px-6 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 ${
-                      isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-blue-600 hover:bg-blue-700'
-                    }`}
-                  >
-                    <FiSave className="w-5 h-5" />
-                    Update Subject
-                  </button>
+                <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <button
                     onClick={() => setEditingSubject(null)}
-                    className={`py-3 px-6 rounded-lg font-semibold transition-colors ${
+                    className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
                       isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
                     Cancel
+                  </button>
+                  <button
+                    onClick={handleUpdateSubject}
+                    className={`flex-1 py-2.5 sm:py-3 px-4 sm:px-6 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
+                      isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-blue-600 hover:bg-blue-700'
+                    }`}
+                  >
+                    <FiSave className="w-4 h-4 sm:w-5 sm:h-5" />
+                    Update
                   </button>
                 </div>
               </div>

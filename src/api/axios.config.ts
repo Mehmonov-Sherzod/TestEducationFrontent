@@ -3,7 +3,7 @@ import { storage } from '@utils/storage'
 
 // Create axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://localhost:5001',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://10.30.13.228:5000',
   headers: {
     'Content-Type': 'application/json',
     'Accept-Language': 'en-US',
@@ -11,7 +11,7 @@ const api = axios.create({
   timeout: 30000, // 30 seconds
 })
 
-console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL || 'https://localhost:5001')
+console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL || 'http://10.30.13.228:5000')
 
 // Request interceptor - Add JWT token to requests
 api.interceptors.request.use(

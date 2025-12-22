@@ -84,7 +84,7 @@ export const LoginForm = ({ onForgotPassword, onSwitchToRegister }: LoginFormPro
 
       <motion.div
         variants={itemVariants}
-        className="flex items-center justify-between"
+        className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0"
       >
         <label className="flex items-center gap-2 cursor-pointer group">
           <div className="relative">
@@ -106,7 +106,7 @@ export const LoginForm = ({ onForgotPassword, onSwitchToRegister }: LoginFormPro
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <span className={`text-sm transition-colors select-none ${
+          <span className={`text-xs sm:text-sm transition-colors select-none ${
             isDark ? 'text-gray-400 group-hover:text-white' : 'text-gray-600 group-hover:text-black'
           }`}>
             Remember me
@@ -116,7 +116,7 @@ export const LoginForm = ({ onForgotPassword, onSwitchToRegister }: LoginFormPro
         <button
           type="button"
           onClick={onForgotPassword}
-          className={`text-sm transition-colors ${
+          className={`text-xs sm:text-sm transition-colors ${
             isDark ? 'text-gray-400 hover:text-cyan-400' : 'text-gray-500 hover:text-blue-500'
           }`}
         >
@@ -132,7 +132,7 @@ export const LoginForm = ({ onForgotPassword, onSwitchToRegister }: LoginFormPro
 
       {/* Sign Up Link */}
       <motion.div variants={itemVariants} className="pt-4 text-center">
-        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+        <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
           Don't have an account?{' '}
           <button
             type="button"

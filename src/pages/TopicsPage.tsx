@@ -324,17 +324,17 @@ export const TopicsPage = () => {
   const totalPages = Math.ceil(totalCount / pageSize)
 
   return (
-    <div className="py-8 px-4 max-w-7xl mx-auto">
+    <div className="py-4 sm:py-8 px-2 sm:px-4 max-w-7xl mx-auto">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8"
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8"
       >
         <div>
           <h1
-            className={`text-4xl font-bold mb-2 flex items-center gap-3 ${
+            className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 flex flex-wrap items-center gap-2 sm:gap-3 ${
               (isDark ? 'text-white' : 'text-gray-700')
             }`}
           >
@@ -347,13 +347,15 @@ export const TopicsPage = () => {
                 className={isDark ? 'text-cyan-400' : 'text-blue-600'}
               />
             </motion.div>
-            Topics
+            <span>Topics</span>
             {isSuperAdmin && (
               <motion.span
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.3, type: 'spring' }}
-                className="text-xs px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full font-normal flex items-center gap-1"
+                className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full font-normal flex items-center gap-1 ${
+                  isDark ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-600'
+                }`}
               >
                 <FiShield className="w-3 h-3" />
                 SuperAdmin
@@ -364,7 +366,9 @@ export const TopicsPage = () => {
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.3, type: 'spring' }}
-                className="text-xs px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full font-normal flex items-center gap-1"
+                className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full font-normal flex items-center gap-1 ${
+                  isDark ? 'bg-blue-500/20 text-blue-300' : 'bg-blue-100 text-blue-600'
+                }`}
               >
                 <FiKey className="w-3 h-3" />
                 Admin
@@ -375,14 +379,16 @@ export const TopicsPage = () => {
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.3, type: 'spring' }}
-                className="text-xs px-3 py-1 bg-green-500/20 text-green-300 rounded-full font-normal flex items-center gap-1"
+                className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full font-normal flex items-center gap-1 ${
+                  isDark ? 'bg-green-500/20 text-green-300' : 'bg-green-100 text-green-600'
+                }`}
               >
                 <FiUser className="w-3 h-3" />
                 Student
               </motion.span>
             )}
           </h1>
-          <p className={(isDark ? 'text-gray-400' : 'text-gray-600')}>
+          <p className={`text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             {canManageTopics
               ? 'Manage topics across all subjects'
               : 'Browse available topics'}
@@ -398,13 +404,13 @@ export const TopicsPage = () => {
               setTopicForm({ topicName: '', subjectId: '' })
               setIsCreating(true)
             }}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 ${
+            className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 text-sm sm:text-base w-full sm:w-auto ${
               isDark
                 ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:shadow-green-500/30'
                 : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-blue-500/30'
             }`}
           >
-            <FiPlus className="w-5 h-5" />
+            <FiPlus className="w-4 h-4 sm:w-5 sm:h-5" />
             Create Topic
           </motion.button>
         )}
@@ -415,12 +421,12 @@ export const TopicsPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="mb-8 flex flex-col md:flex-row gap-4"
+        className="mb-4 sm:mb-8 flex flex-col sm:flex-row gap-3 sm:gap-4"
       >
         {/* Search */}
-        <div className="relative flex-1 max-w-md">
+        <div className="relative flex-1 sm:max-w-md">
           <FiSearch
-            className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${
+            className={`absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${
               (isDark ? 'text-gray-400' : 'text-gray-500')
             }`}
           />
@@ -429,7 +435,7 @@ export const TopicsPage = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search topics..."
-            className={`w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all duration-300 ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+            className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all duration-300 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
           />
           {searchQuery && (
             <motion.button
@@ -446,80 +452,61 @@ export const TopicsPage = () => {
           )}
         </div>
 
-        {/* Subject Filter Dropdown */}
-        <div className="relative">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all duration-300 min-w-[220px] justify-between ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'}`}
-          >
-            <div className="flex items-center gap-2">
-              <FiFilter
-                className={isDark ? 'text-cyan-400' : 'text-blue-600'}
-              />
-              <span className="truncate">
-                {selectedSubjectFilter
-                  ? subjects.find((s) => s.id === selectedSubjectFilter)?.name ||
-                    'All Subjects'
-                  : 'All Subjects'}
-              </span>
-            </div>
-            <motion.div
-              animate={{ rotate: isFilterOpen ? 180 : 0 }}
-              transition={{ duration: 0.2 }}
+        <div className="flex gap-2 sm:gap-4">
+          {/* Subject Filter Dropdown */}
+          <div className="relative flex-1 sm:flex-none">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className={`flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border transition-all duration-300 w-full sm:min-w-[200px] justify-between text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'}`}
             >
-              <FiChevronDown />
-            </motion.div>
-          </motion.button>
-
-          <AnimatePresence>
-            {isFilterOpen && (
-              <>
-                {/* Backdrop */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-40"
-                  onClick={() => setIsFilterOpen(false)}
+              <div className="flex items-center gap-2 min-w-0">
+                <FiFilter
+                  className={`flex-shrink-0 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}
                 />
-                <motion.div
-                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  className={`absolute top-full mt-2 w-full rounded-xl border shadow-2xl z-50 overflow-hidden max-h-64 overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
-                >
-                  <button
-                    onClick={() => {
-                      setSelectedSubjectFilter('')
-                      setIsFilterOpen(false)
-                      setCurrentPage(1)
-                    }}
-                    className={`w-full px-4 py-3 text-left transition-colors flex items-center gap-2 ${
-                      !selectedSubjectFilter
-                        ? isDark
-                          ? 'bg-cyan-500/20 text-cyan-400'
-                          : 'bg-blue-50 text-blue-600'
-                        : isDark
-                        ? 'text-white hover:bg-gray-700'
-                        : 'text-gray-900 hover:bg-gray-50'
-                    }`}
+                <span className="truncate text-sm">
+                  {selectedSubjectFilter
+                    ? subjects.find((s) => s.id === selectedSubjectFilter)?.name ||
+                      'All'
+                    : 'All Subjects'}
+                </span>
+              </div>
+              <motion.div
+                animate={{ rotate: isFilterOpen ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex-shrink-0"
+              >
+                <FiChevronDown />
+              </motion.div>
+            </motion.button>
+
+            <AnimatePresence>
+              {isFilterOpen && (
+                <>
+                  {/* Backdrop */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-40"
+                    onClick={() => setIsFilterOpen(false)}
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className={`absolute top-full mt-2 w-full sm:min-w-[200px] rounded-xl border shadow-2xl z-50 overflow-hidden max-h-64 overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
                   >
-                    <FiBook className="w-4 h-4" />
-                    All Subjects
-                  </button>
-                  {subjects.map((subject) => (
                     <button
-                      key={subject.id}
                       onClick={() => {
-                        setSelectedSubjectFilter(subject.id)
+                        setSelectedSubjectFilter('')
                         setIsFilterOpen(false)
                         setCurrentPage(1)
                       }}
-                      className={`w-full px-4 py-3 text-left transition-colors flex items-center gap-2 ${
-                        selectedSubjectFilter === subject.id
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-left transition-colors flex items-center gap-2 text-sm ${
+                        !selectedSubjectFilter
                           ? isDark
                             ? 'bg-cyan-500/20 text-cyan-400'
                             : 'bg-blue-50 text-blue-600'
@@ -529,25 +516,47 @@ export const TopicsPage = () => {
                       }`}
                     >
                       <FiBook className="w-4 h-4" />
-                      {subject.name}
+                      All Subjects
                     </button>
-                  ))}
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
-        </div>
+                    {subjects.map((subject) => (
+                      <button
+                        key={subject.id}
+                        onClick={() => {
+                          setSelectedSubjectFilter(subject.id)
+                          setIsFilterOpen(false)
+                          setCurrentPage(1)
+                        }}
+                        className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-left transition-colors flex items-center gap-2 text-sm ${
+                          selectedSubjectFilter === subject.id
+                            ? isDark
+                              ? 'bg-cyan-500/20 text-cyan-400'
+                              : 'bg-blue-50 text-blue-600'
+                            : isDark
+                            ? 'text-white hover:bg-gray-700'
+                            : 'text-gray-900 hover:bg-gray-50'
+                        }`}
+                      >
+                        <FiBook className="w-4 h-4" />
+                        {subject.name}
+                      </button>
+                    ))}
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
 
-        {/* Refresh Button */}
-        <motion.button
-          whileHover={{ scale: 1.05, rotate: 180 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => fetchTopics()}
-          disabled={isLoading}
-          className={`p-3 rounded-xl border transition-all duration-300 ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-        >
-          <FiRefreshCw className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
-        </motion.button>
+          {/* Refresh Button */}
+          <motion.button
+            whileHover={{ scale: 1.05, rotate: 180 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => fetchTopics()}
+            disabled={isLoading}
+            className={`p-2.5 sm:p-3 rounded-xl border transition-all duration-300 flex-shrink-0 ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            <FiRefreshCw className={`w-4 h-4 sm:w-5 sm:h-5 ${isLoading ? 'animate-spin' : ''}`} />
+          </motion.button>
+        </div>
       </motion.div>
 
       {/* Content */}
@@ -767,26 +776,60 @@ export const TopicsPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className={`flex flex-col md:flex-row items-center justify-between gap-4 mt-8 px-6 py-4 rounded-2xl border ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'}`}
+              className={`flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 sm:mt-8 px-3 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl border ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'}`}
             >
               <p
-                className={isDark ? 'text-gray-400' : 'text-gray-600'}
+                className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
               >
-                Page {currentPage} of {totalPages} ({totalCount} total)
+                {currentPage} / {totalPages} ({totalCount})
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className={`flex items-center gap-1 px-4 py-2 rounded-lg transition-all ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-lg transition-all text-sm ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   <FiChevronLeft className="w-4 h-4" />
-                  Previous
+                  <span className="hidden sm:inline">Previous</span>
                 </motion.button>
 
-                <div className="flex items-center gap-1">
+                {/* Mobile: 3 pages, Desktop: 5 pages */}
+                <div className="flex sm:hidden items-center gap-1">
+                  {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
+                    let pageNum
+                    if (totalPages <= 3) {
+                      pageNum = i + 1
+                    } else if (currentPage === 1) {
+                      pageNum = i + 1
+                    } else if (currentPage === totalPages) {
+                      pageNum = totalPages - 2 + i
+                    } else {
+                      pageNum = currentPage - 1 + i
+                    }
+                    return (
+                      <motion.button
+                        key={pageNum}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`w-8 h-8 rounded-lg text-sm font-medium transition-all ${
+                          currentPage === pageNum
+                            ? isDark
+                              ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg'
+                              : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                            : isDark
+                            ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {pageNum}
+                      </motion.button>
+                    )
+                  })}
+                </div>
+                <div className="hidden sm:flex items-center gap-1">
                   {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                     let pageNum
                     if (totalPages <= 5) {
@@ -825,9 +868,9 @@ export const TopicsPage = () => {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className={`flex items-center gap-1 px-4 py-2 rounded-lg transition-all ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-lg transition-all text-sm ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
-                  Next
+                  <span className="hidden sm:inline">Next</span>
                   <FiChevronRight className="w-4 h-4" />
                 </motion.button>
               </div>
@@ -843,7 +886,7 @@ export const TopicsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4"
             onClick={() => !isSubmitting && setIsCreating(false)}
           >
             <motion.div
@@ -852,7 +895,7 @@ export const TopicsPage = () => {
               exit={{ scale: 0.9, y: 20, rotateX: 10 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-2xl shadow-2xl p-8 max-w-md w-full relative overflow-hidden ${isDark ? 'bg-gray-800 border border-cyan-500/30' : 'bg-white border border-blue-500/30'}`}
+              className={`rounded-2xl shadow-2xl p-4 sm:p-8 max-w-md w-full relative overflow-hidden max-h-[90vh] overflow-y-auto ${isDark ? 'bg-gray-800 border border-cyan-500/30' : 'bg-white border border-blue-500/30'}`}
             >
               {/* Animated Background Glow */}
               <motion.div
@@ -869,40 +912,34 @@ export const TopicsPage = () => {
               />
 
               <div className="relative">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
                   <h2
-                    className={`text-2xl font-bold flex items-center gap-2 ${
+                    className={`text-lg sm:text-2xl font-bold flex items-center gap-2 ${
                       (isDark ? 'text-white' : 'text-gray-700')
                     }`}
                   >
-                    <motion.div
-                      animate={{ rotate: [0, 360] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                    >
-                      <FiLayers
-                        className={
-                          isDark ? 'text-cyan-400' : 'text-blue-600'
-                        }
-                      />
-                    </motion.div>
-                    Create New Topic
+                    <FiLayers
+                      className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}
+                    />
+                    <span className="hidden sm:inline">Create New Topic</span>
+                    <span className="sm:hidden">New Topic</span>
                   </h2>
                   <motion.button
                     whileHover={{ scale: 1.1, rotate: 90 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => !isSubmitting && setIsCreating(false)}
                     disabled={isSubmitting}
-                    className={`p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
+                    className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
                   >
-                    <FiX className="w-6 h-6" />
+                    <FiX className="w-5 h-5 sm:w-6 sm:h-6" />
                   </motion.button>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {/* Subject Dropdown */}
                   <div>
                     <label
-                      className={`block text-sm mb-2 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
+                      className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
                     >
                       Subject *
                     </label>
@@ -915,7 +952,7 @@ export const TopicsPage = () => {
                         })
                       }
                       disabled={isSubmitting}
-                      className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
                     >
                       <option value="" className={isDark ? 'bg-gray-900' : ''}>
                         Select a subject
@@ -935,7 +972,7 @@ export const TopicsPage = () => {
                   {/* Topic Name */}
                   <div>
                     <label
-                      className={`block text-sm mb-2 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
+                      className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
                     >
                       Topic Name *
                     </label>
@@ -946,18 +983,27 @@ export const TopicsPage = () => {
                         setTopicForm({ ...topicForm, topicName: e.target.value })
                       }
                       disabled={isSubmitting}
-                      className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
                       placeholder="Enter topic name"
                     />
                   </div>
 
-                  <div className="flex gap-3 mt-6">
+                  <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
+                    <motion.button
+                      whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                      whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                      onClick={() => !isSubmitting && setIsCreating(false)}
+                      disabled={isSubmitting}
+                      className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    >
+                      Cancel
+                    </motion.button>
                     <motion.button
                       whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                       whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                       onClick={handleCreateTopic}
                       disabled={isSubmitting}
-                      className={`flex-1 py-3 px-6 rounded-xl font-semibold shadow-lg transition-all flex items-center justify-center gap-2 ${
+                      className={`flex-1 py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl font-semibold shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
                         isDark
                           ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:shadow-green-500/25'
                           : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-blue-500/25'
@@ -967,21 +1013,12 @@ export const TopicsPage = () => {
                         <motion.div
                           animate={{ rotate: 360 }}
                           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                          className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                          className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full"
                         />
                       ) : (
-                        <FiSave className="w-5 h-5" />
+                        <FiSave className="w-4 h-4 sm:w-5 sm:h-5" />
                       )}
-                      {isSubmitting ? 'Creating...' : 'Create Topic'}
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                      whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                      onClick={() => !isSubmitting && setIsCreating(false)}
-                      disabled={isSubmitting}
-                      className={`py-3 px-6 rounded-xl font-semibold transition-colors ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
-                    >
-                      Cancel
+                      {isSubmitting ? 'Creating...' : 'Create'}
                     </motion.button>
                   </div>
                 </div>
@@ -998,7 +1035,7 @@ export const TopicsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4"
             onClick={() => !isSubmitting && setEditingTopic(null)}
           >
             <motion.div
@@ -1007,7 +1044,7 @@ export const TopicsPage = () => {
               exit={{ scale: 0.9, y: 20 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-2xl shadow-2xl p-8 max-w-md w-full relative overflow-hidden ${isDark ? 'bg-gray-800 border border-cyan-500/30' : 'bg-white border border-blue-500/30'}`}
+              className={`rounded-2xl shadow-2xl p-4 sm:p-8 max-w-md w-full relative overflow-hidden max-h-[90vh] overflow-y-auto ${isDark ? 'bg-gray-800 border border-cyan-500/30' : 'bg-white border border-blue-500/30'}`}
             >
               {/* Animated Background Glow */}
               <motion.div
@@ -1024,13 +1061,13 @@ export const TopicsPage = () => {
               />
 
               <div className="relative">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
                   <h2
-                    className={`text-2xl font-bold flex items-center gap-2 ${
+                    className={`text-lg sm:text-2xl font-bold flex items-center gap-2 ${
                       (isDark ? 'text-white' : 'text-gray-700')
                     }`}
                   >
-                    <FiEdit2 className={isDark ? 'text-cyan-400' : 'text-blue-400'} />
+                    <FiEdit2 className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-cyan-400' : 'text-blue-400'}`} />
                     Edit Topic
                   </h2>
                   <motion.button
@@ -1038,22 +1075,22 @@ export const TopicsPage = () => {
                     whileTap={{ scale: 0.9 }}
                     onClick={() => !isSubmitting && setEditingTopic(null)}
                     disabled={isSubmitting}
-                    className={`p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
+                    className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
                   >
-                    <FiX className="w-6 h-6" />
+                    <FiX className="w-5 h-5 sm:w-6 sm:h-6" />
                   </motion.button>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {/* Subject Display (Read-only) */}
                   <div>
                     <label
-                      className={`block text-sm mb-2 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
+                      className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
                     >
                       Subject
                     </label>
                     <div
-                      className={`w-full px-4 py-3 rounded-xl border ${isDark ? 'bg-gray-900 border-gray-700 text-gray-400' : 'bg-gray-50 border-gray-200 text-gray-500'}`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-gray-400' : 'bg-gray-50 border-gray-200 text-gray-500'}`}
                     >
                       {editingTopic.subjectName}
                     </div>
@@ -1062,7 +1099,7 @@ export const TopicsPage = () => {
                   {/* Topic Name */}
                   <div>
                     <label
-                      className={`block text-sm mb-2 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
+                      className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
                     >
                       Topic Name *
                     </label>
@@ -1073,18 +1110,27 @@ export const TopicsPage = () => {
                         setTopicForm({ ...topicForm, topicName: e.target.value })
                       }
                       disabled={isSubmitting}
-                      className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
                       placeholder="Enter topic name"
                     />
                   </div>
 
-                  <div className="flex gap-3 mt-6">
+                  <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
+                    <motion.button
+                      whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                      whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                      onClick={() => !isSubmitting && setEditingTopic(null)}
+                      disabled={isSubmitting}
+                      className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    >
+                      Cancel
+                    </motion.button>
                     <motion.button
                       whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                       whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                       onClick={handleUpdateTopic}
                       disabled={isSubmitting}
-                      className={`flex-1 py-3 px-6 rounded-xl font-semibold shadow-lg transition-all flex items-center justify-center gap-2 ${
+                      className={`flex-1 py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl font-semibold shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
                         isDark
                           ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:shadow-green-500/25'
                           : 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:shadow-blue-500/25'
@@ -1094,21 +1140,12 @@ export const TopicsPage = () => {
                         <motion.div
                           animate={{ rotate: 360 }}
                           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                          className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                          className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full"
                         />
                       ) : (
-                        <FiSave className="w-5 h-5" />
+                        <FiSave className="w-4 h-4 sm:w-5 sm:h-5" />
                       )}
-                      {isSubmitting ? 'Updating...' : 'Update Topic'}
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                      whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                      onClick={() => !isSubmitting && setEditingTopic(null)}
-                      disabled={isSubmitting}
-                      className={`py-3 px-6 rounded-xl font-semibold transition-colors ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
-                    >
-                      Cancel
+                      {isSubmitting ? 'Updating...' : 'Update'}
                     </motion.button>
                   </div>
                 </div>
@@ -1125,7 +1162,7 @@ export const TopicsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4"
             onClick={() => !isSubmitting && setDeletingTopic(null)}
           >
             <motion.div
@@ -1134,26 +1171,26 @@ export const TopicsPage = () => {
               exit={{ scale: 0.9, y: 20 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               onClick={(e) => e.stopPropagation()}
-              className={`p-8 rounded-2xl shadow-2xl max-w-md w-full border ${isDark ? 'bg-gray-800 border-red-500/20' : 'bg-white border-red-500/20'}`}
+              className={`p-4 sm:p-8 rounded-2xl shadow-2xl max-w-md w-full border ${isDark ? 'bg-gray-800 border-red-500/20' : 'bg-white border-red-500/20'}`}
             >
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                 <motion.div
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
-                  className="p-3 bg-red-500/20 rounded-full"
+                  className="p-2 sm:p-3 bg-red-500/20 rounded-full"
                 >
-                  <FiAlertTriangle className="w-8 h-8 text-red-400" />
+                  <FiAlertTriangle className="w-6 h-6 sm:w-8 sm:h-8 text-red-400" />
                 </motion.div>
                 <div>
                   <h2
-                    className={`text-2xl font-bold ${
+                    className={`text-lg sm:text-2xl font-bold ${
                       (isDark ? 'text-white' : 'text-gray-700')
                     }`}
                   >
                     Delete Topic
                   </h2>
                   <p
-                    className={isDark ? 'text-gray-400' : 'text-gray-600'}
+                    className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                   >
                     This action cannot be undone
                   </p>
@@ -1164,12 +1201,12 @@ export const TopicsPage = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className={`mb-6 p-4 border rounded-xl ${
+                className={`mb-4 sm:mb-6 p-3 sm:p-4 border rounded-xl ${
                   isDark ? 'bg-red-500/10 border-red-500/20' : 'bg-red-50 border-red-200'
                 }`}
               >
-                <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
-                  Are you sure you want to delete the topic{' '}
+                <p className={`text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Are you sure you want to delete{' '}
                   <span
                     className={`font-bold ${
                       (isDark ? 'text-white' : 'text-gray-700')
@@ -1180,7 +1217,7 @@ export const TopicsPage = () => {
                   ?
                 </p>
                 <p
-                  className={`text-sm mt-2 ${
+                  className={`text-xs sm:text-sm mt-1.5 sm:mt-2 ${
                     (isDark ? 'text-gray-400' : 'text-gray-500')
                   }`}
                 >
@@ -1188,13 +1225,13 @@ export const TopicsPage = () => {
                 </p>
               </motion.div>
 
-              <div className="flex gap-3">
+              <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3">
                 <motion.button
                   whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                   whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                   onClick={() => !isSubmitting && setDeletingTopic(null)}
                   disabled={isSubmitting}
-                  className={`flex-1 px-6 py-3 rounded-xl font-medium transition-colors ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium transition-colors text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
                   Cancel
                 </motion.button>
@@ -1203,7 +1240,7 @@ export const TopicsPage = () => {
                   whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                   onClick={handleDeleteTopic}
                   disabled={isSubmitting}
-                  className={`flex-1 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-colors inline-flex items-center justify-center gap-2 ${
+                  className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base ${
                     isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
                   }`}
                 >

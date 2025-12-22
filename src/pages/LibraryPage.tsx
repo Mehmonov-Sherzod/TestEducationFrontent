@@ -64,6 +64,7 @@ export const LibraryPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null)
   const [isSubjectDropdownOpen, setIsSubjectDropdownOpen] = useState(false)
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
@@ -128,13 +129,27 @@ export const LibraryPage = () => {
 
         console.log('API Response Values:', values)
 
+        // API base URL for relative paths
+        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://10.30.13.228:5000'
+
         setBooks(
-          values.map((b: any) => ({
-            id: b.Id || b.id,
-            description: b.Description || b.description,
-            image: b.Image || b.image,
-          }))
+          values.map((b: any) => {
+            // Get file URL from Image or Path field
+            let fileUrl = b.Image || b.image || b.Path || b.path || ''
+
+            // Convert relative URL to absolute
+            if (fileUrl && !fileUrl.startsWith('http')) {
+              fileUrl = `${apiBaseUrl}${fileUrl.startsWith('/') ? '' : '/'}${fileUrl}`
+            }
+
+            return {
+              id: b.Id || b.id,
+              description: b.Description || b.description,
+              image: fileUrl,
+            }
+          })
         )
+        setFailedImages(new Set()) // Clear failed images on new data
 
         const total = result.TotalCount || 0
         setTotalCount(total)
@@ -189,7 +204,7 @@ export const LibraryPage = () => {
       const response = await libraryService.create({
         description: form.description,
         subjectId: form.subjectId,
-        image: form.file,
+        file: form.file,
       })
 
       if (response.Succeeded) {
@@ -238,22 +253,22 @@ export const LibraryPage = () => {
 
   return (
     <div className={`min-h-screen ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8"
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8"
         >
           <div>
             <h1
-              className={`text-3xl font-bold ${
+              className={`text-2xl sm:text-3xl font-bold ${
                 (isDark ? 'text-white' : 'text-gray-700')
               }`}
             >
               Kutubxona
             </h1>
-            <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+            <p className={`text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               O'quv materiallari va kitoblar
             </p>
           </div>
@@ -263,13 +278,13 @@ export const LibraryPage = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setIsCreateModalOpen(true)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all ${
+              className={`flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl font-medium transition-all text-sm sm:text-base w-full sm:w-auto ${
                 isDark
                   ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/25'
                   : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/25'
               }`}
             >
-              <FiPlus className="w-5 h-5" />
+              <FiPlus className="w-4 h-4 sm:w-5 sm:h-5" />
               Yangi qo'shish
             </motion.button>
           )}
@@ -280,19 +295,19 @@ export const LibraryPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex flex-col md:flex-row gap-4 mb-8"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8"
         >
           {/* Search */}
-          <div className="relative flex-1 max-w-md">
+          <div className="relative flex-1 sm:max-w-md">
             <FiSearch
-              className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+              className={`absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
             />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Qidirish..."
-              className={`w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-cyan-500'}`}
+              className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-cyan-500'}`}
             />
             {searchQuery && (
               <button
@@ -310,7 +325,7 @@ export const LibraryPage = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setIsSubjectDropdownOpen(!isSubjectDropdownOpen)}
-              className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all min-w-[180px] justify-between ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'}`}
+              className={`flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border transition-all w-full sm:min-w-[180px] justify-between text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'}`}
             >
               <div className="flex items-center gap-2">
                 <FiFilter className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
@@ -384,9 +399,9 @@ export const LibraryPage = () => {
 
         {/* Content */}
         {isLoading ? (
-          <div className="flex items-center justify-center py-20">
+          <div className="flex items-center justify-center py-12 sm:py-20">
             <div
-              className={`w-12 h-12 border-4 rounded-full animate-spin ${
+              className={`w-10 h-10 sm:w-12 sm:h-12 border-4 rounded-full animate-spin ${
                 false
                   ? 'border-red-500 border-t-transparent'
                   : 'border-blue-500 border-t-transparent'
@@ -397,25 +412,25 @@ export const LibraryPage = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center justify-center py-20"
+            className="flex items-center justify-center py-12 sm:py-20"
           >
-            <div className="text-center">
+            <div className="text-center px-4">
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
                 <FiFilter
-                  className={`w-20 h-20 mx-auto mb-4 ${isDark ? 'text-cyan-400' : 'text-blue-500'}`}
+                  className={`w-12 h-12 sm:w-20 sm:h-20 mx-auto mb-3 sm:mb-4 ${isDark ? 'text-cyan-400' : 'text-blue-500'}`}
                 />
               </motion.div>
               <p
-                className={`text-xl mb-2 ${
+                className={`text-lg sm:text-xl mb-2 ${
                   (isDark ? 'text-white' : 'text-gray-700')
                 }`}
               >
                 Fan tanlang
               </p>
-              <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+              <p className={`text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                 Kitoblarni ko'rish uchun yuqoridagi filterdan fan tanlang
               </p>
             </div>
@@ -424,25 +439,25 @@ export const LibraryPage = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center justify-center py-20"
+            className="flex items-center justify-center py-12 sm:py-20"
           >
-            <div className="text-center">
+            <div className="text-center px-4">
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
                 <FiBook
-                  className={`w-20 h-20 mx-auto mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+                  className={`w-12 h-12 sm:w-20 sm:h-20 mx-auto mb-3 sm:mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                 />
               </motion.div>
               <p
-                className={`text-xl mb-2 ${
+                className={`text-lg sm:text-xl mb-2 ${
                   (isDark ? 'text-gray-400' : 'text-gray-600')
                 }`}
               >
                 Kitoblar topilmadi
               </p>
-              <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+              <p className={`text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                 Yangi kitob qo'shish uchun "Yangi qo'shish" tugmasini bosing
               </p>
             </div>
@@ -452,11 +467,32 @@ export const LibraryPage = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4"
           >
             {books.map((book) => {
-              const hasImage = book.image && book.image.startsWith('http')
-              const currentYear = new Date().getFullYear()
+              const hasImage = book.image && book.image.startsWith('http') && !failedImages.has(book.id)
+
+              // Generate dynamic color based on book description
+              const getColorFromString = (str: string) => {
+                const colors = [
+                  { from: 'from-blue-500', via: 'via-blue-600', to: 'to-indigo-700', spine: 'bg-blue-800' },
+                  { from: 'from-emerald-500', via: 'via-teal-600', to: 'to-cyan-700', spine: 'bg-emerald-800' },
+                  { from: 'from-orange-500', via: 'via-red-500', to: 'to-rose-600', spine: 'bg-orange-800' },
+                  { from: 'from-purple-500', via: 'via-violet-600', to: 'to-indigo-700', spine: 'bg-purple-800' },
+                  { from: 'from-pink-500', via: 'via-rose-500', to: 'to-red-600', spine: 'bg-pink-800' },
+                  { from: 'from-cyan-500', via: 'via-blue-500', to: 'to-indigo-600', spine: 'bg-cyan-800' },
+                  { from: 'from-amber-500', via: 'via-orange-500', to: 'to-red-500', spine: 'bg-amber-800' },
+                  { from: 'from-lime-500', via: 'via-green-500', to: 'to-emerald-600', spine: 'bg-lime-800' },
+                ]
+                let hash = 0
+                for (let i = 0; i < str.length; i++) {
+                  hash = str.charCodeAt(i) + ((hash << 5) - hash)
+                }
+                return colors[Math.abs(hash) % colors.length]
+              }
+
+              const bookColor = getColorFromString(book.description || 'kitob')
+              const initials = (book.description || 'K').split(' ').slice(0, 2).map(w => w[0]?.toUpperCase()).join('')
 
               return (
                 <motion.div
@@ -465,123 +501,169 @@ export const LibraryPage = () => {
                   whileHover={{ y: -6, scale: 1.02 }}
                   className="group cursor-pointer"
                 >
-                  {/* Abituriyent Style Book Cover */}
-                  <div
-                    className="relative overflow-hidden rounded-lg shadow-lg"
-                    style={{ aspectRatio: '3/4' }}
-                  >
+                  {/* Realistic 3D Book */}
+                  <div className="relative" style={{ aspectRatio: '3/4', perspective: '1000px' }}>
+                    {/* Book pages (side) */}
+                    <div
+                      className="absolute left-0 top-[3px] bottom-[3px] w-5 bg-gradient-to-r from-gray-100 via-gray-50 to-gray-200 rounded-l-[2px]"
+                      style={{
+                        transform: 'rotateY(-15deg) translateX(-2px)',
+                        boxShadow: 'inset -2px 0 4px rgba(0,0,0,0.1)'
+                      }}
+                    >
+                      {/* Page lines */}
+                      {[...Array(20)].map((_, i) => (
+                        <div key={i} className="h-[1px] bg-gray-300/60" style={{ marginTop: `${4 + i * 5}%` }} />
+                      ))}
+                    </div>
+
+                    {/* Main book cover */}
+                    <div
+                      className="relative w-full h-full overflow-hidden rounded-r-md rounded-l-[3px]"
+                      style={{
+                        boxShadow: '6px 6px 20px rgba(0,0,0,0.4), 2px 2px 6px rgba(0,0,0,0.2), inset -2px 0 4px rgba(0,0,0,0.1)',
+                        transform: 'translateX(3px)'
+                      }}
+                    >
                     {hasImage ? (
                       <>
                         <img
                           src={book.image}
                           alt={book.description}
                           className="w-full h-full object-cover"
+                          onError={() => {
+                            setFailedImages(prev => new Set(prev).add(book.id))
+                          }}
                         />
-                        {/* Overlay on hover */}
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                          <a
+                        {/* Bottom buttons - always visible */}
+                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pt-8 pb-3 flex items-end justify-center gap-3">
+                          <motion.a
                             href={book.image}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-white text-gray-800 hover:bg-gray-100"
+                            className="p-2.5 rounded-full bg-white/90 text-gray-800 shadow-lg backdrop-blur-sm"
                             onClick={(e) => e.stopPropagation()}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
                           >
-                            <FiEye className="w-5 h-5" />
-                          </a>
+                            <FiEye className="w-4 h-4" />
+                          </motion.a>
                           {canManageLibrary && (
-                            <button
+                            <motion.button
                               onClick={(e) => {
                                 e.stopPropagation()
                                 setDeleteConfirm(book)
                               }}
-                              className="p-2 rounded-full bg-red-500 text-white hover:bg-red-600"
+                              className="p-2.5 rounded-full bg-red-500/90 text-white shadow-lg backdrop-blur-sm"
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.9 }}
                             >
-                              <FiTrash2 className="w-5 h-5" />
-                            </button>
+                              <FiTrash2 className="w-4 h-4" />
+                            </motion.button>
                           )}
                         </div>
                       </>
                     ) : (
-                      /* Abituriyent Style Cover */
-                      <div className="w-full h-full bg-gradient-to-b from-cyan-500 via-blue-600 to-purple-700 p-3 flex flex-col">
-                        {/* Top decorative line */}
-                        <div className="text-center text-[6px] text-white/60 mb-1 truncate">
-                          O'zbekiston Respublikasi ta'lim tizimi uchun
-                        </div>
+                      /* Dynamic Generated Book Cover */
+                      <div className={`w-full h-full flex flex-col relative bg-gradient-to-br ${bookColor.from} ${bookColor.via} ${bookColor.to} overflow-hidden`}>
+                        {/* Leather/Paper texture */}
+                        <div className="absolute inset-0 opacity-10" style={{
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+                        }} />
 
-                        {/* Header Banner */}
-                        <div className="relative bg-gradient-to-r from-purple-800 via-purple-700 to-purple-800 py-1.5 px-2 -mx-3">
-                          <p className="text-white font-bold text-center text-xs tracking-wider">
-                            KUTUBXONA
-                          </p>
-                          {/* Year badge */}
-                          <div className="absolute -right-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center shadow">
-                            <span className="text-[8px] font-bold text-gray-800">{currentYear}</span>
+                        {/* Embossed frame */}
+                        <div className="absolute inset-3 border border-white/20 rounded-sm pointer-events-none shadow-inner" />
+                        <div className="absolute inset-4 border border-black/10 rounded-sm pointer-events-none" />
+
+                        {/* Corner ornaments */}
+                        <div className="absolute top-2 left-6 text-amber-200/50 text-[10px]">❧</div>
+                        <div className="absolute top-2 right-2 text-amber-200/50 text-[10px] rotate-90">❧</div>
+                        <div className="absolute bottom-8 left-6 text-amber-200/50 text-[10px] rotate-[-90deg]">❧</div>
+                        <div className="absolute bottom-8 right-2 text-amber-200/50 text-[10px] rotate-180">❧</div>
+
+                        {/* Main content */}
+                        <div className="flex-1 flex flex-col items-center justify-center p-4 relative z-10">
+                          {/* Embossed initials */}
+                          <div className="w-14 h-14 rounded-lg flex items-center justify-center mb-3 border-2 border-white/30 shadow-lg"
+                            style={{
+                              background: 'linear-gradient(145deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%)',
+                              boxShadow: 'inset 2px 2px 4px rgba(255,255,255,0.2), inset -2px -2px 4px rgba(0,0,0,0.2)'
+                            }}>
+                            <span className="text-white font-bold text-xl" style={{
+                              textShadow: '1px 1px 2px rgba(0,0,0,0.5), -1px -1px 1px rgba(255,255,255,0.3)'
+                            }}>
+                              {initials || 'K'}
+                            </span>
                           </div>
-                        </div>
 
-                        {/* Center content */}
-                        <div className="flex-1 flex flex-col items-center justify-center relative">
-                          {/* Background book icon */}
-                          <div className="absolute inset-0 flex items-center justify-center opacity-10">
-                            <FiBook className="w-24 h-24 text-white" />
+                          {/* Decorative divider */}
+                          <div className="flex items-center gap-1 mb-2">
+                            <div className="w-6 h-[1px] bg-gradient-to-r from-transparent via-amber-200/60 to-transparent" />
+                            <div className="w-2 h-2 rotate-45 border border-amber-200/60" />
+                            <div className="w-6 h-[1px] bg-gradient-to-r from-transparent via-amber-200/60 to-transparent" />
                           </div>
 
-                          {/* Subject name */}
-                          <h3 className="text-white font-bold text-center text-sm leading-tight mb-1 relative z-10 line-clamp-2">
-                            {book.description?.split(' ').slice(0, 3).join(' ').toUpperCase()}
+                          {/* Title */}
+                          <h3 className="text-white font-semibold text-center text-[11px] leading-snug line-clamp-3 px-2"
+                            style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
+                            {book.description || 'Kitob'}
                           </h3>
-
-                          {/* Subtitle */}
-                          <p className="text-yellow-300 text-[10px] text-center italic">
-                            fanidan
-                          </p>
-                          <p className="text-white/90 text-[9px] text-center">
-                            mavzulashtirilgan
-                          </p>
-                          <p className="text-white font-semibold text-[10px] text-center">
-                            testlar to'plami
-                          </p>
                         </div>
 
-                        {/* Bottom section */}
-                        <div className="flex items-end justify-between mt-auto">
-                          {/* Grade/Level badge */}
-                          <div className="bg-white/20 backdrop-blur-sm rounded px-2 py-1">
-                            <span className="text-white font-bold text-lg">1-11</span>
-                          </div>
-
-                          {/* Publisher style */}
-                          <div className="text-right">
-                            <div className="w-6 h-6 rounded bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
-                              <FiBook className="w-3 h-3 text-white" />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Hover overlay */}
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                        {/* Bottom buttons - always visible */}
+                        <div className="bg-black/40 backdrop-blur-sm px-2 py-2.5 relative z-10 flex items-center justify-center gap-3">
+                          {book.image ? (
+                            <motion.a
+                              href={book.image}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="p-2.5 rounded-full bg-white/90 text-gray-800 shadow-lg backdrop-blur-sm"
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.9 }}
+                            >
+                              <FiEye className="w-4 h-4" />
+                            </motion.a>
+                          ) : (
+                            <motion.button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                toast.error('Fayl mavjud emas')
+                              }}
+                              className="p-2.5 rounded-full bg-white/50 text-gray-500 cursor-not-allowed shadow-lg backdrop-blur-sm"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <FiEye className="w-4 h-4" />
+                            </motion.button>
+                          )}
                           {canManageLibrary && (
-                            <button
+                            <motion.button
                               onClick={(e) => {
                                 e.stopPropagation()
                                 setDeleteConfirm(book)
                               }}
-                              className="p-2 rounded-full bg-red-500 text-white hover:bg-red-600"
+                              className="p-2.5 rounded-full bg-red-500/90 text-white shadow-lg backdrop-blur-sm"
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.9 }}
                             >
-                              <FiTrash2 className="w-5 h-5" />
-                            </button>
+                              <FiTrash2 className="w-4 h-4" />
+                            </motion.button>
                           )}
                         </div>
                       </div>
                     )}
 
-                    {/* Book edge effect */}
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-r from-black/30 to-transparent" />
+                    {/* Cover spine highlight */}
+                    <div className="absolute left-0 top-0 bottom-0 w-[6px] bg-gradient-to-r from-black/30 via-white/10 to-transparent pointer-events-none" />
+
+                    {/* Top/Bottom book edge */}
+                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-b from-white/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-t from-black/20 to-transparent" />
+                    </div>
                   </div>
 
                   {/* Title below */}
-                  <p className={`mt-2 text-sm font-medium text-center line-clamp-2 ${
+                  <p className={`mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-center line-clamp-2 ${
                     isDark ? 'text-gray-300' : 'text-gray-700'
                   }`}>
                     {book.description}
@@ -597,27 +679,33 @@ export const LibraryPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`flex items-center justify-between mt-8 p-4 rounded-xl ${
+            className={`flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 mt-6 sm:mt-8 p-3 sm:p-4 rounded-xl ${
               isDark ? 'bg-gray-800/50' : 'bg-white shadow-sm'
             }`}
           >
-            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               Jami: {totalCount} ta kitob
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                 disabled={!hasPrevious}
-                className={`p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
                   isDark
                     ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                <FiChevronLeft className="w-5 h-5" />
+                <FiChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
 
-              <div className="flex items-center gap-1">
+              {/* Mobile: Show current/total */}
+              <span className={`sm:hidden text-xs px-2 ${isDark ? 'text-white' : 'text-gray-700'}`}>
+                {currentPage} / {totalPages}
+              </span>
+
+              {/* Desktop: Show page numbers */}
+              <div className="hidden sm:flex items-center gap-1">
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                   let pageNum
                   if (totalPages <= 5) {
@@ -633,7 +721,7 @@ export const LibraryPage = () => {
                     <button
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`w-10 h-10 rounded-lg font-medium transition-all ${
+                      className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg font-medium transition-all text-sm ${
                         currentPage === pageNum
                           ? isDark
                             ? 'bg-cyan-500 text-white'
@@ -652,13 +740,13 @@ export const LibraryPage = () => {
               <button
                 onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                 disabled={!hasNext}
-                className={`p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
                   isDark
                     ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                <FiChevronRight className="w-5 h-5" />
+                <FiChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
           </motion.div>
@@ -672,7 +760,7 @@ export const LibraryPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm"
             onClick={() => setIsCreateModalOpen(false)}
           >
             <motion.div
@@ -680,21 +768,21 @@ export const LibraryPage = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className={`w-full max-w-md rounded-2xl p-6 border shadow-xl ${isDark ? 'bg-gray-800 border-gray-700 text-gray-400' : 'bg-white border-gray-200 text-gray-600'}`}
+              className={`w-full max-w-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border shadow-xl max-h-[90vh] overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700 text-gray-400' : 'bg-white border-gray-200 text-gray-600'}`}
             >
               <h2
-                className={`text-xl font-bold mb-6 ${
+                className={`text-lg sm:text-xl font-bold mb-4 sm:mb-6 ${
                   (isDark ? 'text-white' : 'text-gray-700')
                 }`}
               >
                 Yangi kitob qo'shish
               </h2>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {/* Description */}
                 <div>
                   <label
-                    className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+                    className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                   >
                     Tavsif *
                   </label>
@@ -705,14 +793,14 @@ export const LibraryPage = () => {
                       setForm({ ...form, description: e.target.value })
                     }
                     placeholder="Kitob nomi yoki tavsifi"
-                    className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-cyan-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-cyan-500'}`}
                   />
                 </div>
 
                 {/* Subject */}
                 <div>
                   <label
-                    className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+                    className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                   >
                     Fan *
                   </label>
@@ -721,7 +809,7 @@ export const LibraryPage = () => {
                     onChange={(e) =>
                       setForm({ ...form, subjectId: e.target.value })
                     }
-                    className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-cyan-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-cyan-500'}`}
                   >
                     <option value="" className={isDark ? 'text-gray-400' : 'text-gray-600'}>
                       Fan tanlang
@@ -741,12 +829,12 @@ export const LibraryPage = () => {
                 {/* File Upload */}
                 <div>
                   <label
-                    className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+                    className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                   >
                     Fayl *
                   </label>
                   <label
-                    className={`flex flex-col items-center justify-center w-full h-32 rounded-xl border-2 border-dashed cursor-pointer transition-all ${isDark ? 'border-gray-700 hover:border-cyan-500/50 bg-gray-800' : 'border-gray-300 hover:border-blue-400 bg-gray-50'}`}
+                    className={`flex flex-col items-center justify-center w-full h-24 sm:h-32 rounded-xl border-2 border-dashed cursor-pointer transition-all ${isDark ? 'border-gray-700 hover:border-cyan-500/50 bg-gray-800' : 'border-gray-300 hover:border-blue-400 bg-gray-50'}`}
                   >
                     <input
                       type="file"
@@ -757,12 +845,12 @@ export const LibraryPage = () => {
                       className="hidden"
                     />
                     {form.file ? (
-                      <div className="text-center">
+                      <div className="text-center px-2">
                         <FiBook
-                          className={`w-8 h-8 mx-auto mb-2 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}
+                          className={`w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-1.5 sm:mb-2 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}
                         />
                         <p
-                          className={`text-sm ${
+                          className={`text-xs sm:text-sm truncate max-w-[200px] ${
                             (isDark ? 'text-gray-400' : 'text-gray-600')
                           }`}
                         >
@@ -772,10 +860,10 @@ export const LibraryPage = () => {
                     ) : (
                       <div className="text-center">
                         <FiUpload
-                          className={`w-8 h-8 mx-auto mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+                          className={`w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-1.5 sm:mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                         />
                         <p
-                          className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+                          className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                         >
                           Fayl yuklash uchun bosing
                         </p>
@@ -786,12 +874,12 @@ export const LibraryPage = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex gap-3 mt-6">
+              <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setIsCreateModalOpen(false)}
-                  className={`flex-1 py-3 rounded-xl font-medium transition-all ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`flex-1 py-2.5 sm:py-3 rounded-xl font-medium transition-all text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Bekor qilish
                 </motion.button>
@@ -800,7 +888,7 @@ export const LibraryPage = () => {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleCreate}
                   disabled={isSubmitting}
-                  className={`flex-1 py-3 rounded-xl font-medium transition-all ${isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gradient-to-r from-blue-600 to-blue-700'} text-white ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`flex-1 py-2.5 sm:py-3 rounded-xl font-medium transition-all text-sm sm:text-base ${isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gradient-to-r from-blue-600 to-blue-700'} text-white ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   {isSubmitting ? 'Yuklanmoqda...' : 'Saqlash'}
                 </motion.button>
@@ -817,7 +905,7 @@ export const LibraryPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm"
             onClick={() => setDeleteConfirm(null)}
           >
             <motion.div
@@ -825,34 +913,34 @@ export const LibraryPage = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className={`w-full max-w-sm rounded-2xl p-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+              className={`w-full max-w-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border ${isDark ? 'bg-gray-800 border-gray-700 text-gray-400' : 'bg-white border-gray-200 text-gray-600'}`}
             >
               <div className="text-center">
                 <div
-                  className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+                  className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full flex items-center justify-center ${isDark ? 'bg-red-500/20' : 'bg-red-100'}`}
                 >
                   <FiTrash2
-                    className={`w-8 h-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+                    className={`w-6 h-6 sm:w-8 sm:h-8 ${isDark ? 'text-red-400' : 'text-red-600'}`}
                   />
                 </div>
                 <h3
-                  className={`text-lg font-bold mb-2 ${
+                  className={`text-base sm:text-lg font-bold mb-2 ${
                     (isDark ? 'text-white' : 'text-gray-700')
                   }`}
                 >
                   O'chirishni tasdiqlang
                 </h3>
-                <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+                <p className={`text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   "{deleteConfirm.description}" kitobini o'chirmoqchimisiz?
                 </p>
               </div>
 
-              <div className="flex gap-3 mt-6">
+              <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setDeleteConfirm(null)}
-                  className={`flex-1 py-3 rounded-xl font-medium ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`flex-1 py-2.5 sm:py-3 rounded-xl font-medium text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Bekor qilish
                 </motion.button>
@@ -861,7 +949,7 @@ export const LibraryPage = () => {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleDelete}
                   disabled={isSubmitting}
-                  className={`flex-1 py-3 rounded-xl font-medium bg-red-500 text-white hover:bg-red-600 ${
+                  className={`flex-1 py-2.5 sm:py-3 rounded-xl font-medium bg-red-500 text-white hover:bg-red-600 text-sm sm:text-base ${
                     isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
