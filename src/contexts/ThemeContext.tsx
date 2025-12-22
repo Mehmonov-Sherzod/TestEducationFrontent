@@ -15,11 +15,8 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     // Check localStorage first
     const saved = localStorage.getItem('theme') as Theme
     if (saved) return saved
-    // Check system preference
-    if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-      return 'light'
-    }
-    return 'dark'
+    // Default to light mode
+    return 'light'
   })
 
   useEffect(() => {

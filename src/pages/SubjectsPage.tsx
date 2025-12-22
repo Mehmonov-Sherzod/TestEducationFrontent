@@ -352,7 +352,7 @@ export const SubjectsPage = () => {
             className={`w-full pl-12 pr-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all ${
               isDark
                 ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500'
-                : 'bg-white border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
+                : 'bg-white/70 border-cyan-100 text-black placeholder-gray-400 focus:ring-blue-500'
             }`}
           />
         </div>
@@ -376,11 +376,11 @@ export const SubjectsPage = () => {
       ) : (
         <>
           <div className={`rounded-xl overflow-hidden border ${
-            isDark ? 'bg-gray-800/50 border-gray-700' : 'bg-white border-gray-200 shadow-sm'
+            isDark ? 'bg-gray-800/50 border-gray-700' : 'bg-white/60 border-cyan-100 shadow-sm'
           }`}>
             {/* Table Header */}
             <div className={`grid grid-cols-12 gap-4 px-6 py-4 border-b ${
-              isDark ? 'bg-gray-800/80 border-gray-700' : 'bg-gray-50 border-gray-200'
+              isDark ? 'bg-gray-800/80 border-gray-700' : 'bg-cyan-50/40 border-cyan-100'
             }`}>
               <div className={`col-span-1 text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
                 #
@@ -454,7 +454,7 @@ export const SubjectsPage = () => {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className={`flex items-center justify-between mt-6 p-4 rounded-xl ${
-              isDark ? 'bg-gray-800/50' : 'bg-white shadow-sm'
+              isDark ? 'bg-gray-800/50' : 'bg-cyan-50/50 shadow-sm'
             }`}>
               <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                 Showing {(currentPage - 1) * pageSize + 1} - {Math.min(currentPage * pageSize, totalCount)} of {totalCount}

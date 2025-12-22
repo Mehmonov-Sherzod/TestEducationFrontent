@@ -148,7 +148,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
         'fixed left-0 top-0 h-screen z-40',
         isDark
           ? 'bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950'
-          : 'bg-gradient-to-b from-slate-50 via-white to-slate-50'
+          : 'bg-gradient-to-b from-white/70 via-cyan-50/50 to-white/70'
       )}
     >
       {/* Decorative Elements */}

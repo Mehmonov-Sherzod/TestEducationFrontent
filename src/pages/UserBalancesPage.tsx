@@ -215,7 +215,7 @@ export const UserBalancesPage = () => {
                   <div className={`col-span-1 font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                     {(currentPage - 1) * pageSize + index + 1}
                   </div>
-                  <div className={`col-span-3 font-semibold ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                  <div className={`col-span-3 font-semibold ${isDark ? 'text-white' : 'text-gray-700'}`}>
                     {balance.userName || '-'}
                   </div>
                   <div className={`col-span-3 font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>

@@ -60,7 +60,7 @@ export const LoginForm = ({ onForgotPassword, onSwitchToRegister }: LoginFormPro
       initial="hidden"
       animate="visible"
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
+      className="space-y-4"
     >
       <motion.div variants={itemVariants}>
         <Input
@@ -124,8 +124,8 @@ export const LoginForm = ({ onForgotPassword, onSwitchToRegister }: LoginFormPro
         </button>
       </motion.div>
 
-      <motion.div variants={itemVariants} className="pt-2">
-        <Button type="submit" className="w-full" isLoading={isLoading}>
+      <motion.div variants={itemVariants} className="pt-4">
+        <Button type="submit" className="w-full py-3.5" isLoading={isLoading}>
           Sign In
         </Button>
       </motion.div>
