@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { FiLogOut, FiUser, FiMail, FiShield } from 'react-icons/fi'
-import { AnimatedBackground } from '@components/shared/AnimatedBackground'
 import { Card } from '@components/shared/Card'
 import { Button } from '@components/shared/Button'
 import { useAuth } from '@hooks/useAuth'
@@ -38,9 +37,6 @@ export const Dashboard = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Animated Background */}
-      <AnimatedBackground />
-
       {/* Dashboard Content */}
       <div className="relative z-10 container mx-auto px-3 sm:px-4 py-4 sm:py-8">
         {/* Header */}

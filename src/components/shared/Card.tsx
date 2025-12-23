@@ -21,17 +21,13 @@ export const Card = ({ children, className, hoverable = false }: CardProps) => {
       className={cn(
         'rounded-2xl sm:rounded-3xl px-5 sm:px-8 lg:px-14 py-6 sm:py-8 transition-all duration-300 relative',
         isDark
-          ? 'bg-gray-800 border border-gray-700 shadow-black/20'
-          : '',
+          ? 'bg-[#111111] border border-gray-800 shadow-black/20'
+          : 'bg-white border border-gray-100 shadow-xl shadow-gray-200/50',
         hoverable && (isDark
-          ? 'hover:shadow-xl hover:shadow-red-500/20'
-          : 'hover:shadow-xl hover:shadow-red-500/10'),
+          ? 'hover:shadow-xl hover:shadow-blue-500/20'
+          : 'hover:shadow-2xl hover:shadow-blue-500/10'),
         className
       )}
-      style={!isDark ? {
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(224,244,248,0.95) 20%, rgba(224,244,248,0.95) 80%, rgba(255,255,255,0.4) 100%)',
-        boxShadow: 'inset 0 0 60px rgba(255,255,255,0.7), 0 4px 30px rgba(0,0,0,0.05)',
-      } : {}}
     >
       {children}
     </motion.div>

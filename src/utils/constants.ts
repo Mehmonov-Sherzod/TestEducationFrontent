@@ -71,6 +71,7 @@ export const MESSAGES = {
 export const ROUTES = {
   HOME: '/',
   AUTH: '/',
+  LOGIN: '/login',
   DASHBOARD: '/dashboard',
   SUBJECTS: '/subjects',
   TOPICS: '/topics',

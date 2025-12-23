@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider, useTheme } from '@contexts/ThemeContext'
 import { AuthPage } from '@pages/AuthPage'
+import { LoginPage } from '@pages/LoginPage'
 import { EnhancedDashboard } from '@pages/EnhancedDashboard'
 import { SubjectsPage } from '@pages/SubjectsPage'
 import { QuestionsPage } from '@pages/QuestionsPage'
@@ -82,12 +83,22 @@ function AppContent() {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       <Routes>
-        {/* Public Route - Auth Page */}
+        {/* Public Route - Auth Page (Landing) */}
         <Route
           path={ROUTES.AUTH}
           element={
             <PublicRoute>
               <AuthPage />
+            </PublicRoute>
+          }
+        />
+
+        {/* Public Route - Login Page */}
+        <Route
+          path={ROUTES.LOGIN}
+          element={
+            <PublicRoute>
+              <LoginPage />
             </PublicRoute>
           }
         />

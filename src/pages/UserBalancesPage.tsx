@@ -153,7 +153,7 @@ export const UserBalancesPage = () => {
             placeholder="Qidirish..."
             className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${
               isDark
-                ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500'
+                ? 'bg-[#151515] border-gray-600/30 text-white placeholder-gray-500 focus:ring-blue-500/50 focus:border-blue-500'
                 : 'bg-white border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
             }`}
           />
@@ -210,7 +210,7 @@ export const UserBalancesPage = () => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: index * 0.03 }}
                   className={`grid grid-cols-12 gap-4 px-4 lg:px-6 py-3 lg:py-4 items-center transition-colors ${
-                    isDark ? 'hover:bg-gray-700/30' : 'hover:bg-gray-50'
+                    isDark ? 'hover:bg-[#1a1a1a]/30' : 'hover:bg-gray-50'
                   }`}
                 >
                   <div className={`col-span-1 font-medium text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -255,12 +255,12 @@ export const UserBalancesPage = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: index * 0.03 }}
-                  className={`p-3 ${isDark ? 'hover:bg-gray-700/30' : 'hover:bg-gray-50'}`}
+                  className={`p-3 ${isDark ? 'hover:bg-[#1a1a1a]/30' : 'hover:bg-gray-50'}`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-xs px-1.5 py-0.5 rounded ${isDark ? 'bg-gray-700 text-gray-400' : 'bg-gray-100 text-gray-500'}`}>
+                        <span className={`text-xs px-1.5 py-0.5 rounded ${isDark ? 'bg-[#1a1a1a] text-gray-400' : 'bg-gray-100 text-gray-500'}`}>
                           #{(currentPage - 1) * pageSize + index + 1}
                         </span>
                         <h3 className={`font-semibold text-sm truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -299,7 +299,7 @@ export const UserBalancesPage = () => {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className={`flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 sm:mt-6 p-3 sm:p-4 rounded-xl ${
-              isDark ? 'bg-gray-800/50' : 'bg-white shadow-sm'
+              isDark ? 'bg-[#151515]/50' : 'bg-white shadow-sm'
             }`}>
               <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                 {(currentPage - 1) * pageSize + 1}-{Math.min(currentPage * pageSize, totalCount)} / {totalCount}
@@ -309,7 +309,7 @@ export const UserBalancesPage = () => {
                   onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
                   className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm ${
-                    isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
                   ←
@@ -357,7 +357,7 @@ export const UserBalancesPage = () => {
                   onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
                   className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm ${
-                    isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
                   →
@@ -384,7 +384,7 @@ export const UserBalancesPage = () => {
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
               className={`rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 max-w-md w-full border ${
-                isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'
               }`}
             >
               <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -394,14 +394,14 @@ export const UserBalancesPage = () => {
                 </h2>
                 <button
                   onClick={() => setEditingBalance(null)}
-                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
+                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-[#1a1a1a]' : 'hover:bg-gray-100'}`}
                 >
                   <FiX className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                 </button>
               </div>
 
               <div className="space-y-3 sm:space-y-4">
-                <div className={`p-2.5 sm:p-3 rounded-lg ${isDark ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
+                <div className={`p-2.5 sm:p-3 rounded-lg ${isDark ? 'bg-[#1a1a1a]/50' : 'bg-gray-50'}`}>
                   <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Foydalanuvchi</p>
                   <p className={`font-semibold text-sm sm:text-base ${isDark ? 'text-white' : 'text-gray-800'}`}>{editingBalance.userName}</p>
                 </div>
@@ -416,7 +416,7 @@ export const UserBalancesPage = () => {
                     onChange={(e) => setNewAmount(e.target.value)}
                     className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
                       isDark
-                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500'
+                        ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-blue-500/50 focus:border-blue-500'
                         : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
                     }`}
                     placeholder="Balans summasini kiriting"
@@ -427,7 +427,7 @@ export const UserBalancesPage = () => {
                   <button
                     onClick={() => setEditingBalance(null)}
                     className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
-                      isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      isDark ? 'bg-[#1a1a1a] text-gray-200 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
                     Bekor qilish

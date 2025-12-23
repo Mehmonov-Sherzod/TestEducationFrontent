@@ -70,77 +70,85 @@ export const ChangePasswordPage = () => {
   }
 
   return (
-    <div className="p-3 sm:p-6 max-w-xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className={cn(
-          'rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-xl',
-          isDark
-            ? 'bg-gray-800/50 border border-gray-700/50'
-            : 'bg-white border border-gray-200'
-        )}
-      >
-        <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="max-w-4xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={cn(
+            'rounded-xl p-6 sm:p-8 border',
+            isDark
+              ? 'bg-[#151515] border-gray-600/30'
+              : 'bg-white border-gray-200 shadow-lg'
+          )}
+        >
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-6">
           <div
             className={cn(
-              'w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center',
+              'w-12 h-12 rounded-xl flex items-center justify-center',
               isDark
-                ? 'bg-gradient-to-br from-cyan-500/20 to-blue-500/20'
-                : 'bg-gradient-to-br from-blue-500/10 to-indigo-500/10'
+                ? 'bg-blue-500/20'
+                : 'bg-blue-100'
             )}
           >
             <FiLock
-              className={cn('w-5 h-5 sm:w-6 sm:h-6', isDark ? 'text-cyan-400' : 'text-blue-600')}
+              className={cn('w-6 h-6', isDark ? 'text-blue-400' : 'text-blue-600')}
             />
           </div>
           <div>
             <h1
               className={cn(
-                'text-lg sm:text-xl font-bold',
+                'text-xl font-bold',
                 isDark ? 'text-white' : 'text-gray-900'
               )}
             >
               Parolni o'zgartirish
             </h1>
-            <p className={cn('text-xs sm:text-sm', isDark ? 'text-gray-400' : 'text-gray-500')}>
+            <p className={cn('text-sm', isDark ? 'text-gray-400' : 'text-gray-500')}>
               Yangi parol kiriting
             </p>
           </div>
         </div>
 
+        {/* Message */}
         {message && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-              'p-3 sm:p-4 rounded-lg sm:rounded-xl flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6',
+              'p-4 rounded-lg flex items-center gap-3 mb-6',
               message.type === 'success'
                 ? 'bg-green-500/10 text-green-500'
                 : 'bg-red-500/10 text-red-500'
             )}
           >
             {message.type === 'success' ? (
-              <FiCheck className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+              <FiCheck className="w-5 h-5 flex-shrink-0" />
             ) : (
-              <FiAlertCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+              <FiAlertCircle className="w-5 h-5 flex-shrink-0" />
             )}
-            <span className="text-xs sm:text-sm">{message.text}</span>
+            <span className="text-sm">{message.text}</span>
           </motion.div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Current Password */}
           <div>
             <label
               className={cn(
-                'block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2',
-                isDark ? 'text-gray-300' : 'text-gray-700'
+                'block text-sm font-medium mb-2',
+                isDark ? 'text-white' : 'text-gray-700'
               )}
             >
               Joriy parol
             </label>
-            <div className="relative">
+            <div className={cn(
+              'flex items-center rounded-lg border transition-colors',
+              isDark
+                ? 'bg-[#1a1a1a] border-gray-600/30 focus-within:border-blue-500'
+                : 'bg-gray-50 border-gray-200 focus-within:border-blue-500'
+            )}>
               <input
                 type={showPasswords.current ? 'text' : 'password'}
                 value={form.currentPassword}
@@ -148,10 +156,10 @@ export const ChangePasswordPage = () => {
                   setForm({ ...form, currentPassword: e.target.value })
                 }
                 className={cn(
-                  'w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl pr-10 sm:pr-12 transition-colors text-sm sm:text-base',
+                  'flex-1 px-4 py-3 bg-transparent outline-none text-sm',
                   isDark
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:border-cyan-500'
-                    : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-500 focus:border-blue-500'
+                    ? 'text-white placeholder-gray-500'
+                    : 'text-gray-900 placeholder-gray-400'
                 )}
                 placeholder="Joriy parolingizni kiriting"
                 required
@@ -162,11 +170,11 @@ export const ChangePasswordPage = () => {
                   setShowPasswords({ ...showPasswords, current: !showPasswords.current })
                 }
                 className={cn(
-                  'absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 p-1',
-                  isDark ? 'text-gray-400' : 'text-gray-500'
+                  'px-4 py-3',
+                  isDark ? 'text-gray-500' : 'text-gray-400'
                 )}
               >
-                {showPasswords.current ? <FiEyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <FiEye className="w-4 h-4 sm:w-5 sm:h-5" />}
+                {showPasswords.current ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
               </button>
             </div>
           </div>
@@ -175,22 +183,27 @@ export const ChangePasswordPage = () => {
           <div>
             <label
               className={cn(
-                'block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2',
-                isDark ? 'text-gray-300' : 'text-gray-700'
+                'block text-sm font-medium mb-2',
+                isDark ? 'text-white' : 'text-gray-700'
               )}
             >
               Yangi parol
             </label>
-            <div className="relative">
+            <div className={cn(
+              'flex items-center rounded-lg border transition-colors',
+              isDark
+                ? 'bg-[#1a1a1a] border-gray-600/30 focus-within:border-blue-500'
+                : 'bg-gray-50 border-gray-200 focus-within:border-blue-500'
+            )}>
               <input
                 type={showPasswords.new ? 'text' : 'password'}
                 value={form.newPassword}
                 onChange={(e) => setForm({ ...form, newPassword: e.target.value })}
                 className={cn(
-                  'w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl pr-10 sm:pr-12 transition-colors text-sm sm:text-base',
+                  'flex-1 px-4 py-3 bg-transparent outline-none text-sm',
                   isDark
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:border-cyan-500'
-                    : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-500 focus:border-blue-500'
+                    ? 'text-white placeholder-gray-500'
+                    : 'text-gray-900 placeholder-gray-400'
                 )}
                 placeholder="Yangi parolni kiriting"
                 required
@@ -201,11 +214,11 @@ export const ChangePasswordPage = () => {
                   setShowPasswords({ ...showPasswords, new: !showPasswords.new })
                 }
                 className={cn(
-                  'absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 p-1',
-                  isDark ? 'text-gray-400' : 'text-gray-500'
+                  'px-4 py-3',
+                  isDark ? 'text-gray-500' : 'text-gray-400'
                 )}
               >
-                {showPasswords.new ? <FiEyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <FiEye className="w-4 h-4 sm:w-5 sm:h-5" />}
+                {showPasswords.new ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
               </button>
             </div>
           </div>
@@ -214,13 +227,18 @@ export const ChangePasswordPage = () => {
           <div>
             <label
               className={cn(
-                'block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2',
-                isDark ? 'text-gray-300' : 'text-gray-700'
+                'block text-sm font-medium mb-2',
+                isDark ? 'text-white' : 'text-gray-700'
               )}
             >
               Yangi parolni tasdiqlang
             </label>
-            <div className="relative">
+            <div className={cn(
+              'flex items-center rounded-lg border transition-colors',
+              isDark
+                ? 'bg-[#1a1a1a] border-gray-600/30 focus-within:border-blue-500'
+                : 'bg-gray-50 border-gray-200 focus-within:border-blue-500'
+            )}>
               <input
                 type={showPasswords.confirm ? 'text' : 'password'}
                 value={form.confirmPassword}
@@ -228,10 +246,10 @@ export const ChangePasswordPage = () => {
                   setForm({ ...form, confirmPassword: e.target.value })
                 }
                 className={cn(
-                  'w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl pr-10 sm:pr-12 transition-colors text-sm sm:text-base',
+                  'flex-1 px-4 py-3 bg-transparent outline-none text-sm',
                   isDark
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:border-cyan-500'
-                    : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-500 focus:border-blue-500'
+                    ? 'text-white placeholder-gray-500'
+                    : 'text-gray-900 placeholder-gray-400'
                 )}
                 placeholder="Yangi parolni qayta kiriting"
                 required
@@ -242,29 +260,31 @@ export const ChangePasswordPage = () => {
                   setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })
                 }
                 className={cn(
-                  'absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 p-1',
-                  isDark ? 'text-gray-400' : 'text-gray-500'
+                  'px-4 py-3',
+                  isDark ? 'text-gray-500' : 'text-gray-400'
                 )}
               >
-                {showPasswords.confirm ? <FiEyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <FiEye className="w-4 h-4 sm:w-5 sm:h-5" />}
+                {showPasswords.confirm ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
               </button>
             </div>
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={isLoading}
             className={cn(
-              'w-full py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all mt-4 sm:mt-6 text-sm sm:text-base',
-              'bg-gradient-to-r from-cyan-500 to-blue-600 text-white',
-              'hover:from-cyan-600 hover:to-blue-700',
+              'w-full py-3 rounded-lg font-medium transition-all mt-2 text-sm',
+              'bg-gradient-to-r from-blue-500 to-cyan-500 text-white',
+              'hover:from-blue-600 hover:to-cyan-600',
               'disabled:opacity-50 disabled:cursor-not-allowed'
             )}
           >
             {isLoading ? 'Saqlanmoqda...' : 'Parolni o\'zgartirish'}
           </button>
         </form>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   )
 }

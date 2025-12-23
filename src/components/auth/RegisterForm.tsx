@@ -120,7 +120,7 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
                   className={`flex-1 rounded-full transition-all duration-300 ${
                     i <= passwordStrength.score
                       ? 'bg-blue-500'
-                      : isDark ? 'bg-gray-700' : 'bg-gray-200'
+                      : isDark ? 'bg-[#1a1a1a]' : 'bg-gray-200'
                   }`}
                 />
               ))}
@@ -168,7 +168,7 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
             type="button"
             onClick={onSwitchToLogin}
             className={`font-semibold transition-colors ${
-              isDark ? 'text-cyan-400 hover:text-cyan-300' : 'text-blue-500 hover:text-blue-600'
+              isDark ? 'text-blue-400 hover:text-blue-300' : 'text-blue-500 hover:text-blue-600'
             }`}
           >
             Sign in

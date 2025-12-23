@@ -167,7 +167,7 @@ export const MyBalancePage = () => {
             onClick={(e) => e.stopPropagation()}
             className={cn(
               'w-full max-w-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border shadow-xl max-h-[90vh] overflow-y-auto',
-              isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+              isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'
             )}
           >
             {/* Header */}
@@ -178,7 +178,7 @@ export const MyBalancePage = () => {
               </h2>
               <button
                 onClick={() => setIsTopUpModalOpen(false)}
-                className={cn('p-1.5 sm:p-2 rounded-lg transition-colors', isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500')}
+                className={cn('p-1.5 sm:p-2 rounded-lg transition-colors', isDark ? 'hover:bg-[#1a1a1a] text-gray-400' : 'hover:bg-gray-100 text-gray-500')}
               >
                 <FiX className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
@@ -213,7 +213,7 @@ export const MyBalancePage = () => {
                       onClick={() => copyToClipboard(topUpInfo.CardNumber || topUpInfo.cardNumber || '')}
                       className={cn(
                         'p-1.5 sm:p-2 rounded-lg transition-colors',
-                        isDark ? 'bg-gray-800 hover:bg-gray-700 text-cyan-400' : 'bg-gray-200 hover:bg-gray-300 text-blue-600'
+                        isDark ? 'bg-[#1a1a1a] hover:bg-[#252525] text-blue-400' : 'bg-gray-200 hover:bg-gray-300 text-blue-600'
                       )}
                     >
                       <FiCopy className="w-4 h-4 sm:w-5 sm:h-5" />

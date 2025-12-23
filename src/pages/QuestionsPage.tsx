@@ -637,7 +637,7 @@ export const QuestionsPage = () => {
                   <button
                     onClick={() => setCurrentPage(p => p - 1)}
                     disabled={currentPage === 1}
-                    className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 transition-colors ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 transition-colors ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                   >
                     <FiChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
@@ -647,7 +647,7 @@ export const QuestionsPage = () => {
                   <button
                     onClick={() => setCurrentPage(p => p + 1)}
                     disabled={currentPage === totalPages}
-                    className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 transition-colors ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 transition-colors ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                   >
                     <FiChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
@@ -673,7 +673,7 @@ export const QuestionsPage = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-xl sm:rounded-2xl shadow-2xl border p-4 sm:p-6 lg:p-8 max-w-5xl w-full max-h-[95vh] overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
+              className={`rounded-xl sm:rounded-2xl shadow-2xl border p-4 sm:p-6 lg:p-8 max-w-5xl w-full max-h-[95vh] overflow-y-auto ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'}`}
             >
               <div className="flex items-center justify-between mb-4 sm:mb-6 lg:mb-8">
                 <h2 className={`text-xl sm:text-2xl lg:text-3xl font-bold flex items-center gap-2 sm:gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -683,7 +683,7 @@ export const QuestionsPage = () => {
                 </h2>
                 <button
                   onClick={() => setIsCreating(false)}
-                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100'}`}
+                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-[#1a1a1a] text-gray-300' : 'hover:bg-gray-100'}`}
                 >
                   <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-gray-300' : 'text-gray-500'}`} />
                 </button>
@@ -801,7 +801,7 @@ export const QuestionsPage = () => {
                         >
                           {answer.isCorrect && <FiCheck className="w-3 h-3 sm:w-5 sm:h-5" />}
                         </button>
-                        <div className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 rounded-lg flex-shrink-0 ${isDark ? 'bg-gray-700' : 'bg-gray-100'}`}>
+                        <div className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 rounded-lg flex-shrink-0 ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-100'}`}>
                           <span className={`font-semibold text-xs sm:text-sm ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
                             {String.fromCharCode(65 + index)}
                           </span>
@@ -822,7 +822,7 @@ export const QuestionsPage = () => {
                 <div className={`flex flex-col-reverse sm:flex-row gap-2 sm:gap-4 mt-4 sm:mt-8 pt-4 sm:pt-6 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
                   <button
                     onClick={() => setIsCreating(false)}
-                    className={`py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 lg:px-8 rounded-xl font-semibold transition-colors text-sm sm:text-base lg:text-lg ${isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-600' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                    className={`py-2.5 sm:py-3 lg:py-4 px-4 sm:px-6 lg:px-8 rounded-xl font-semibold transition-colors text-sm sm:text-base lg:text-lg ${isDark ? 'bg-[#1a1a1a] text-gray-200 hover:bg-[#252525] border border-gray-600/30' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
                   >
                     Cancel
                   </button>
@@ -859,7 +859,7 @@ export const QuestionsPage = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-xl sm:rounded-2xl shadow-2xl border p-4 sm:p-6 max-w-2xl w-full max-h-[95vh] overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
+              className={`rounded-xl sm:rounded-2xl shadow-2xl border p-4 sm:p-6 max-w-2xl w-full max-h-[95vh] overflow-y-auto ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'}`}
             >
               <div className="flex items-center justify-between mb-4 sm:mb-6">
                 <h2 className={`text-lg sm:text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -868,7 +868,7 @@ export const QuestionsPage = () => {
                 </h2>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100'}`}
+                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-[#1a1a1a] text-gray-300' : 'hover:bg-gray-100'}`}
                 >
                   <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-gray-300' : 'text-gray-500'}`} />
                 </button>
@@ -938,7 +938,7 @@ export const QuestionsPage = () => {
                 <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <button
                     onClick={() => setIsEditing(false)}
-                    className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-700' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                    className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] text-gray-200 hover:bg-[#252525] border border-gray-600/30' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
                   >
                     Cancel
                   </button>

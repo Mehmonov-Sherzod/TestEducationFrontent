@@ -33,11 +33,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 className={cn(
                   'absolute left-4 top-1/2 -translate-y-1/2 z-10 transition-colors duration-200',
                   isFocused
-                    ? 'text-red-500'
+                    ? 'text-blue-500'
                     : error
                     ? 'text-red-400'
-                    : isDark
-                    ? 'text-gray-500'
                     : 'text-gray-400'
                 )}
               >
@@ -55,20 +53,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 'border transition-all duration-200',
                 'text-sm sm:text-base',
                 'focus:outline-none',
-                // Theme styles
-                isDark
-                  ? 'bg-gray-800 text-white placeholder:text-gray-500'
-                  : 'bg-gray-50 text-black placeholder:text-gray-400',
+                // Theme styles - always white background
+                '!bg-white text-gray-900 placeholder:text-gray-400',
                 // Border states
                 isFocused
-                  ? isDark
-                    ? 'border-red-500 bg-gray-700'
-                    : 'border-red-500 bg-white'
+                  ? 'border-blue-500 shadow-sm shadow-blue-500/20'
                   : error
                   ? 'border-red-500/50'
                   : isDark
-                  ? 'border-gray-700 hover:border-gray-600'
-                  : 'border-gray-200 hover:border-gray-300',
+                  ? 'border-gray-200 hover:border-gray-300'
+                  : 'border-gray-300 hover:border-gray-400',
                 // Padding for icon
                 icon ? 'pl-12' : 'pl-4',
                 isPassword ? 'pr-12' : 'pr-4',
@@ -89,9 +83,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 onClick={() => setShowPassword(!showPassword)}
                 className={cn(
                   'absolute right-4 top-1/2 -translate-y-1/2 z-10 transition-colors duration-200 p-1 rounded-lg',
-                  isDark
-                    ? 'text-gray-500 hover:text-red-400'
-                    : 'text-gray-400 hover:text-red-500'
+                  'text-gray-400 hover:text-blue-500'
                 )}
               >
                 {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}

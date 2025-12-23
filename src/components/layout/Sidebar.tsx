@@ -201,7 +201,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
               <div className={cn(
                 'w-10 h-10 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0',
                 isDark
-                  ? 'bg-teal-600'
+                  ? 'bg-blue-500'
                   : 'bg-blue-600'
               )}>
                 <span className="text-white font-bold text-lg">P</span>
@@ -256,7 +256,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                           isCollapsed ? 'justify-center px-3 py-3' : 'gap-3 px-4 py-3',
                           isActive
                             ? isDark
-                              ? 'bg-[#0d9488] text-white'
+                              ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
                               : 'bg-gray-100 text-gray-900'
                             : isDark
                               ? 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -319,7 +319,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                                       'block py-2 px-3 rounded-lg text-sm transition-colors',
                                       isChildActive
                                         ? isDark
-                                          ? 'text-teal-400 bg-teal-500/10'
+                                          ? 'text-blue-400 bg-blue-500/10'
                                           : 'text-gray-900 bg-gray-100'
                                         : isDark
                                           ? 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -345,7 +345,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                         isCollapsed ? 'justify-center px-3 py-3' : 'gap-3 px-4 py-3',
                         isActive
                           ? isDark
-                            ? 'bg-[#0d9488] text-white'
+                            ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
                             : 'bg-gray-100 text-gray-900'
                           : isDark
                             ? 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -433,7 +433,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                 className={cn(
                   'w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm flex-shrink-0',
                   isDark
-                    ? 'bg-teal-600 text-white'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-blue-600 text-white'
                 )}
                 title={isCollapsed ? user?.fullName : undefined}
@@ -455,7 +455,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                         className={cn(
                           'text-[10px] font-medium px-1.5 py-0.5 rounded-md',
                           isDark
-                            ? 'bg-teal-500/20 text-teal-400'
+                            ? 'bg-blue-500/20 text-blue-400'
                             : 'bg-blue-100 text-blue-600'
                         )}
                       >

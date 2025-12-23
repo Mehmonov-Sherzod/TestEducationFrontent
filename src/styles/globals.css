@@ -8,7 +8,7 @@
   }
 
   /* ========================================
-     PROFESSIONAL COLOR SCHEME
+     PROFESSIONAL COLOR SCHEME - BLUE PRIMARY
      ======================================== */
 
   /* Light Mode */
@@ -44,7 +44,9 @@
     --color-warning-light: #fef3c7;
   }
 
-  /* Dark Mode - Professional Teal Theme */
+  /* ========================================
+     DARK MODE - PROFESSIONAL BLUE THEME
+     ======================================== */
   .dark {
     /* Backgrounds */
     --color-bg-primary: #0a0a0a;
@@ -61,11 +63,11 @@
     --color-border: rgba(82, 82, 91, 0.3);
     --color-border-light: rgba(82, 82, 91, 0.2);
 
-    /* Primary - Teal */
-    --color-primary: #0d9488;
-    --color-primary-hover: #0f766e;
-    --color-primary-light: rgba(13, 148, 136, 0.15);
-    --color-primary-text: #5eead4;
+    /* Primary - Blue */
+    --color-primary: #3b82f6;
+    --color-primary-hover: #2563eb;
+    --color-primary-light: rgba(59, 130, 246, 0.15);
+    --color-primary-text: #93c5fd;
 
     /* Status Colors */
     --color-success: #22c55e;
@@ -126,10 +128,36 @@
 
 @layer components {
   /* ========================================
+     NAVIGATION COMPONENTS
+     ======================================== */
+
+  /* Default nav item */
+  .nav-item {
+    @apply px-4 py-3 rounded-xl transition-all duration-200 flex items-center gap-3;
+    color: var(--color-text-muted);
+  }
+
+  .nav-item:hover {
+    background-color: var(--color-bg-hover);
+    color: var(--color-text-primary);
+  }
+
+  /* Active nav item - Blue */
+  .nav-item-active {
+    @apply px-4 py-3 rounded-xl flex items-center gap-3;
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .dark .nav-item-active {
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  }
+
+  /* ========================================
      BUTTON COMPONENTS
      ======================================== */
 
-  /* Primary Button */
+  /* Primary Button - Blue (Create, Save, Edit) */
   .btn-primary {
     @apply px-4 py-2.5 rounded-lg font-medium transition-all duration-200;
     background-color: var(--color-primary);
@@ -141,7 +169,56 @@
     @apply shadow-lg;
   }
 
-  /* Secondary Button */
+  .dark .btn-primary:hover {
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+  }
+
+  /* Edit Button - Blue outline/light */
+  .btn-edit {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .dark .btn-edit {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+  }
+
+  .btn-edit:hover {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  /* Delete Button - Red */
+  .btn-danger {
+    @apply px-4 py-2.5 rounded-lg font-medium transition-all duration-200;
+    background-color: var(--color-danger);
+    color: white;
+  }
+
+  .btn-danger:hover {
+    @apply shadow-lg;
+    background-color: #dc2626;
+  }
+
+  .dark .btn-danger:hover {
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+  }
+
+  /* Delete Button - Light variant */
+  .btn-danger-light {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    background-color: var(--color-danger-light);
+    color: var(--color-danger);
+  }
+
+  .btn-danger-light:hover {
+    background-color: var(--color-danger);
+    color: white;
+  }
+
+  /* Secondary/Cancel Button */
   .btn-secondary {
     @apply px-4 py-2.5 rounded-lg font-medium transition-all duration-200;
     background-color: var(--color-bg-input);
@@ -151,28 +228,7 @@
 
   .btn-secondary:hover {
     background-color: var(--color-bg-hover);
-  }
-
-  /* Danger Button */
-  .btn-danger {
-    @apply px-4 py-2.5 rounded-lg font-medium transition-all duration-200;
-    background-color: var(--color-danger);
-    color: white;
-  }
-
-  .btn-danger:hover {
-    @apply opacity-90 shadow-lg;
-  }
-
-  /* Success Button */
-  .btn-success {
-    @apply px-4 py-2.5 rounded-lg font-medium transition-all duration-200;
-    background-color: var(--color-success);
-    color: white;
-  }
-
-  .btn-success:hover {
-    @apply opacity-90 shadow-lg;
+    border-color: var(--color-text-muted);
   }
 
   /* Ghost Button */
@@ -183,22 +239,130 @@
 
   .btn-ghost:hover {
     background-color: var(--color-bg-hover);
+    color: var(--color-text-primary);
+  }
+
+  /* Logout Button - Red */
+  .btn-logout {
+    @apply px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 w-full;
+    background-color: var(--color-danger);
+    color: white;
+  }
+
+  .btn-logout:hover {
+    background-color: #dc2626;
+    @apply shadow-lg;
+  }
+
+  .dark .btn-logout:hover {
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
   }
 
   /* ========================================
-     CARD COMPONENTS
+     LANGUAGE SELECTOR BUTTONS
      ======================================== */
 
-  .card {
-    background-color: var(--color-bg-card);
+  .lang-btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    background-color: var(--color-bg-input);
+    color: var(--color-text-secondary);
     border: 1px solid var(--color-border);
-    @apply rounded-xl;
   }
 
-  .card-elevated {
-    background-color: var(--color-bg-card);
+  .lang-btn:hover {
+    background-color: var(--color-bg-hover);
+    border-color: var(--color-text-muted);
+  }
+
+  .lang-btn-active {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    background-color: var(--color-primary);
+    color: white;
+    border: 1px solid var(--color-primary);
+  }
+
+  .dark .lang-btn-active {
+    box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+  }
+
+  /* ========================================
+     BADGE COMPONENTS
+     ======================================== */
+
+  /* SuperAdmin Badge - Blue */
+  .badge-superadmin {
+    @apply px-3 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .dark .badge-superadmin {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+  }
+
+  /* Admin Badge */
+  .badge-admin {
+    @apply px-3 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1;
+    background-color: rgba(168, 85, 247, 0.15);
+    color: #a855f7;
+  }
+
+  /* Student Badge */
+  .badge-student {
+    @apply px-3 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1;
+    background-color: var(--color-success-light);
+    color: var(--color-success);
+  }
+
+  /* Primary Badge */
+  .badge-primary {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-text);
+    @apply px-2 py-0.5 rounded-md text-xs font-medium;
+  }
+
+  .badge-success {
+    background-color: var(--color-success-light);
+    color: var(--color-success);
+    @apply px-2 py-0.5 rounded-md text-xs font-medium;
+  }
+
+  .badge-danger {
+    background-color: var(--color-danger-light);
+    color: var(--color-danger);
+    @apply px-2 py-0.5 rounded-md text-xs font-medium;
+  }
+
+  .badge-warning {
+    background-color: var(--color-warning-light);
+    color: var(--color-warning);
+    @apply px-2 py-0.5 rounded-md text-xs font-medium;
+  }
+
+  /* ========================================
+     SEARCH INPUT
+     ======================================== */
+
+  .search-input {
+    @apply w-full pl-12 pr-4 py-3 rounded-lg transition-all duration-200;
+    background-color: var(--color-bg-input);
     border: 1px solid var(--color-border);
-    @apply rounded-xl shadow-lg;
+    color: var(--color-text-primary);
+  }
+
+  .search-input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .search-input:focus {
+    @apply outline-none ring-2;
+    ring-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .dark .search-input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 
   /* ========================================
@@ -237,6 +401,15 @@
     border-bottom: 1px solid var(--color-border);
   }
 
+  .table-header-text {
+    color: var(--color-primary);
+    @apply text-sm font-semibold;
+  }
+
+  .dark .table-header-text {
+    color: #93c5fd;
+  }
+
   .table-row {
     border-bottom: 1px solid var(--color-border-light);
     @apply transition-colors duration-200;
@@ -246,52 +419,24 @@
     background-color: var(--color-bg-hover);
   }
 
-  /* ========================================
-     NAVIGATION COMPONENTS
-     ======================================== */
-
-  .nav-item {
-    @apply px-4 py-3 rounded-xl transition-all duration-200;
-    color: var(--color-text-muted);
-  }
-
-  .nav-item:hover {
-    background-color: var(--color-bg-hover);
-    color: var(--color-text-primary);
-  }
-
-  .nav-item-active {
-    @apply px-4 py-3 rounded-xl;
-    background-color: var(--color-primary);
-    color: white;
+  .table-row:last-child {
+    border-bottom: none;
   }
 
   /* ========================================
-     BADGE COMPONENTS
+     CARD COMPONENTS
      ======================================== */
 
-  .badge-primary {
-    background-color: var(--color-primary-light);
-    color: var(--color-primary-text);
-    @apply px-2 py-0.5 rounded-md text-xs font-medium;
+  .card {
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    @apply rounded-xl;
   }
 
-  .badge-success {
-    background-color: var(--color-success-light);
-    color: var(--color-success);
-    @apply px-2 py-0.5 rounded-md text-xs font-medium;
-  }
-
-  .badge-danger {
-    background-color: var(--color-danger-light);
-    color: var(--color-danger);
-    @apply px-2 py-0.5 rounded-md text-xs font-medium;
-  }
-
-  .badge-warning {
-    background-color: var(--color-warning-light);
-    color: var(--color-warning);
-    @apply px-2 py-0.5 rounded-md text-xs font-medium;
+  .card-elevated {
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    @apply rounded-xl shadow-lg;
   }
 
   /* ========================================
@@ -309,6 +454,90 @@
     border: 1px solid var(--color-border);
     @apply rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto;
   }
+
+  /* ========================================
+     PAGINATION
+     ======================================== */
+
+  .pagination-btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    background-color: var(--color-bg-input);
+    color: var(--color-text-secondary);
+  }
+
+  .pagination-btn:hover:not(:disabled) {
+    background-color: var(--color-bg-hover);
+  }
+
+  .pagination-btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .pagination-btn-active {
+    @apply px-4 py-2 rounded-lg font-medium;
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .dark .pagination-btn-active {
+    box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+  }
+
+  /* ========================================
+     SIDEBAR COMPONENTS
+     ======================================== */
+
+  .sidebar {
+    background-color: var(--color-bg-card);
+    border-right: 1px solid var(--color-border);
+  }
+
+  .sidebar-logo {
+    @apply w-10 h-10 rounded-xl flex items-center justify-center;
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .dark .sidebar-logo {
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  }
+
+  .sidebar-avatar {
+    @apply w-10 h-10 rounded-xl flex items-center justify-center;
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .sidebar-role-badge {
+    @apply px-2 py-0.5 rounded text-xs font-medium;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .dark .sidebar-role-badge {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+  }
+
+  /* ========================================
+     ICON COLORS
+     ======================================== */
+
+  .icon-primary {
+    color: var(--color-primary);
+  }
+
+  .dark .icon-primary {
+    color: #93c5fd;
+  }
+
+  .icon-muted {
+    color: var(--color-text-muted);
+  }
+
+  .icon-danger {
+    color: var(--color-danger);
+  }
 }
 
 @layer utilities {
@@ -318,9 +547,18 @@
     background-image: linear-gradient(135deg, var(--color-primary), var(--color-primary-text));
   }
 
-  /* Glow effect */
+  /* Blue Glow effect */
   .glow-primary {
     box-shadow: 0 0 20px var(--color-primary-light);
+  }
+
+  .dark .glow-primary {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+  }
+
+  /* Hover glow for buttons */
+  .hover-glow:hover {
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
   }
 
   /* Loading spinner */
@@ -329,9 +567,58 @@
     border-top-color: var(--color-primary);
     @apply animate-spin rounded-full;
   }
+
+  /* Blue text for dark mode */
+  .text-primary-dark {
+    color: #93c5fd;
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    @apply transition-all duration-200 ease-in-out;
+  }
 }
 
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+/* ========================================
+   DARK MODE TAILWIND OVERRIDES
+   Use these classes in your components
+   ======================================== */
+
+/*
+  NAVIGATION:
+  - Default: text-gray-400 hover:bg-white/5 hover:text-white
+  - Active:  bg-blue-500 text-white shadow-lg shadow-blue-500/30
+
+  BUTTONS:
+  - Primary (Create/Save): bg-blue-500 hover:bg-blue-600 text-white
+  - Edit:    bg-blue-500/15 text-blue-400 hover:bg-blue-500/25
+  - Delete:  bg-red-500 hover:bg-red-600 text-white
+  - Cancel:  bg-[#1a1a1a] border-gray-600/30 text-gray-300 hover:bg-[#252525]
+
+  LANGUAGE BUTTONS:
+  - Default: bg-[#1a1a1a] border-gray-600/30 text-gray-300
+  - Active:  bg-blue-500 text-white
+
+  BADGES:
+  - SuperAdmin: bg-blue-500/20 text-blue-400
+  - Admin:      bg-purple-500/20 text-purple-400
+  - Student:    bg-green-500/20 text-green-400
+
+  SEARCH INPUT:
+  - bg-[#1a1a1a] border-gray-600/30 text-white
+  - focus:ring-blue-500/50 focus:border-blue-500
+
+  TABLE:
+  - Container: bg-[#151515] border-gray-600/30
+  - Header text: text-blue-400
+  - Row hover: hover:bg-white/5
+  - Dividers: divide-gray-600/20
+
+  LOGOUT:
+  - bg-red-500 hover:bg-red-600 text-white
+*/

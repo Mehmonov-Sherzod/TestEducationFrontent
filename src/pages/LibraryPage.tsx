@@ -307,7 +307,7 @@ export const LibraryPage = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Qidirish..."
-              className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-cyan-500'}`}
+              className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-[#151515] border-gray-600/30 text-white focus:ring-blue-500/50 focus:border-blue-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
             />
             {searchQuery && (
               <button
@@ -325,7 +325,7 @@ export const LibraryPage = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setIsSubjectDropdownOpen(!isSubjectDropdownOpen)}
-              className={`flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border transition-all w-full sm:min-w-[180px] justify-between text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'}`}
+              className={`flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border transition-all w-full sm:min-w-[180px] justify-between text-sm sm:text-base ${isDark ? 'bg-[#151515] border-gray-600/30 text-white' : 'bg-white border-gray-200 text-black'}`}
             >
               <div className="flex items-center gap-2">
                 <FiFilter className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
@@ -351,7 +351,7 @@ export const LibraryPage = () => {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className={`absolute top-full mt-2 w-56 max-h-60 overflow-y-auto rounded-xl border shadow-2xl z-50 ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
+                    className={`absolute top-full mt-2 w-56 max-h-60 overflow-y-auto rounded-xl border shadow-2xl z-50 ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'}`}
                   >
                     <button
                       onClick={() => {
@@ -364,7 +364,7 @@ export const LibraryPage = () => {
                             ? 'bg-cyan-500/20 text-cyan-400'
                             : 'bg-blue-50 text-blue-600'
                           : isDark
-                          ? 'text-white hover:bg-gray-700'
+                          ? 'text-white hover:bg-[#1a1a1a]'
                           : 'text-gray-900 hover:bg-gray-50'
                       }`}
                     >
@@ -383,7 +383,7 @@ export const LibraryPage = () => {
                               ? 'bg-cyan-500/20 text-cyan-400'
                               : 'bg-blue-50 text-blue-600'
                             : isDark
-                            ? 'text-white hover:bg-gray-700'
+                            ? 'text-white hover:bg-[#1a1a1a]'
                             : 'text-gray-900 hover:bg-gray-50'
                         }`}
                       >
@@ -680,7 +680,7 @@ export const LibraryPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className={`flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 mt-6 sm:mt-8 p-3 sm:p-4 rounded-xl ${
-              isDark ? 'bg-gray-800/50' : 'bg-white shadow-sm'
+              isDark ? 'bg-[#151515]/50' : 'bg-white shadow-sm'
             }`}
           >
             <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -692,7 +692,7 @@ export const LibraryPage = () => {
                 disabled={!hasPrevious}
                 className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
                   isDark
-                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -727,7 +727,7 @@ export const LibraryPage = () => {
                             ? 'bg-cyan-500 text-white'
                             : 'bg-blue-600 text-white'
                           : isDark
-                          ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                          ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
@@ -742,7 +742,7 @@ export const LibraryPage = () => {
                 disabled={!hasNext}
                 className={`p-1.5 sm:p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
                   isDark
-                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -768,7 +768,7 @@ export const LibraryPage = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className={`w-full max-w-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border shadow-xl max-h-[90vh] overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700 text-gray-400' : 'bg-white border-gray-200 text-gray-600'}`}
+              className={`w-full max-w-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border shadow-xl max-h-[90vh] overflow-y-auto ${isDark ? 'bg-[#151515] border-gray-600/30 text-gray-400' : 'bg-white border-gray-200 text-gray-600'}`}
             >
               <h2
                 className={`text-lg sm:text-xl font-bold mb-4 sm:mb-6 ${
@@ -793,7 +793,7 @@ export const LibraryPage = () => {
                       setForm({ ...form, description: e.target.value })
                     }
                     placeholder="Kitob nomi yoki tavsifi"
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-cyan-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-blue-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
                   />
                 </div>
 
@@ -809,7 +809,7 @@ export const LibraryPage = () => {
                     onChange={(e) =>
                       setForm({ ...form, subjectId: e.target.value })
                     }
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-cyan-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-blue-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
                   >
                     <option value="" className={isDark ? 'text-gray-400' : 'text-gray-600'}>
                       Fan tanlang
@@ -834,7 +834,7 @@ export const LibraryPage = () => {
                     Fayl *
                   </label>
                   <label
-                    className={`flex flex-col items-center justify-center w-full h-24 sm:h-32 rounded-xl border-2 border-dashed cursor-pointer transition-all ${isDark ? 'border-gray-700 hover:border-cyan-500/50 bg-gray-800' : 'border-gray-300 hover:border-blue-400 bg-gray-50'}`}
+                    className={`flex flex-col items-center justify-center w-full h-24 sm:h-32 rounded-xl border-2 border-dashed cursor-pointer transition-all ${isDark ? 'border-gray-600/30 hover:border-blue-500/50 bg-[#1a1a1a]' : 'border-gray-300 hover:border-blue-400 bg-gray-50'}`}
                   >
                     <input
                       type="file"
@@ -879,7 +879,7 @@ export const LibraryPage = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setIsCreateModalOpen(false)}
-                  className={`flex-1 py-2.5 sm:py-3 rounded-xl font-medium transition-all text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`flex-1 py-2.5 sm:py-3 rounded-xl font-medium transition-all text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Bekor qilish
                 </motion.button>
@@ -913,7 +913,7 @@ export const LibraryPage = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className={`w-full max-w-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border ${isDark ? 'bg-gray-800 border-gray-700 text-gray-400' : 'bg-white border-gray-200 text-gray-600'}`}
+              className={`w-full max-w-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border ${isDark ? 'bg-[#151515] border-gray-600/30 text-gray-400' : 'bg-white border-gray-200 text-gray-600'}`}
             >
               <div className="text-center">
                 <div
@@ -940,7 +940,7 @@ export const LibraryPage = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setDeleteConfirm(null)}
-                  className={`flex-1 py-2.5 sm:py-3 rounded-xl font-medium text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`flex-1 py-2.5 sm:py-3 rounded-xl font-medium text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Bekor qilish
                 </motion.button>

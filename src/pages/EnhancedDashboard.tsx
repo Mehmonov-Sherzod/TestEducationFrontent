@@ -144,7 +144,7 @@ export const EnhancedDashboard = () => {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 + index * 0.1 }}
-                  className={`flex items-center justify-between p-4 rounded-lg transition-colors ${isDark ? 'bg-gray-900 hover:bg-gray-700' : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'}`}
+                  className={`flex items-center justify-between p-4 rounded-lg transition-colors ${isDark ? 'bg-[#1a1a1a] hover:bg-[#252525]' : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'}`}
                 >
                   <div>
                     <h4 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>{activity.subject}</h4>
@@ -205,7 +205,7 @@ export const EnhancedDashboard = () => {
                   transition={{ delay: 0.5 + index * 0.1 }}
                   whileHover={{ scale: 1.02, x: 4 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`w-full flex items-center gap-3 p-4 rounded-lg transition-all ${isDark ? 'bg-gray-900 hover:bg-gray-700' : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'}`}
+                  className={`w-full flex items-center gap-3 p-4 rounded-lg transition-all ${isDark ? 'bg-[#1a1a1a] hover:bg-[#252525]' : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'}`}
                 >
                   <div className={`p-2 rounded-lg ${action.bgColor} ${action.iconColor}`}>
                     {action.icon}

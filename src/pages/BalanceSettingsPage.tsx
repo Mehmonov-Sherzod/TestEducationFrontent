@@ -171,7 +171,7 @@ export const BalanceSettingsPage = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsEditing(true)}
                 className={`p-1.5 sm:p-2 rounded-lg transition-colors ${
-                  isDark ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                  isDark ? 'bg-[#1a1a1a] hover:bg-[#252525] text-gray-300' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
                 }`}
               >
                 <FiEdit2 className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -281,7 +281,7 @@ export const BalanceSettingsPage = () => {
                     })
                   }}
                   className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-colors text-sm sm:text-base ${
-                    isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
                 >
                   Bekor qilish

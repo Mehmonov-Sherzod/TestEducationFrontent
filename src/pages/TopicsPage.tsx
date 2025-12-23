@@ -344,7 +344,7 @@ export const TopicsPage = () => {
               transition={{ type: 'spring', stiffness: 200, damping: 15 }}
             >
               <FiLayers
-                className={isDark ? 'text-teal-400' : 'text-gray-600'}
+                className={isDark ? 'text-blue-400' : 'text-gray-600'}
               />
             </motion.div>
             <span>Topics</span>
@@ -435,7 +435,7 @@ export const TopicsPage = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search topics..."
-            className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all duration-300 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-teal-500/50 focus:border-teal-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+            className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all duration-300 text-sm sm:text-base ${isDark ? 'bg-[#151515] border-gray-600/30 text-white focus:ring-blue-500/50 focus:border-blue-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
           />
           {searchQuery && (
             <motion.button
@@ -459,11 +459,11 @@ export const TopicsPage = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className={`flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border transition-all duration-300 w-full sm:min-w-[200px] justify-between text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'}`}
+              className={`flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border transition-all duration-300 w-full sm:min-w-[200px] justify-between text-sm sm:text-base ${isDark ? 'bg-[#151515] border-gray-600/30 text-white' : 'bg-white border-gray-200 text-black'}`}
             >
               <div className="flex items-center gap-2 min-w-0">
                 <FiFilter
-                  className={`flex-shrink-0 ${isDark ? 'text-teal-400' : 'text-gray-600'}`}
+                  className={`flex-shrink-0 ${isDark ? 'text-blue-400' : 'text-gray-600'}`}
                 />
                 <span className="truncate text-sm">
                   {selectedSubjectFilter
@@ -497,7 +497,7 @@ export const TopicsPage = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
-                    className={`absolute top-full mt-2 w-full sm:min-w-[200px] rounded-xl border shadow-2xl z-50 overflow-hidden max-h-64 overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
+                    className={`absolute top-full mt-2 w-full sm:min-w-[200px] rounded-xl border shadow-2xl z-50 overflow-hidden max-h-64 overflow-y-auto ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'}`}
                   >
                     <button
                       onClick={() => {
@@ -508,10 +508,10 @@ export const TopicsPage = () => {
                       className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-left transition-colors flex items-center gap-2 text-sm ${
                         !selectedSubjectFilter
                           ? isDark
-                            ? 'bg-teal-500/20 text-teal-400'
+                            ? 'bg-blue-500/15 text-blue-400'
                             : 'bg-blue-50 text-blue-600'
                           : isDark
-                          ? 'text-white hover:bg-gray-700'
+                          ? 'text-white hover:bg-[#1a1a1a]'
                           : 'text-gray-900 hover:bg-gray-50'
                       }`}
                     >
@@ -529,10 +529,10 @@ export const TopicsPage = () => {
                         className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-left transition-colors flex items-center gap-2 text-sm ${
                           selectedSubjectFilter === subject.id
                             ? isDark
-                              ? 'bg-teal-500/20 text-teal-400'
+                              ? 'bg-blue-500/15 text-blue-400'
                               : 'bg-blue-50 text-blue-600'
                             : isDark
-                            ? 'text-white hover:bg-gray-700'
+                            ? 'text-white hover:bg-[#1a1a1a]'
                             : 'text-gray-900 hover:bg-gray-50'
                         }`}
                       >
@@ -552,7 +552,7 @@ export const TopicsPage = () => {
             whileTap={{ scale: 0.95 }}
             onClick={() => fetchTopics()}
             disabled={isLoading}
-            className={`p-2.5 sm:p-3 rounded-xl border transition-all duration-300 flex-shrink-0 ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`p-2.5 sm:p-3 rounded-xl border transition-all duration-300 flex-shrink-0 ${isDark ? 'bg-[#151515] border-gray-600/30 text-white' : 'bg-white border-gray-200 text-black'} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             <FiRefreshCw className={`w-4 h-4 sm:w-5 sm:h-5 ${isLoading ? 'animate-spin' : ''}`} />
           </motion.button>
@@ -635,11 +635,11 @@ export const TopicsPage = () => {
                   className="flex items-center gap-3 p-4 cursor-pointer select-none"
                 >
                   <div
-                    className={`p-2 rounded-lg flex-shrink-0 ${isDark ? 'bg-teal-500/20' : 'bg-gray-100'}`}
+                    className={`p-2 rounded-lg flex-shrink-0 ${isDark ? 'bg-blue-500/15' : 'bg-gray-100'}`}
                   >
                     <FiBook
                       className={`w-5 h-5 ${
-                        isDark ? 'text-teal-400' : 'text-gray-600'
+                        isDark ? 'text-blue-400' : 'text-gray-600'
                       }`}
                     />
                   </div>
@@ -670,7 +670,7 @@ export const TopicsPage = () => {
                       }}
                       className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
                         isDark
-                          ? 'hover:bg-teal-500/20 text-teal-400'
+                          ? 'hover:bg-blue-500/15 text-blue-400'
                           : 'hover:bg-blue-500/10 text-blue-600'
                       }`}
                     >
@@ -706,13 +706,13 @@ export const TopicsPage = () => {
                               initial={{ opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: topicIndex * 0.03 }}
-                              className={`flex items-center gap-3 p-3 rounded-lg ${isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-50 hover:bg-gray-100'} transition-colors`}
+                              className={`flex items-center gap-3 p-3 rounded-lg ${isDark ? 'bg-[#1a1a1a] hover:bg-[#252525]' : 'bg-gray-50 hover:bg-gray-100'} transition-colors`}
                             >
                               <div
-                                className={`p-1.5 rounded-md flex-shrink-0 ${isDark ? 'bg-teal-500/20' : 'bg-gray-100'}`}
+                                className={`p-1.5 rounded-md flex-shrink-0 ${isDark ? 'bg-blue-500/15' : 'bg-gray-100'}`}
                               >
                                 <FiLayers
-                                  className={`w-4 h-4 ${isDark ? 'text-teal-400' : 'text-gray-600'}`}
+                                  className={`w-4 h-4 ${isDark ? 'text-blue-400' : 'text-gray-600'}`}
                                 />
                               </div>
                               <div className="flex-1 min-w-0">
@@ -739,8 +739,8 @@ export const TopicsPage = () => {
                                     onClick={() => openEditModal(topic)}
                                     className={`p-1.5 rounded-md transition-colors ${
                                       isDark
-                                        ? 'hover:bg-teal-500/20 text-teal-400'
-                                        : 'hover:bg-teal-500/10 text-teal-600'
+                                        ? 'hover:bg-blue-500/15 text-blue-400'
+                                        : 'hover:bg-blue-500/10 text-teal-600'
                                     }`}
                                   >
                                     <FiEdit2 className="w-3.5 h-3.5" />
@@ -776,7 +776,7 @@ export const TopicsPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className={`flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 sm:mt-8 px-3 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl border ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-black'}`}
+              className={`flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 sm:mt-8 px-3 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl border ${isDark ? 'bg-[#151515] border-gray-600/30 text-white' : 'bg-white border-gray-200 text-black'}`}
             >
               <p
                 className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
@@ -789,7 +789,7 @@ export const TopicsPage = () => {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-lg transition-all text-sm ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-lg transition-all text-sm ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   <FiChevronLeft className="w-4 h-4" />
                   <span className="hidden sm:inline">Previous</span>
@@ -817,10 +817,10 @@ export const TopicsPage = () => {
                         className={`w-8 h-8 rounded-lg text-sm font-medium transition-all ${
                           currentPage === pageNum
                             ? isDark
-                              ? 'bg-teal-600 text-white shadow-lg'
+                              ? 'bg-blue-500 text-white shadow-lg'
                               : 'bg-blue-600 text-white shadow-lg'
                             : isDark
-                            ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                            ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]'
                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                         }`}
                       >
@@ -850,10 +850,10 @@ export const TopicsPage = () => {
                         className={`w-10 h-10 rounded-lg font-medium transition-all ${
                           currentPage === pageNum
                             ? isDark
-                              ? 'bg-teal-600 text-white shadow-lg'
+                              ? 'bg-blue-500 text-white shadow-lg'
                               : 'bg-blue-600 text-white shadow-lg'
                             : isDark
-                            ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                            ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]'
                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                         }`}
                       >
@@ -868,7 +868,7 @@ export const TopicsPage = () => {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-lg transition-all text-sm ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-lg transition-all text-sm ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   <span className="hidden sm:inline">Next</span>
                   <FiChevronRight className="w-4 h-4" />
@@ -895,7 +895,7 @@ export const TopicsPage = () => {
               exit={{ scale: 0.9, y: 20, rotateX: 10 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-2xl shadow-2xl p-4 sm:p-8 max-w-md w-full relative overflow-hidden max-h-[90vh] overflow-y-auto ${isDark ? 'bg-gray-800 border border-cyan-500/30' : 'bg-white border border-blue-500/30'}`}
+              className={`rounded-2xl shadow-2xl p-4 sm:p-8 max-w-md w-full relative overflow-hidden max-h-[90vh] overflow-y-auto ${isDark ? 'bg-[#151515] border border-gray-600/30' : 'bg-white border border-blue-500/30'}`}
             >
               {/* Animated Background Glow */}
               <motion.div
@@ -908,7 +908,7 @@ export const TopicsPage = () => {
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
-                className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none ${isDark ? 'bg-teal-500/10' : 'bg-blue-500/20'}`}
+                className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none ${isDark ? 'bg-blue-500/10' : 'bg-blue-500/20'}`}
               />
 
               <div className="relative">
@@ -919,7 +919,7 @@ export const TopicsPage = () => {
                     }`}
                   >
                     <FiLayers
-                      className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-teal-400' : 'text-blue-600'}`}
+                      className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}
                     />
                     <span className="hidden sm:inline">Create New Topic</span>
                     <span className="sm:hidden">New Topic</span>
@@ -929,7 +929,7 @@ export const TopicsPage = () => {
                     whileTap={{ scale: 0.9 }}
                     onClick={() => !isSubmitting && setIsCreating(false)}
                     disabled={isSubmitting}
-                    className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
+                    className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-[#1a1a1a] text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
                   >
                     <FiX className="w-5 h-5 sm:w-6 sm:h-6" />
                   </motion.button>
@@ -952,7 +952,7 @@ export const TopicsPage = () => {
                         })
                       }
                       disabled={isSubmitting}
-                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-teal-500/50 focus:border-teal-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-blue-500/50 focus:border-blue-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
                     >
                       <option value="" className={isDark ? 'bg-gray-900' : ''}>
                         Select a subject
@@ -983,7 +983,7 @@ export const TopicsPage = () => {
                         setTopicForm({ ...topicForm, topicName: e.target.value })
                       }
                       disabled={isSubmitting}
-                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-teal-500/50 focus:border-teal-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-blue-500/50 focus:border-blue-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
                       placeholder="Enter topic name"
                     />
                   </div>
@@ -994,7 +994,7 @@ export const TopicsPage = () => {
                       whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                       onClick={() => !isSubmitting && setIsCreating(false)}
                       disabled={isSubmitting}
-                      className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                      className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
                       Cancel
                     </motion.button>
@@ -1044,7 +1044,7 @@ export const TopicsPage = () => {
               exit={{ scale: 0.9, y: 20 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-2xl shadow-2xl p-4 sm:p-8 max-w-md w-full relative overflow-hidden max-h-[90vh] overflow-y-auto ${isDark ? 'bg-gray-800 border border-cyan-500/30' : 'bg-white border border-blue-500/30'}`}
+              className={`rounded-2xl shadow-2xl p-4 sm:p-8 max-w-md w-full relative overflow-hidden max-h-[90vh] overflow-y-auto ${isDark ? 'bg-[#151515] border border-gray-600/30' : 'bg-white border border-blue-500/30'}`}
             >
               {/* Animated Background Glow */}
               <motion.div
@@ -1057,7 +1057,7 @@ export const TopicsPage = () => {
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
-                className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none ${isDark ? 'bg-teal-500/10' : 'bg-blue-500/20'}`}
+                className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none ${isDark ? 'bg-blue-500/10' : 'bg-blue-500/20'}`}
               />
 
               <div className="relative">
@@ -1067,7 +1067,7 @@ export const TopicsPage = () => {
                       (isDark ? 'text-white' : 'text-gray-700')
                     }`}
                   >
-                    <FiEdit2 className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-teal-400' : 'text-blue-400'}`} />
+                    <FiEdit2 className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-blue-400' : 'text-blue-400'}`} />
                     Edit Topic
                   </h2>
                   <motion.button
@@ -1075,7 +1075,7 @@ export const TopicsPage = () => {
                     whileTap={{ scale: 0.9 }}
                     onClick={() => !isSubmitting && setEditingTopic(null)}
                     disabled={isSubmitting}
-                    className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
+                    className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-[#1a1a1a] text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
                   >
                     <FiX className="w-5 h-5 sm:w-6 sm:h-6" />
                   </motion.button>
@@ -1110,7 +1110,7 @@ export const TopicsPage = () => {
                         setTopicForm({ ...topicForm, topicName: e.target.value })
                       }
                       disabled={isSubmitting}
-                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-teal-500/50 focus:border-teal-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-blue-500/50 focus:border-blue-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
                       placeholder="Enter topic name"
                     />
                   </div>
@@ -1121,7 +1121,7 @@ export const TopicsPage = () => {
                       whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                       onClick={() => !isSubmitting && setEditingTopic(null)}
                       disabled={isSubmitting}
-                      className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                      className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
                       Cancel
                     </motion.button>
@@ -1231,7 +1231,7 @@ export const TopicsPage = () => {
                   whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                   onClick={() => !isSubmitting && setDeletingTopic(null)}
                   disabled={isSubmitting}
-                  className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium transition-colors text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium transition-colors text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
                   Cancel
                 </motion.button>

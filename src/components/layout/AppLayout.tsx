@@ -2,15 +2,15 @@ import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Sidebar } from './Sidebar'
-import { AnimatedBackground } from '@components/shared/AnimatedBackground'
+import { useTheme } from '@contexts/ThemeContext'
 
 export const AppLayout = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Animated Background */}
-      <AnimatedBackground />
+    <div className={`relative min-h-screen overflow-hidden ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#f9fafb]'}`}>
 
       {/* Sidebar */}
       <Sidebar
