@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { FiDollarSign, FiSearch, FiUsers, FiEdit2, FiX, FiSave } from 'react-icons/fi'
 import { useAuthStore } from '@store/authStore'
 import { useTheme } from '@contexts/ThemeContext'
-import { API_BASE_URL } from '@utils/constants'
 import toast from 'react-hot-toast'
 
 interface UserBalance {
@@ -32,7 +31,7 @@ export const UserBalancesPage = () => {
       setIsLoading(true)
       console.log('Fetching balances with token:', token ? 'present' : 'missing')
 
-      const response = await fetch(`${API_BASE_URL}/api/UserBalance`, {
+      const response = await fetch(`/api/UserBalance`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +90,7 @@ export const UserBalancesPage = () => {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/UserBalance?Id=${editingBalance.id}`, {
+      const response = await fetch(`/api/UserBalance?Id=${editingBalance.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -132,8 +131,8 @@ export const UserBalancesPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 sm:mb-8">
         <div>
-          <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3 ${isDark ? 'text-white' : 'text-gray-700'}`}>
-            <FiUsers className={`w-6 h-6 sm:w-8 sm:h-8 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
+          <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+            <FiUsers className={`w-6 h-6 sm:w-8 sm:h-8 ${isDark ? 'text-cyan-400' : 'text-gray-600'}`} />
             <span className="hidden sm:inline">Foydalanuvchilar Balansi</span>
             <span className="sm:hidden">Balanslar</span>
           </h1>
@@ -165,8 +164,8 @@ export const UserBalancesPage = () => {
       {isLoading ? (
         <div className="flex items-center justify-center py-12 sm:py-20">
           <div className="text-center">
-            <div className={`w-10 h-10 sm:w-16 sm:h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-3 sm:mb-4 ${isDark ? 'border-cyan-500' : 'border-blue-500'}`}></div>
-            <p className={`text-sm sm:text-lg ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>Yuklanmoqda...</p>
+            <div className={`w-10 h-10 sm:w-16 sm:h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-3 sm:mb-4 ${isDark ? 'border-cyan-500' : 'border-gray-400'}`}></div>
+            <p className={`text-sm sm:text-lg ${isDark ? 'text-cyan-400' : 'text-gray-600'}`}>Yuklanmoqda...</p>
           </div>
         </div>
       ) : balances.length === 0 ? (
@@ -179,31 +178,31 @@ export const UserBalancesPage = () => {
       ) : (
         <>
           <div className={`rounded-xl overflow-hidden border ${
-            isDark ? 'bg-gray-800/50 border-gray-700' : 'bg-white border-gray-200 shadow-sm'
+            isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200 shadow-sm'
           }`}>
             {/* Desktop Table Header */}
             <div className={`hidden sm:grid grid-cols-12 gap-4 px-4 lg:px-6 py-3 lg:py-4 border-b ${
-              isDark ? 'bg-gray-800/80 border-gray-700' : 'bg-gray-50 border-gray-200'
+              isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-gray-50 border-gray-200'
             }`}>
-              <div className={`col-span-1 text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+              <div className={`col-span-1 text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-gray-600'}`}>
                 #
               </div>
-              <div className={`col-span-3 text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+              <div className={`col-span-3 text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-gray-600'}`}>
                 Foydalanuvchi
               </div>
-              <div className={`col-span-3 text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+              <div className={`col-span-3 text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-gray-600'}`}>
                 Balance ID
               </div>
-              <div className={`col-span-3 text-xs lg:text-sm font-semibold text-right ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+              <div className={`col-span-3 text-xs lg:text-sm font-semibold text-right ${isDark ? 'text-cyan-400' : 'text-gray-600'}`}>
                 Balans
               </div>
-              <div className={`col-span-2 text-xs lg:text-sm font-semibold text-right ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+              <div className={`col-span-2 text-xs lg:text-sm font-semibold text-right ${isDark ? 'text-cyan-400' : 'text-gray-600'}`}>
                 Amallar
               </div>
             </div>
 
             {/* Desktop Table Body */}
-            <div className={`hidden sm:block divide-y ${isDark ? 'divide-gray-700/50' : 'divide-gray-100'}`}>
+            <div className={`hidden sm:block divide-y ${isDark ? 'divide-gray-600/20' : 'divide-gray-100'}`}>
               {balances.map((balance, index) => (
                 <motion.div
                   key={balance.balanceCode || index}

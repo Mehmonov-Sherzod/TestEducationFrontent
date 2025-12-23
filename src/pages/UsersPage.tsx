@@ -18,7 +18,6 @@ import {
 import { useAuthStore } from '@store/authStore'
 import { useTheme } from '@contexts/ThemeContext'
 import toast from 'react-hot-toast'
-import { API_BASE_URL } from '@utils/constants'
 
 interface User {
   Id: number
@@ -91,7 +90,7 @@ export const UsersPage = () => {
   // Fetch users with pagination (All roles use this)
   const fetchUsers = async () => {
     console.log('=== Fetching Users (Paginated) ===')
-    console.log('API_BASE_URL:', API_BASE_URL)
+    console.log('Using proxy for API calls')
     console.log('Current page:', currentPage)
     console.log('Page size:', pageSize)
     console.log('Search query:', searchQuery)
@@ -100,7 +99,7 @@ export const UsersPage = () => {
     try {
       setIsLoading(true)
 
-      const url = `${API_BASE_URL}/api/User/get-all-page`
+      const url = `/api/User/get-all-page`
       const requestBody = {
         PageNumber: currentPage,
         PageSize: pageSize,
@@ -203,7 +202,7 @@ export const UsersPage = () => {
       console.log('=== Creating User ===')
       console.log('Request body:', requestBody)
 
-      const response = await fetch(`${API_BASE_URL}/api/User/Create`, {
+      const response = await fetch(`/api/User/Create`, {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -250,7 +249,7 @@ export const UsersPage = () => {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/User/${userId}`, {
+      const response = await fetch(`/api/User/${userId}`, {
         method: 'DELETE',
         headers: {
           'accept': '*/*',
@@ -282,8 +281,8 @@ export const UsersPage = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 flex items-center gap-2 sm:gap-3 flex-wrap ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            <FiUsers className={`w-6 h-6 sm:w-8 sm:h-8 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`} />
+          <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 flex items-center gap-2 sm:gap-3 flex-wrap ${isDark ? 'text-white' : 'text-gray-800'}`}>
+            <FiUsers className={`w-6 h-6 sm:w-8 sm:h-8 ${isDark ? 'text-teal-400' : 'text-gray-600'}`} />
             <span className="hidden sm:inline">User Management</span>
             <span className="sm:hidden">Foydalanuvchilar</span>
             {isSuperAdmin && (
@@ -307,7 +306,7 @@ export const UsersPage = () => {
           <button
             onClick={() => setIsCreating(true)}
             className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all text-sm sm:text-base w-full sm:w-auto ${
-              isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gradient-to-r from-blue-600 to-blue-700'
+              isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'
             }`}
           >
             <FiPlus className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -329,18 +328,18 @@ export const UsersPage = () => {
               setCurrentPage(1)
             }}
             placeholder="Qidirish..."
-            className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+            className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-teal-500/50 focus:border-teal-500' : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
           />
         </div>
       </div>
 
       {/* Users Table */}
-      <div className={`rounded-xl sm:rounded-2xl shadow-lg overflow-hidden border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+      <div className={`rounded-xl sm:rounded-2xl overflow-hidden border ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200 shadow-lg'}`}>
         {isLoading ? (
           <div className="flex items-center justify-center py-12 sm:py-20">
             <div className="text-center">
-              <div className={`w-10 h-10 sm:w-16 sm:h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-3 sm:mb-4 ${isDark ? 'border-cyan-500' : 'border-blue-500'}`}></div>
-              <p className={`text-sm sm:text-lg ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>Yuklanmoqda...</p>
+              <div className={`w-10 h-10 sm:w-16 sm:h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-3 sm:mb-4 ${isDark ? 'border-teal-500' : 'border-gray-400'}`}></div>
+              <p className={`text-sm sm:text-lg ${isDark ? 'text-teal-400' : 'text-gray-600'}`}>Yuklanmoqda...</p>
             </div>
           </div>
         ) : users.length === 0 ? (
@@ -355,26 +354,26 @@ export const UsersPage = () => {
             {/* Desktop Table */}
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full">
-                <thead className={`border-b ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-gray-50 border-gray-200'}`}>
+                <thead className={`border-b ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-gray-50 border-gray-200'}`}>
                   <tr>
-                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-teal-400' : 'text-gray-600'}`}>
                       #
                     </th>
-                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-teal-400' : 'text-gray-600'}`}>
                       Full Name
                     </th>
-                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-teal-400' : 'text-gray-600'}`}>
                       Email
                     </th>
-                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-left text-xs lg:text-sm font-semibold ${isDark ? 'text-teal-400' : 'text-gray-600'}`}>
                       Phone
                     </th>
-                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-right text-xs lg:text-sm font-semibold ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
+                    <th className={`px-4 lg:px-6 py-3 lg:py-4 text-right text-xs lg:text-sm font-semibold ${isDark ? 'text-teal-400' : 'text-gray-600'}`}>
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className={`divide-y ${isDark ? 'divide-gray-600' : 'divide-gray-100'}`}>
+                <tbody className={`divide-y ${isDark ? 'divide-gray-600/20' : 'divide-gray-100'}`}>
                   {users.map((u, index) => (
                     <motion.tr
                       key={u.Id}
@@ -492,11 +491,11 @@ export const UsersPage = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-xl sm:rounded-2xl shadow-2xl border p-4 sm:p-6 lg:p-8 max-w-md w-full max-h-[90vh] overflow-y-auto ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
+              className={`rounded-xl sm:rounded-2xl shadow-2xl border p-4 sm:p-6 lg:p-8 max-w-md w-full max-h-[90vh] overflow-y-auto ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'}`}
             >
               <div className="flex items-center justify-between mb-4 sm:mb-6">
                 <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  <FiShield className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-cyan-400' : 'text-purple-600'}`} />
+                  <FiShield className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-teal-400' : 'text-purple-600'}`} />
                   <span className="hidden sm:inline">Create New User</span>
                   <span className="sm:hidden">Yangi foydalanuvchi</span>
                 </h2>
@@ -517,7 +516,7 @@ export const UsersPage = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, fullName: e.target.value })
                     }
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-teal-500/50 focus:border-teal-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
                     placeholder="To'liq ismni kiriting"
                   />
                 </div>
@@ -533,7 +532,7 @@ export const UsersPage = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, email: e.target.value })
                     }
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-teal-500/50 focus:border-teal-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
                     placeholder="user@example.com"
                   />
                 </div>
@@ -549,7 +548,7 @@ export const UsersPage = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, password: e.target.value })
                     }
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-teal-500/50 focus:border-teal-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
                     placeholder="Parolni kiriting"
                   />
                 </div>
@@ -565,7 +564,7 @@ export const UsersPage = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, phoneNumber: e.target.value })
                     }
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-teal-500/50 focus:border-teal-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
                     placeholder="+998 XX XXX XX XX"
                   />
                 </div>
@@ -577,7 +576,7 @@ export const UsersPage = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, roleIds: [parseInt(e.target.value)] })
                     }
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-teal-500/50 focus:border-teal-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
                   >
                     <option value={3} className={isDark ? 'bg-gray-800' : 'bg-white'}>Student</option>
                     <option value={2} className={isDark ? 'bg-gray-800' : 'bg-white'}>Admin</option>
@@ -588,14 +587,14 @@ export const UsersPage = () => {
                 <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <button
                     onClick={() => setIsCreating(false)}
-                    className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-700' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                    className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-colors text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] text-gray-200 hover:bg-[#252525] border border-gray-600/30' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
                   >
                     Bekor qilish
                   </button>
                   <button
                     onClick={handleCreateUser}
                     className={`flex-1 py-2.5 sm:py-3 px-4 sm:px-6 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
-                      isDark ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gradient-to-r from-blue-600 to-blue-700'
+                      isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'
                     }`}
                   >
                     <FiSave className="w-4 h-4 sm:w-5 sm:h-5" />

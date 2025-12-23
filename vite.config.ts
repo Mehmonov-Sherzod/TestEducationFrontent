@@ -21,14 +21,13 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    https: false, // Disable HTTPS on frontend since backend is handling it
+    https: false,
     proxy: {
-      // Optional: You can proxy API requests to avoid CORS issues
-      // '/api': {
-      //   target: 'https://localhost:5001',
-      //   changeOrigin: true,
-      //   secure: false, // Accept self-signed certificates
-      // }
+      '/api': {
+        target: 'https://localhost:5001',
+        changeOrigin: true,
+        secure: false,
+      }
     }
   }
 })

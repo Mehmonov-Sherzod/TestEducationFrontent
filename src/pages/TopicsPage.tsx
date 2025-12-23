@@ -344,7 +344,7 @@ export const TopicsPage = () => {
               transition={{ type: 'spring', stiffness: 200, damping: 15 }}
             >
               <FiLayers
-                className={isDark ? 'text-cyan-400' : 'text-blue-600'}
+                className={isDark ? 'text-teal-400' : 'text-gray-600'}
               />
             </motion.div>
             <span>Topics</span>
@@ -406,8 +406,8 @@ export const TopicsPage = () => {
             }}
             className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 text-sm sm:text-base w-full sm:w-auto ${
               isDark
-                ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:shadow-green-500/30'
-                : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-blue-500/30'
+                ? 'bg-green-600 hover:bg-green-700 text-white hover:shadow-green-500/30'
+                : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-blue-500/30'
             }`}
           >
             <FiPlus className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -435,7 +435,7 @@ export const TopicsPage = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search topics..."
-            className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all duration-300 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+            className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all duration-300 text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-teal-500/50 focus:border-teal-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
           />
           {searchQuery && (
             <motion.button
@@ -463,7 +463,7 @@ export const TopicsPage = () => {
             >
               <div className="flex items-center gap-2 min-w-0">
                 <FiFilter
-                  className={`flex-shrink-0 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}
+                  className={`flex-shrink-0 ${isDark ? 'text-teal-400' : 'text-gray-600'}`}
                 />
                 <span className="truncate text-sm">
                   {selectedSubjectFilter
@@ -508,7 +508,7 @@ export const TopicsPage = () => {
                       className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-left transition-colors flex items-center gap-2 text-sm ${
                         !selectedSubjectFilter
                           ? isDark
-                            ? 'bg-cyan-500/20 text-cyan-400'
+                            ? 'bg-teal-500/20 text-teal-400'
                             : 'bg-blue-50 text-blue-600'
                           : isDark
                           ? 'text-white hover:bg-gray-700'
@@ -529,7 +529,7 @@ export const TopicsPage = () => {
                         className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-left transition-colors flex items-center gap-2 text-sm ${
                           selectedSubjectFilter === subject.id
                             ? isDark
-                              ? 'bg-cyan-500/20 text-cyan-400'
+                              ? 'bg-teal-500/20 text-teal-400'
                               : 'bg-blue-50 text-blue-600'
                             : isDark
                             ? 'text-white hover:bg-gray-700'
@@ -627,7 +627,7 @@ export const TopicsPage = () => {
               <motion.div
                 key={subjectGroup.subjectId}
                 variants={cardVariants}
-                className={`rounded-xl border overflow-hidden ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200 shadow-sm'}`}
+                className={`rounded-xl border overflow-hidden ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200 shadow-sm'}`}
               >
                 {/* Clickable Subject Header */}
                 <div
@@ -635,11 +635,11 @@ export const TopicsPage = () => {
                   className="flex items-center gap-3 p-4 cursor-pointer select-none"
                 >
                   <div
-                    className={`p-2 rounded-lg flex-shrink-0 ${isDark ? 'bg-gradient-to-br from-cyan-500/20 to-blue-500/20' : 'bg-gradient-to-br from-blue-500/10 to-cyan-500/10'}`}
+                    className={`p-2 rounded-lg flex-shrink-0 ${isDark ? 'bg-teal-500/20' : 'bg-gray-100'}`}
                   >
                     <FiBook
                       className={`w-5 h-5 ${
-                        isDark ? 'text-cyan-400' : 'text-blue-600'
+                        isDark ? 'text-teal-400' : 'text-gray-600'
                       }`}
                     />
                   </div>
@@ -670,8 +670,8 @@ export const TopicsPage = () => {
                       }}
                       className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
                         isDark
-                          ? 'hover:bg-cyan-500/20 text-cyan-400'
-                          : 'hover:bg-purple-500/10 text-purple-600'
+                          ? 'hover:bg-teal-500/20 text-teal-400'
+                          : 'hover:bg-blue-500/10 text-blue-600'
                       }`}
                     >
                       <FiPlus className="w-4 h-4" />
@@ -709,10 +709,10 @@ export const TopicsPage = () => {
                               className={`flex items-center gap-3 p-3 rounded-lg ${isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-50 hover:bg-gray-100'} transition-colors`}
                             >
                               <div
-                                className={`p-1.5 rounded-md flex-shrink-0 ${isDark ? 'bg-cyan-500/20' : 'bg-blue-500/10'}`}
+                                className={`p-1.5 rounded-md flex-shrink-0 ${isDark ? 'bg-teal-500/20' : 'bg-gray-100'}`}
                               >
                                 <FiLayers
-                                  className={`w-4 h-4 ${isDark ? 'text-cyan-400' : 'text-gray-600'}`}
+                                  className={`w-4 h-4 ${isDark ? 'text-teal-400' : 'text-gray-600'}`}
                                 />
                               </div>
                               <div className="flex-1 min-w-0">
@@ -739,8 +739,8 @@ export const TopicsPage = () => {
                                     onClick={() => openEditModal(topic)}
                                     className={`p-1.5 rounded-md transition-colors ${
                                       isDark
-                                        ? 'hover:bg-blue-500/20 text-blue-400'
-                                        : 'hover:bg-blue-500/10 text-blue-600'
+                                        ? 'hover:bg-teal-500/20 text-teal-400'
+                                        : 'hover:bg-teal-500/10 text-teal-600'
                                     }`}
                                   >
                                     <FiEdit2 className="w-3.5 h-3.5" />
@@ -817,8 +817,8 @@ export const TopicsPage = () => {
                         className={`w-8 h-8 rounded-lg text-sm font-medium transition-all ${
                           currentPage === pageNum
                             ? isDark
-                              ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg'
-                              : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                              ? 'bg-teal-600 text-white shadow-lg'
+                              : 'bg-blue-600 text-white shadow-lg'
                             : isDark
                             ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -850,8 +850,8 @@ export const TopicsPage = () => {
                         className={`w-10 h-10 rounded-lg font-medium transition-all ${
                           currentPage === pageNum
                             ? isDark
-                              ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg'
-                              : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
+                              ? 'bg-teal-600 text-white shadow-lg'
+                              : 'bg-blue-600 text-white shadow-lg'
                             : isDark
                             ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -908,7 +908,7 @@ export const TopicsPage = () => {
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
-                className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none ${isDark ? 'bg-cyan-500/20' : 'bg-blue-500/20'}`}
+                className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none ${isDark ? 'bg-teal-500/10' : 'bg-blue-500/20'}`}
               />
 
               <div className="relative">
@@ -919,7 +919,7 @@ export const TopicsPage = () => {
                     }`}
                   >
                     <FiLayers
-                      className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}
+                      className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-teal-400' : 'text-blue-600'}`}
                     />
                     <span className="hidden sm:inline">Create New Topic</span>
                     <span className="sm:hidden">New Topic</span>
@@ -952,7 +952,7 @@ export const TopicsPage = () => {
                         })
                       }
                       disabled={isSubmitting}
-                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-teal-500/50 focus:border-teal-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
                     >
                       <option value="" className={isDark ? 'bg-gray-900' : ''}>
                         Select a subject
@@ -983,7 +983,7 @@ export const TopicsPage = () => {
                         setTopicForm({ ...topicForm, topicName: e.target.value })
                       }
                       disabled={isSubmitting}
-                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-teal-500/50 focus:border-teal-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
                       placeholder="Enter topic name"
                     />
                   </div>
@@ -1005,8 +1005,8 @@ export const TopicsPage = () => {
                       disabled={isSubmitting}
                       className={`flex-1 py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl font-semibold shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
                         isDark
-                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:shadow-green-500/25'
-                          : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-blue-500/25'
+                          ? 'bg-green-600 hover:bg-green-700 text-white hover:shadow-green-500/25'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-blue-500/25'
                       } ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
                       {isSubmitting ? (
@@ -1057,7 +1057,7 @@ export const TopicsPage = () => {
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
-                className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none ${isDark ? 'bg-cyan-500/20' : 'bg-blue-500/20'}`}
+                className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none ${isDark ? 'bg-teal-500/10' : 'bg-blue-500/20'}`}
               />
 
               <div className="relative">
@@ -1067,7 +1067,7 @@ export const TopicsPage = () => {
                       (isDark ? 'text-white' : 'text-gray-700')
                     }`}
                   >
-                    <FiEdit2 className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-cyan-400' : 'text-blue-400'}`} />
+                    <FiEdit2 className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-teal-400' : 'text-blue-400'}`} />
                     Edit Topic
                   </h2>
                   <motion.button
@@ -1110,7 +1110,7 @@ export const TopicsPage = () => {
                         setTopicForm({ ...topicForm, topicName: e.target.value })
                       }
                       disabled={isSubmitting}
-                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-gray-800 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-teal-500/50 focus:border-teal-500' : 'bg-white border-gray-200 text-black focus:ring-blue-500'}`}
                       placeholder="Enter topic name"
                     />
                   </div>
@@ -1132,8 +1132,8 @@ export const TopicsPage = () => {
                       disabled={isSubmitting}
                       className={`flex-1 py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl font-semibold shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
                         isDark
-                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:shadow-green-500/25'
-                          : 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:shadow-blue-500/25'
+                          ? 'bg-green-600 hover:bg-green-700 text-white hover:shadow-green-500/25'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-blue-500/25'
                       } ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
                       {isSubmitting ? (
@@ -1171,7 +1171,7 @@ export const TopicsPage = () => {
               exit={{ scale: 0.9, y: 20 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               onClick={(e) => e.stopPropagation()}
-              className={`p-4 sm:p-8 rounded-2xl shadow-2xl max-w-md w-full border ${isDark ? 'bg-gray-800 border-red-500/20' : 'bg-white border-red-500/20'}`}
+              className={`p-4 sm:p-8 rounded-2xl shadow-2xl max-w-md w-full border ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'}`}
             >
               <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                 <motion.div

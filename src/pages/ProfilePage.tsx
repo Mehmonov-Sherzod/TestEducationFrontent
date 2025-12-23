@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  FiUser, FiMail, FiPhone, FiEdit2, FiSave, FiX,
+  FiUser,
   FiCamera
 } from 'react-icons/fi'
 import { useAuthStore } from '@store/authStore'
@@ -139,10 +139,6 @@ export const ProfilePage = () => {
     )
   }
 
-  const getInitials = (name: string) => {
-    return name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'
-  }
-
   return (
     <div className="p-3 sm:p-6">
       <div className="max-w-md mx-auto">
@@ -151,8 +147,8 @@ export const ProfilePage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className={cn(
-            'rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-lg',
-            isDark ? 'bg-gray-800' : 'bg-white'
+            'rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border',
+            isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200 shadow-lg'
           )}
         >
           {/* Header with icon */}
@@ -225,7 +221,7 @@ export const ProfilePage = () => {
                   <div className={cn(
                     'px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl border',
                     isDark
-                      ? 'bg-gray-700/50 border-gray-600'
+                      ? 'bg-[#262626] border-gray-700'
                       : 'bg-gray-50 border-gray-200'
                   )}>
                     <p className={cn(
@@ -248,7 +244,7 @@ export const ProfilePage = () => {
                   <div className={cn(
                     'px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl border',
                     isDark
-                      ? 'bg-gray-700/50 border-gray-600'
+                      ? 'bg-[#262626] border-gray-700'
                       : 'bg-gray-50 border-gray-200'
                   )}>
                     <p className={cn(
@@ -293,7 +289,7 @@ export const ProfilePage = () => {
                     className={cn(
                       'w-full px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl border outline-none transition-colors text-sm sm:text-base',
                       isDark
-                        ? 'bg-gray-700/50 border-gray-600 text-white placeholder-gray-500 focus:border-blue-500'
+                        ? 'bg-[#262626] border-gray-700 text-white placeholder-gray-500 focus:border-teal-500'
                         : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-blue-400'
                     )}
                     placeholder="To'liq ismingiz"
@@ -315,7 +311,7 @@ export const ProfilePage = () => {
                     className={cn(
                       'w-full px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl border outline-none transition-colors text-sm sm:text-base',
                       isDark
-                        ? 'bg-gray-700/50 border-gray-600 text-white placeholder-gray-500 focus:border-blue-500'
+                        ? 'bg-[#262626] border-gray-700 text-white placeholder-gray-500 focus:border-teal-500'
                         : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-blue-400'
                     )}
                     placeholder="Email manzilingiz"
@@ -337,7 +333,7 @@ export const ProfilePage = () => {
                     className={cn(
                       'w-full px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl border outline-none transition-colors text-sm sm:text-base',
                       isDark
-                        ? 'bg-gray-700/50 border-gray-600 text-white placeholder-gray-500 focus:border-blue-500'
+                        ? 'bg-[#262626] border-gray-700 text-white placeholder-gray-500 focus:border-teal-500'
                         : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-blue-400'
                     )}
                     placeholder="+998 XX XXX XX XX"

@@ -2,8 +2,11 @@ import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'ax
 import { storage } from '@utils/storage'
 
 // Create axios instance
+// In development, requests go through Vite proxy (no baseURL needed)
+// In production, use the full API URL
+const isDev = import.meta.env.DEV
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://10.30.13.228:5000',
+  baseURL: isDev ? '' : (import.meta.env.VITE_API_BASE_URL || 'https://localhost:5001'),
   headers: {
     'Content-Type': 'application/json',
     'Accept-Language': 'en-US',
@@ -11,7 +14,7 @@ const api = axios.create({
   timeout: 30000, // 30 seconds
 })
 
-console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL || 'http://10.30.13.228:5000')
+console.log('API Mode:', isDev ? 'Development (using proxy)' : 'Production')
 
 // Request interceptor - Add JWT token to requests
 api.interceptors.request.use(

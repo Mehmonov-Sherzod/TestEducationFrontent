@@ -129,8 +129,8 @@ export const LibraryPage = () => {
 
         console.log('API Response Values:', values)
 
-        // API base URL for relative paths
-        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://10.30.13.228:5000'
+        // API base URL for relative paths (empty in dev for proxy, full URL in prod)
+        const apiBaseUrl = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE_URL || 'https://localhost:5001')
 
         setBooks(
           values.map((b: any) => {
@@ -470,7 +470,7 @@ export const LibraryPage = () => {
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4"
           >
             {books.map((book) => {
-              const hasImage = book.image && book.image.startsWith('http') && !failedImages.has(book.id)
+              const hasImage = book.image && book.image.startsWith('http') && !failedImages.has(book.id || '')
 
               // Generate dynamic color based on book description
               const getColorFromString = (str: string) => {
@@ -532,7 +532,7 @@ export const LibraryPage = () => {
                           alt={book.description}
                           className="w-full h-full object-cover"
                           onError={() => {
-                            setFailedImages(prev => new Set(prev).add(book.id))
+                            setFailedImages(prev => new Set(prev).add(book.id || ''))
                           }}
                         />
                         {/* Bottom buttons - always visible */}

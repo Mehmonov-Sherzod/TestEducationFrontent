@@ -26,7 +26,7 @@ interface UserBalance {
 }
 
 export const MyBalancePage = () => {
-  const { user, token } = useAuth()
+  const { token } = useAuth()
   const { theme } = useTheme()
   const isDark = theme === 'dark'
 
@@ -35,7 +35,7 @@ export const MyBalancePage = () => {
   const [isTopUpModalOpen, setIsTopUpModalOpen] = useState(false)
   const [topUpInfo, setTopUpInfo] = useState<TopUpInfo | null>(null)
   const [isLoadingTopUp, setIsLoadingTopUp] = useState(false)
-  const [copied, setCopied] = useState(false)
+  const [_copied, setCopied] = useState(false)
 
   useEffect(() => {
     if (token) {
@@ -47,7 +47,7 @@ export const MyBalancePage = () => {
     if (!token) return
 
     try {
-      const response = await fetch(`https://localhost:5001/api/UserBalance`, {
+      const response = await fetch(`/api/UserBalance`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ export const MyBalancePage = () => {
   const fetchTopUpInfo = async () => {
     setIsLoadingTopUp(true)
     try {
-      const response = await fetch(`https://localhost:5001/api/BalanceTransaction`, {
+      const response = await fetch(`/api/BalanceTransaction`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

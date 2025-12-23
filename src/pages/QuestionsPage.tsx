@@ -19,7 +19,6 @@ import { useTheme } from '@contexts/ThemeContext'
 import toast from 'react-hot-toast'
 import { questionService } from '@api/question.service'
 import { QuestionResponse, QuestionLevel, CreateAnswerData } from '@appTypes/question.types'
-import { API_BASE_URL } from '@utils/constants'
 
 interface Subject {
   Id: string
@@ -84,7 +83,7 @@ export const QuestionsPage = () => {
   // Fetch subjects
   const fetchSubjects = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/Subject/get-all`, {
+      const response = await fetch(`/api/Subject/get-all`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'lang': selectedLanguage,
@@ -107,7 +106,7 @@ export const QuestionsPage = () => {
     }
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/topic/paged?SubjectId=${subjectId}&PageNumber=1&PageSize=100`,
+        `/api/topic/paged?SubjectId=${subjectId}&PageNumber=1&PageSize=100`,
         {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -144,7 +143,7 @@ export const QuestionsPage = () => {
     }
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/topic/paged?SubjectId=${subjectId}&PageNumber=1&PageSize=100`,
+        `/api/topic/paged?SubjectId=${subjectId}&PageNumber=1&PageSize=100`,
         {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -394,8 +393,8 @@ export const QuestionsPage = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 flex items-center gap-2 sm:gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            <FiHelpCircle className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
+          <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 flex items-center gap-2 sm:gap-3 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+            <FiHelpCircle className={isDark ? 'text-cyan-400' : 'text-gray-600'} />
             <span className="hidden sm:inline">Questions Management</span>
             <span className="sm:hidden">Savollar</span>
           </h1>
@@ -419,9 +418,9 @@ export const QuestionsPage = () => {
       </div>
 
       {/* Filters */}
-      <div className={`p-3 sm:p-4 rounded-xl mb-4 sm:mb-6 border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+      <div className={`p-3 sm:p-4 rounded-xl mb-4 sm:mb-6 border ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'}`}>
         <div className="flex items-center gap-2 mb-3 sm:mb-4">
-          <FiFilter className={isDark ? 'text-cyan-400' : 'text-blue-600'} />
+          <FiFilter className={isDark ? 'text-cyan-400' : 'text-gray-600'} />
           <span className={`font-semibold text-sm sm:text-base ${isDark ? 'text-white' : 'text-gray-900'}`}>Filters</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
@@ -431,7 +430,7 @@ export const QuestionsPage = () => {
             <select
               value={selectedSubjectId}
               onChange={(e) => setSelectedSubjectId(e.target.value)}
-              className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+              className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-gray-500/50 focus:border-gray-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
             >
               <option value="">Select Subject</option>
               {subjects.map((subject) => (
@@ -449,7 +448,7 @@ export const QuestionsPage = () => {
               value={selectedTopicId}
               onChange={(e) => setSelectedTopicId(e.target.value)}
               disabled={!selectedSubjectId}
-              className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-red-500'} disabled:opacity-50`}
+              className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-gray-500/50 focus:border-gray-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'} disabled:opacity-50`}
             >
               <option value="">All Topics</option>
               {topics.map((topic) => (
@@ -466,7 +465,7 @@ export const QuestionsPage = () => {
             <select
               value={selectedLanguage}
               onChange={(e) => setSelectedLanguage(e.target.value)}
-              className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-gray-900 border-gray-700 text-white focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+              className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-gray-500/50 focus:border-gray-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
             >
               <option value="uz">O'zbek</option>
               <option value="rus">Русский</option>
@@ -484,7 +483,7 @@ export const QuestionsPage = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search..."
-                className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
+                className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-gray-500/50 focus:border-gray-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
               />
             </div>
           </div>
@@ -492,7 +491,7 @@ export const QuestionsPage = () => {
       </div>
 
       {/* Questions List */}
-      <div className={`rounded-xl sm:rounded-2xl shadow-lg overflow-hidden border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+      <div className={`rounded-xl sm:rounded-2xl overflow-hidden border ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200 shadow-lg'}`}>
         {!selectedSubjectId ? (
           <div className="flex items-center justify-center py-12 sm:py-20">
             <div className="text-center px-4">
@@ -503,7 +502,7 @@ export const QuestionsPage = () => {
         ) : isLoading ? (
           <div className="flex items-center justify-center py-12 sm:py-20">
             <div className="text-center">
-              <div className={`w-12 h-12 sm:w-16 sm:h-16 border-4 ${isDark ? 'border-cyan-500' : 'border-blue-500'} border-t-transparent rounded-full animate-spin mx-auto mb-3 sm:mb-4`}></div>
+              <div className={`w-12 h-12 sm:w-16 sm:h-16 border-4 ${isDark ? 'border-cyan-500' : 'border-gray-400'} border-t-transparent rounded-full animate-spin mx-auto mb-3 sm:mb-4`}></div>
               <p className={`text-sm sm:text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Loading questions...</p>
             </div>
           </div>
@@ -516,7 +515,7 @@ export const QuestionsPage = () => {
           </div>
         ) : (
           <>
-            <div className={`divide-y ${isDark ? 'divide-gray-700' : 'divide-gray-200'}`}>
+            <div className={`divide-y ${isDark ? 'divide-gray-600/20' : 'divide-gray-200'}`}>
               {questions.map((question, index) => (
                 <motion.div
                   key={index}
@@ -528,8 +527,8 @@ export const QuestionsPage = () => {
                   <button
                     onClick={() => setExpandedQuestion(expandedQuestion === index ? null : index)}
                     className={`w-full p-3 sm:p-4 text-left flex items-center justify-between gap-2 sm:gap-4 transition-colors ${
-                      isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
-                    } ${expandedQuestion === index ? (isDark ? 'bg-gray-700/50' : 'bg-gray-50') : ''}`}
+                      isDark ? 'hover:bg-white/5' : 'hover:bg-gray-50'
+                    } ${expandedQuestion === index ? (isDark ? 'bg-white/5' : 'bg-gray-50') : ''}`}
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 sm:gap-3 mb-1">
@@ -561,7 +560,7 @@ export const QuestionsPage = () => {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className={`overflow-hidden ${isDark ? 'bg-gray-800/50' : 'bg-gray-50/50'}`}
+                        className={`overflow-hidden ${isDark ? 'bg-black/20' : 'bg-gray-50/50'}`}
                       >
                         <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                           {question.Image && (

@@ -41,7 +41,7 @@ export const ChangePasswordPage = () => {
 
     try {
       const response = await fetch(
-        `https://localhost:5001/api/User/${user?.id}-Update-password`,
+        `/api/User/${user?.id}-Update-password`,
         {
           method: 'PUT',
           headers: {

@@ -16,7 +16,6 @@ import {
   FiChevronLeft,
   FiChevronDown,
   FiDollarSign,
-  FiSettings,
 } from 'react-icons/fi'
 import { useAuth } from '@hooks/useAuth'
 import { ROUTES } from '@utils/constants'
@@ -147,21 +146,10 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
       className={cn(
         'fixed left-0 top-0 h-screen z-40',
         isDark
-          ? 'bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950'
-          : 'bg-gradient-to-b from-white/70 via-cyan-50/50 to-white/70'
+          ? 'bg-[#111111]'
+          : 'bg-white'
       )}
     >
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={cn(
-          'absolute -top-24 -left-24 w-48 h-48 rounded-full blur-3xl opacity-20',
-          isDark ? 'bg-cyan-500' : 'bg-blue-400'
-        )} />
-        <div className={cn(
-          'absolute -bottom-24 -right-24 w-48 h-48 rounded-full blur-3xl opacity-10',
-          isDark ? 'bg-purple-500' : 'bg-indigo-400'
-        )} />
-      </div>
 
       {/* Border Line */}
       <div className={cn(
@@ -213,8 +201,8 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
               <div className={cn(
                 'w-10 h-10 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0',
                 isDark
-                  ? 'bg-gradient-to-br from-cyan-500 to-blue-600 shadow-cyan-500/25'
-                  : 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-blue-500/25'
+                  ? 'bg-teal-600'
+                  : 'bg-blue-600'
               )}>
                 <span className="text-white font-bold text-lg">P</span>
               </div>
@@ -268,29 +256,13 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                           isCollapsed ? 'justify-center px-3 py-3' : 'gap-3 px-4 py-3',
                           isActive
                             ? isDark
-                              ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/10 text-cyan-400'
-                              : 'bg-gradient-to-r from-blue-500/10 to-indigo-500/5 text-blue-600'
+                              ? 'bg-[#0d9488] text-white'
+                              : 'bg-gray-100 text-gray-900'
                             : isDark
                               ? 'text-gray-400 hover:text-white hover:bg-white/5'
-                              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/80'
+                              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                         )}
                       >
-                        {/* Active Indicator Line */}
-                        <AnimatePresence>
-                          {isActive && !isCollapsed && (
-                            <motion.div
-                              initial={{ scaleY: 0 }}
-                              animate={{ scaleY: 1 }}
-                              exit={{ scaleY: 0 }}
-                              className={cn(
-                                'absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-full',
-                                isDark
-                                  ? 'bg-gradient-to-b from-cyan-400 to-blue-500'
-                                  : 'bg-gradient-to-b from-blue-500 to-indigo-500'
-                              )}
-                            />
-                          )}
-                        </AnimatePresence>
 
                         {/* Icon */}
                         <span className={cn(
@@ -328,7 +300,10 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className="mt-1 ml-4 pl-4 border-l-2 border-gray-700/50 space-y-1"
+                            className={cn(
+                              'mt-1 ml-4 pl-4 border-l-2 space-y-1',
+                              isDark ? 'border-gray-700/50' : 'border-gray-200'
+                            )}
                           >
                             {item.children?.map((child) => {
                               const isChildActive = location.pathname === child.path
@@ -344,11 +319,11 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                                       'block py-2 px-3 rounded-lg text-sm transition-colors',
                                       isChildActive
                                         ? isDark
-                                          ? 'text-cyan-400 bg-cyan-500/10'
-                                          : 'text-blue-600 bg-blue-500/10'
+                                          ? 'text-teal-400 bg-teal-500/10'
+                                          : 'text-gray-900 bg-gray-100'
                                         : isDark
                                           ? 'text-gray-400 hover:text-white hover:bg-white/5'
-                                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                                     )}
                                   >
                                     {child.label}
@@ -370,30 +345,13 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                         isCollapsed ? 'justify-center px-3 py-3' : 'gap-3 px-4 py-3',
                         isActive
                           ? isDark
-                            ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/10 text-cyan-400'
-                            : 'bg-gradient-to-r from-blue-500/10 to-indigo-500/5 text-blue-600'
+                            ? 'bg-[#0d9488] text-white'
+                            : 'bg-gray-100 text-gray-900'
                           : isDark
                             ? 'text-gray-400 hover:text-white hover:bg-white/5'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/80'
+                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                       )}
                     >
-                      {/* Active Indicator Line */}
-                      <AnimatePresence>
-                        {isActive && !isCollapsed && (
-                          <motion.div
-                            initial={{ scaleY: 0 }}
-                            animate={{ scaleY: 1 }}
-                            exit={{ scaleY: 0 }}
-                            className={cn(
-                              'absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-full',
-                              isDark
-                                ? 'bg-gradient-to-b from-cyan-400 to-blue-500'
-                                : 'bg-gradient-to-b from-blue-500 to-indigo-500'
-                            )}
-                          />
-                        )}
-                      </AnimatePresence>
-
                       {/* Icon */}
                       <span className={cn(
                         'relative transition-transform duration-200',
@@ -475,8 +433,8 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                 className={cn(
                   'w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm flex-shrink-0',
                   isDark
-                    ? 'bg-gradient-to-br from-purple-500 to-pink-500 text-white'
-                    : 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white'
+                    ? 'bg-teal-600 text-white'
+                    : 'bg-blue-600 text-white'
                 )}
                 title={isCollapsed ? user?.fullName : undefined}
               >
@@ -497,7 +455,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                         className={cn(
                           'text-[10px] font-medium px-1.5 py-0.5 rounded-md',
                           isDark
-                            ? 'bg-cyan-500/20 text-cyan-400'
+                            ? 'bg-teal-500/20 text-teal-400'
                             : 'bg-blue-100 text-blue-600'
                         )}
                       >
@@ -536,8 +494,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
             title={isCollapsed ? 'Chiqish' : undefined}
             className={cn(
               'w-full flex items-center justify-center rounded-xl font-medium transition-all',
-              'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-500/20',
-              'hover:shadow-red-500/30 hover:from-red-600 hover:to-rose-700',
+              'bg-red-500 hover:bg-red-600 text-white',
               isCollapsed ? 'p-2.5' : 'gap-2 px-4 py-2.5'
             )}
           >

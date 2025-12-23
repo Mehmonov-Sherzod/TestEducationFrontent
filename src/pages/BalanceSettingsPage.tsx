@@ -4,7 +4,6 @@ import { FiCreditCard, FiUser, FiSave, FiEdit2 } from 'react-icons/fi'
 import { FaTelegram } from 'react-icons/fa'
 import { useTheme } from '@contexts/ThemeContext'
 import { useAuthStore } from '@store/authStore'
-import { API_BASE_URL } from '@utils/constants'
 import toast from 'react-hot-toast'
 
 interface BalanceTransactionInfo {
@@ -35,7 +34,7 @@ export const BalanceSettingsPage = () => {
       if (!token) return
 
       try {
-        const response = await fetch(`${API_BASE_URL}/api/BalanceTransaction`, {
+        const response = await fetch(`/api/BalanceTransaction`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -90,7 +89,7 @@ export const BalanceSettingsPage = () => {
 
     setIsSaving(true)
     try {
-      const response = await fetch(`${API_BASE_URL}/api/BalanceTransaction?Id=${info?.id}`, {
+      const response = await fetch(`/api/BalanceTransaction?Id=${info?.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +157,7 @@ export const BalanceSettingsPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 border ${
-            isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200 shadow-lg'
+            isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200 shadow-lg'
           }`}
         >
           <div className="flex items-center justify-between mb-4 sm:mb-6">

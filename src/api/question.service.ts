@@ -173,8 +173,8 @@ export const questionService = {
     if (image.startsWith('http://') || image.startsWith('https://')) {
       return image
     }
-    // Otherwise, use backend download endpoint
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://localhost:5001'
+    // Otherwise, use backend download endpoint (empty in dev for proxy)
+    const baseUrl = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE_URL || 'https://localhost:5001')
     return `${baseUrl}/api/QuestionAnswer/download?objectName=${encodeURIComponent(image)}`
   },
 }
