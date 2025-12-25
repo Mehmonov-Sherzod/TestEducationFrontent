@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FiDollarSign, FiSearch, FiUsers, FiEdit2, FiX, FiSave } from 'react-icons/fi'
+import { FiDollarSign, FiSearch, FiUsers, FiEdit2, FiX, FiSave, FiPlus } from 'react-icons/fi'
 import { useAuthStore } from '@store/authStore'
 import { useTheme } from '@contexts/ThemeContext'
 import toast from 'react-hot-toast'
@@ -23,7 +23,9 @@ export const UserBalancesPage = () => {
   const [pageSize] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const [editingBalance, setEditingBalance] = useState<UserBalance | null>(null)
+  const [addingBalance, setAddingBalance] = useState<UserBalance | null>(null)
   const [newAmount, setNewAmount] = useState('')
+  const [addAmount, setAddAmount] = useState('')
 
   // Fetch user balances
   const fetchBalances = async () => {
@@ -89,15 +91,18 @@ export const UserBalancesPage = () => {
       return
     }
 
+    const amount = parseFloat(newAmount)
+
     try {
-      const response = await fetch(`/api/UserBalance?Id=${editingBalance.id}`, {
+      // Body Amout = yangi balans, Query Amount = 0 (qo'shmaslik uchun)
+      const response = await fetch(`/api/UserBalance?Id=${editingBalance.id}&Amount=0`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
-          Amout: parseFloat(newAmount),
+          Amout: amount,
         }),
       })
 
@@ -119,9 +124,54 @@ export const UserBalancesPage = () => {
     }
   }
 
+  // Add to balance
+  const handleAddBalance = async () => {
+    if (!addingBalance || !addAmount) {
+      toast.error('To\'ldiriladigan summani kiriting')
+      return
+    }
+
+    const amount = parseFloat(addAmount)
+
+    try {
+      // Body Amout = 0, Query Amount = qo'shiladigan summa
+      const response = await fetch(`/api/UserBalance?Id=${addingBalance.id}&Amount=${amount}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          Amout: addingBalance.amount,
+        }),
+      })
+
+      const data = await response.json()
+      console.log('Add balance response:', data)
+
+      if (data.Succeeded) {
+        toast.success(`${amount.toLocaleString()} so'm muvaffaqiyatli to'ldirildi!`)
+        setAddingBalance(null)
+        setAddAmount('')
+        fetchBalances()
+      } else {
+        const errorMsg = data.Errors?.join(', ') || 'Balansni to\'ldirishda xatolik'
+        toast.error(errorMsg)
+      }
+    } catch (error) {
+      console.error('Failed to add balance:', error)
+      toast.error('Balansni to\'ldirishda xatolik')
+    }
+  }
+
   const openEditModal = (balance: UserBalance) => {
     setEditingBalance(balance)
     setNewAmount(balance.amount.toString())
+  }
+
+  const openAddModal = (balance: UserBalance) => {
+    setAddingBalance(balance)
+    setAddAmount('')
   }
 
   const totalPages = Math.ceil(totalCount / pageSize)
@@ -230,7 +280,18 @@ export const UserBalancesPage = () => {
                       so'm
                     </span>
                   </div>
-                  <div className="col-span-2 flex justify-end">
+                  <div className="col-span-2 flex justify-end gap-2">
+                    <button
+                      onClick={() => openAddModal(balance)}
+                      className={`flex items-center gap-1.5 px-2 lg:px-3 py-1.5 rounded-lg text-xs lg:text-sm font-medium transition-all ${
+                        isDark
+                          ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
+                          : 'bg-green-100 text-green-600 hover:bg-green-200'
+                      }`}
+                    >
+                      <FiPlus className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                      <span className="hidden lg:inline">To'ldirish</span>
+                    </button>
                     <button
                       onClick={() => openEditModal(balance)}
                       className={`flex items-center gap-1.5 px-2 lg:px-3 py-1.5 rounded-lg text-xs lg:text-sm font-medium transition-all ${
@@ -240,7 +301,6 @@ export const UserBalancesPage = () => {
                       }`}
                     >
                       <FiEdit2 className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                      <span className="hidden lg:inline">Edit</span>
                     </button>
                   </div>
                 </motion.div>
@@ -280,16 +340,28 @@ export const UserBalancesPage = () => {
                         </span>
                       </div>
                     </div>
-                    <button
-                      onClick={() => openEditModal(balance)}
-                      className={`p-2 rounded-lg transition-all flex-shrink-0 ${
-                        isDark
-                          ? 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30'
-                          : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
-                      }`}
-                    >
-                      <FiEdit2 className="w-4 h-4" />
-                    </button>
+                    <div className="flex gap-2 flex-shrink-0">
+                      <button
+                        onClick={() => openAddModal(balance)}
+                        className={`p-2 rounded-lg transition-all ${
+                          isDark
+                            ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
+                            : 'bg-green-100 text-green-600 hover:bg-green-200'
+                        }`}
+                      >
+                        <FiPlus className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => openEditModal(balance)}
+                        className={`p-2 rounded-lg transition-all ${
+                          isDark
+                            ? 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30'
+                            : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                        }`}
+                      >
+                        <FiEdit2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -440,6 +512,98 @@ export const UserBalancesPage = () => {
                   >
                     <FiSave className="w-4 h-4 sm:w-5 sm:h-5" />
                     Saqlash
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Add Balance Modal */}
+      <AnimatePresence>
+        {addingBalance && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4"
+            onClick={() => setAddingBalance(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className={`rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 max-w-md w-full border ${
+                isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 className={`text-lg sm:text-xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-700'}`}>
+                  <FiPlus className={`w-5 h-5 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
+                  Balansni to'ldirish
+                </h2>
+                <button
+                  onClick={() => setAddingBalance(null)}
+                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-[#1a1a1a]' : 'hover:bg-gray-100'}`}
+                >
+                  <FiX className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
+                </button>
+              </div>
+
+              <div className="space-y-3 sm:space-y-4">
+                <div className={`p-2.5 sm:p-3 rounded-lg ${isDark ? 'bg-[#1a1a1a]/50' : 'bg-gray-50'}`}>
+                  <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Foydalanuvchi</p>
+                  <p className={`font-semibold text-sm sm:text-base ${isDark ? 'text-white' : 'text-gray-800'}`}>{addingBalance.userName}</p>
+                </div>
+
+                <div className={`p-2.5 sm:p-3 rounded-lg ${isDark ? 'bg-[#1a1a1a]/50' : 'bg-gray-50'}`}>
+                  <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Joriy balans</p>
+                  <p className={`font-bold text-lg ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                    {addingBalance.amount.toLocaleString()} <span className="text-sm font-normal opacity-70">so'm</span>
+                  </p>
+                </div>
+
+                <div>
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    To'ldiriladigan summa (so'm)
+                  </label>
+                  <input
+                    type="number"
+                    value={addAmount}
+                    onChange={(e) => setAddAmount(e.target.value)}
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
+                      isDark
+                        ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-green-500/50 focus:border-green-500'
+                        : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-green-500'
+                    }`}
+                    placeholder="Masalan: 50000"
+                  />
+                  {addAmount && (
+                    <p className={`mt-2 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      Yangi balans: <span className={`font-bold ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                        {(addingBalance.amount + parseFloat(addAmount || '0')).toLocaleString()} so'm
+                      </span>
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
+                  <button
+                    onClick={() => setAddingBalance(null)}
+                    className={`py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
+                      isDark ? 'bg-[#1a1a1a] text-gray-200 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    Bekor qilish
+                  </button>
+                  <button
+                    onClick={handleAddBalance}
+                    className="flex-1 py-2.5 sm:py-3 px-4 sm:px-6 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 text-sm sm:text-base bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
+                  >
+                    <FiPlus className="w-4 h-4 sm:w-5 sm:h-5" />
+                    To'ldirish
                   </button>
                 </div>
               </div>

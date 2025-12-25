@@ -15,8 +15,7 @@ interface LoginFormProps {
   onSwitchToRegister: () => void
 }
 
-export const LoginForm = ({ onForgotPassword: _onForgotPassword, onSwitchToRegister }: LoginFormProps) => {
-  // Note: _onForgotPassword kept for future use
+export const LoginForm = ({ onForgotPassword, onSwitchToRegister }: LoginFormProps) => {
   const navigate = useNavigate()
   const { login, isLoading } = useAuth()
   const { theme } = useTheme()
@@ -83,6 +82,19 @@ export const LoginForm = ({ onForgotPassword: _onForgotPassword, onSwitchToRegis
           error={errors.password?.message}
           {...register('password')}
         />
+      </motion.div>
+
+      {/* Forgot Password Link */}
+      <motion.div variants={itemVariants} className="text-right">
+        <button
+          type="button"
+          onClick={onForgotPassword}
+          className={`text-sm font-medium transition-colors ${
+            isDark ? 'text-cyan-400 hover:text-cyan-300' : 'text-blue-500 hover:text-blue-600'
+          }`}
+        >
+          Parolni unutdingizmi?
+        </button>
       </motion.div>
 
       <motion.div variants={itemVariants} className="pt-1">

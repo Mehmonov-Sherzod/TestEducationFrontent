@@ -24,7 +24,7 @@ export const questionService = {
    * Get question by ID
    * GET /api/QuestionAnswer/{id}?lang=eng
    */
-  getById: async (id: number, lang: string = 'uz'): Promise<ApiResponse<QuestionResponse>> => {
+  getById: async (id: string, lang: string = 'uz'): Promise<ApiResponse<QuestionResponse>> => {
     return api.get(`/api/QuestionAnswer/${id}?lang=${lang}`)
   },
 
@@ -53,7 +53,7 @@ export const questionService = {
    * Create question with answers
    * POST /api/QuestionAnswer
    */
-  create: async (data: CreateQuestionData): Promise<ApiResponse<{ id: number }>> => {
+  create: async (data: CreateQuestionData): Promise<ApiResponse<{ id: string }>> => {
     const formData = new FormData()
 
     // Convert QuestionLevel enum string to number for backend
@@ -61,64 +61,20 @@ export const questionService = {
     const levelValue = levelMap[data.level] ?? 0
 
     formData.append('QuestionText', data.questionText)
-    formData.append('TopicId', data.topicId.toString())
+    formData.append('TopicId', data.topicId)
+    formData.append('SubjectId', data.subjectId)
     formData.append('Level', levelValue.toString())
 
     if (data.image) {
       formData.append('Image', data.image)
     }
 
-    // Add translations - always required by backend
-    // Language enum: uz=0, rus=1, eng=2
-    if (data.translate && data.translate.length > 0) {
-      data.translate.forEach((t, index) => {
-        formData.append(`Translate[${index}].LanguageId`, t.languageId.toString())
-        formData.append(`Translate[${index}].ColumnName`, t.columnName)
-        formData.append(`Translate[${index}].TranslateText`, t.translateText)
-      })
-    } else {
-      // Send default translation using the question text for all 3 languages
-      formData.append('Translate[0].LanguageId', '0') // uz
-      formData.append('Translate[0].ColumnName', 'QuestionText')
-      formData.append('Translate[0].TranslateText', data.questionText)
-      formData.append('Translate[1].LanguageId', '1') // rus
-      formData.append('Translate[1].ColumnName', 'QuestionText')
-      formData.append('Translate[1].TranslateText', data.questionText)
-      formData.append('Translate[2].LanguageId', '2') // eng
-      formData.append('Translate[2].ColumnName', 'QuestionText')
-      formData.append('Translate[2].TranslateText', data.questionText)
-    }
-
     // Add answers
     data.answers.forEach((answer, index) => {
       formData.append(`Answers[${index}].Text`, answer.text)
       formData.append(`Answers[${index}].IsCorrect`, answer.isCorrect.toString())
-
-      // Add answer translations - always required by backend
-      if (answer.translate && answer.translate.length > 0) {
-        answer.translate.forEach((t, tIndex) => {
-          formData.append(
-            `Answers[${index}].Translate[${tIndex}].LanguageId`,
-            t.languageId.toString()
-          )
-          formData.append(`Answers[${index}].Translate[${tIndex}].ColumnName`, t.columnName)
-          formData.append(`Answers[${index}].Translate[${tIndex}].TranslateText`, t.translateText)
-        })
-      } else {
-        // Send default translation using the answer text for all 3 languages
-        formData.append(`Answers[${index}].Translate[0].LanguageId`, '0') // uz
-        formData.append(`Answers[${index}].Translate[0].ColumnName`, 'Text')
-        formData.append(`Answers[${index}].Translate[0].TranslateText`, answer.text)
-        formData.append(`Answers[${index}].Translate[1].LanguageId`, '1') // rus
-        formData.append(`Answers[${index}].Translate[1].ColumnName`, 'Text')
-        formData.append(`Answers[${index}].Translate[1].TranslateText`, answer.text)
-        formData.append(`Answers[${index}].Translate[2].LanguageId`, '2') // eng
-        formData.append(`Answers[${index}].Translate[2].ColumnName`, 'Text')
-        formData.append(`Answers[${index}].Translate[2].TranslateText`, answer.text)
-      }
     })
 
-    // Remove default Content-Type header so axios can set multipart/form-data with boundary
     return api.post('/api/QuestionAnswer', formData, {
       headers: {
         'Content-Type': undefined,
@@ -130,7 +86,7 @@ export const questionService = {
    * Update question
    * PUT /api/QuestionAnswer/{id}
    */
-  update: async (id: number, data: UpdateQuestionData): Promise<ApiResponse<{ id: number }>> => {
+  update: async (id: string, data: UpdateQuestionData): Promise<ApiResponse<{ id: string }>> => {
     const formData = new FormData()
 
     // Convert QuestionLevel enum string to number for backend
@@ -142,7 +98,7 @@ export const questionService = {
 
     // Add answers
     data.answers.forEach((answer, index) => {
-      formData.append(`Answers[${index}].Id`, (answer.id || 0).toString())
+      formData.append(`Answers[${index}].Id`, answer.id || '00000000-0000-0000-0000-000000000000')
       formData.append(`Answers[${index}].Text`, answer.text)
       formData.append(`Answers[${index}].IsCorrect`, answer.isCorrect.toString())
     })
@@ -158,7 +114,7 @@ export const questionService = {
    * Delete question
    * DELETE /api/QuestionAnswer/{id}
    */
-  delete: async (id: number): Promise<ApiResponse<string>> => {
+  delete: async (id: string): Promise<ApiResponse<string>> => {
     return api.delete(`/api/QuestionAnswer/${id}`)
   },
 

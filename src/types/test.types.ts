@@ -6,6 +6,33 @@ export interface Test {
   userTests?: UserTest[]
 }
 
+// StartTestMixed30 API types
+export interface StartTestMixed30Request {
+  SubjectId: string
+  TopicId?: string
+}
+
+export interface StartTestMixed30Response {
+  TestProcsessId: string
+  TotalQuestions: number
+  UserQuestions: UserQuestionResponse[]
+}
+
+export interface UserQuestionResponse {
+  Id: string
+  QuestionId: string
+  QuestionText: string
+  TextProcessId: string
+  UserQuestionAnswers: UserQuestionAnswerResponse[]
+}
+
+export interface UserQuestionAnswerResponse {
+  Id: string
+  UserQuestionId: string
+  IsMarked: boolean
+  AnswerText: string
+}
+
 export interface UserTest {
   id: number
   userId: number

@@ -11,8 +11,11 @@ import {
   FiFilter,
   FiChevronLeft,
   FiChevronRight,
+  FiShoppingBag,
+  FiShoppingCart,
+  FiDownload,
 } from 'react-icons/fi'
-import { libraryService, SharedSource, PageOption } from '@api/library.service'
+import { libraryService, SharedSource, UserSharedSource, PageOption } from '@api/library.service'
 import { subjectService } from '@api/subject.service'
 import { useTheme } from '@contexts/ThemeContext'
 import { useAuthStore } from '@store/authStore'
@@ -54,10 +57,15 @@ export const LibraryPage = () => {
     user?.permissions?.includes('SystemSettings')
   const canManageLibrary = user?.permissions?.includes('ManageLibrary') || isSuperAdmin
 
+  // Tab state
+  const [activeTab, setActiveTab] = useState<'books' | 'purchased'>('books')
+
   // Data state
   const [books, setBooks] = useState<SharedSource[]>([])
+  const [myBooks, setMyBooks] = useState<UserSharedSource[]>([])
   const [subjects, setSubjects] = useState<SubjectOption[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoadingMyBooks, setIsLoadingMyBooks] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Filter state
@@ -76,10 +84,13 @@ export const LibraryPage = () => {
   // Modal state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState<SharedSource | null>(null)
+  const [buyConfirm, setBuyConfirm] = useState<SharedSource | null>(null)
+  const [isBuying, setIsBuying] = useState(false)
 
   // Form state
   const [form, setForm] = useState({
     description: '',
+    price: '',
     subjectId: '',
     file: null as File | null,
   })
@@ -146,6 +157,7 @@ export const LibraryPage = () => {
               id: b.Id || b.id,
               description: b.Description || b.description,
               image: fileUrl,
+              price: b.Price || b.price || 0,
             }
           })
         )
@@ -168,6 +180,40 @@ export const LibraryPage = () => {
     }
   }, [currentPage, pageSize, searchQuery, selectedSubjectId])
 
+  // Fetch my purchased books (GetMyBook API)
+  const fetchMyBooks = useCallback(async () => {
+    try {
+      setIsLoadingMyBooks(true)
+      const response = await libraryService.getMyBooks()
+
+      if (response.Succeeded && response.Result) {
+        const apiBaseUrl = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE_URL || 'https://localhost:5001')
+        const books = Array.isArray(response.Result) ? response.Result : []
+
+        setMyBooks(
+          books.map((book: any) => {
+            let fileUrl = book.Path || book.path || ''
+            if (fileUrl && !fileUrl.startsWith('http')) {
+              fileUrl = `${apiBaseUrl}${fileUrl.startsWith('/') ? '' : '/'}${fileUrl}`
+            }
+            return {
+              description: book.Description || book.description,
+              path: fileUrl,
+              userId: book.UserId || book.userId,
+            }
+          })
+        )
+      } else {
+        setMyBooks([])
+      }
+    } catch (error) {
+      console.error('Failed to fetch my books:', error)
+      setMyBooks([])
+    } finally {
+      setIsLoadingMyBooks(false)
+    }
+  }, [])
+
   useEffect(() => {
     fetchSubjects()
   }, [fetchSubjects])
@@ -175,6 +221,12 @@ export const LibraryPage = () => {
   useEffect(() => {
     fetchBooks()
   }, [fetchBooks])
+
+  useEffect(() => {
+    if (activeTab === 'purchased') {
+      fetchMyBooks()
+    }
+  }, [activeTab, fetchMyBooks])
 
   // Reset to page 1 when search or subject changes
   useEffect(() => {
@@ -203,6 +255,7 @@ export const LibraryPage = () => {
       setIsSubmitting(true)
       const response = await libraryService.create({
         description: form.description,
+        price: parseFloat(form.price) || 0,
         subjectId: form.subjectId,
         file: form.file,
       })
@@ -210,7 +263,7 @@ export const LibraryPage = () => {
       if (response.Succeeded) {
         toast.success('Kitob muvaffaqiyatli qo\'shildi!')
         setIsCreateModalOpen(false)
-        setForm({ description: '', subjectId: '', file: null })
+        setForm({ description: '', price: '', subjectId: '', file: null })
         fetchBooks()
       } else {
         toast.error(response.Errors?.join(', ') || 'Xatolik yuz berdi')
@@ -251,6 +304,33 @@ export const LibraryPage = () => {
     }
   }
 
+  // Handle buy book confirmation
+  const handleBuyBook = async () => {
+    if (!buyConfirm || !buyConfirm.id) {
+      toast.error('Kitob ID topilmadi')
+      return
+    }
+
+    try {
+      setIsBuying(true)
+      const response = await libraryService.buyBook(buyConfirm.id)
+
+      if (response.Succeeded) {
+        toast.success('Kitob muvaffaqiyatli sotib olindi!')
+        setBuyConfirm(null)
+        fetchMyBooks() // Refresh purchased books
+        setActiveTab('purchased') // Switch to purchased tab
+      } else {
+        toast.error(response.Errors?.join(', ') || 'Xatolik yuz berdi')
+      }
+    } catch (error: any) {
+      console.error('Failed to buy book:', error)
+      toast.error(error?.response?.data?.Errors?.[0] || 'Balans yetarli emas yoki xatolik yuz berdi')
+    } finally {
+      setIsBuying(false)
+    }
+  }
+
   return (
     <div className={`min-h-screen ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
       <div className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
@@ -273,7 +353,7 @@ export const LibraryPage = () => {
             </p>
           </div>
 
-          {canManageLibrary && (
+          {canManageLibrary && activeTab === 'books' && (
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -290,7 +370,56 @@ export const LibraryPage = () => {
           )}
         </motion.div>
 
-        {/* Filters */}
+        {/* Tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="flex gap-2 mb-6"
+        >
+          <button
+            onClick={() => setActiveTab('books')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all text-sm sm:text-base ${
+              activeTab === 'books'
+                ? isDark
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
+                  : 'bg-blue-600 text-white shadow-lg shadow-blue-500/25'
+                : isDark
+                  ? 'bg-[#151515] text-gray-400 hover:text-white'
+                  : 'bg-gray-100 text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <FiBook className="w-4 h-4" />
+            Kitoblar
+          </button>
+          <button
+            onClick={() => setActiveTab('purchased')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all text-sm sm:text-base ${
+              activeTab === 'purchased'
+                ? isDark
+                  ? 'bg-green-500 text-white shadow-lg shadow-green-500/25'
+                  : 'bg-green-600 text-white shadow-lg shadow-green-500/25'
+                : isDark
+                  ? 'bg-[#151515] text-gray-400 hover:text-white'
+                  : 'bg-gray-100 text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <FiShoppingBag className="w-4 h-4" />
+            Sotib olingan
+            {myBooks.length > 0 && (
+              <span className={`px-2 py-0.5 rounded-full text-xs ${
+                activeTab === 'purchased'
+                  ? 'bg-white/20 text-white'
+                  : isDark ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-600'
+              }`}>
+                {myBooks.length}
+              </span>
+            )}
+          </button>
+        </motion.div>
+
+        {/* Filters - only show for books tab */}
+        {activeTab === 'books' && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -332,7 +461,7 @@ export const LibraryPage = () => {
                 <span className="truncate">
                   {selectedSubjectId
                     ? subjects.find((s) => s.id === selectedSubjectId)?.name
-                    : 'Barcha fanlar'}
+                    : 'Fanni tanlang'}
                 </span>
               </div>
             </motion.button>
@@ -396,8 +525,11 @@ export const LibraryPage = () => {
             </AnimatePresence>
           </div>
         </motion.div>
+        )}
 
-        {/* Content */}
+        {/* Content - Books Tab */}
+        {activeTab === 'books' && (
+          <>
         {isLoading ? (
           <div className="flex items-center justify-center py-12 sm:py-20">
             <div
@@ -428,10 +560,10 @@ export const LibraryPage = () => {
                   (isDark ? 'text-white' : 'text-gray-700')
                 }`}
               >
-                Fan tanlang
+                Fanni tanlang
               </p>
               <p className={`text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Kitoblarni ko'rish uchun yuqoridagi filterdan fan tanlang
+                Kitoblarni ko'rish uchun yuqoridagi filterdan fanni tanlang
               </p>
             </div>
           </motion.div>
@@ -467,207 +599,135 @@ export const LibraryPage = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6"
           >
             {books.map((book) => {
               const hasImage = book.image && book.image.startsWith('http') && !failedImages.has(book.id || '')
 
-              // Generate dynamic color based on book description
-              const getColorFromString = (str: string) => {
-                const colors = [
-                  { from: 'from-blue-500', via: 'via-blue-600', to: 'to-indigo-700', spine: 'bg-blue-800' },
-                  { from: 'from-emerald-500', via: 'via-teal-600', to: 'to-cyan-700', spine: 'bg-emerald-800' },
-                  { from: 'from-orange-500', via: 'via-red-500', to: 'to-rose-600', spine: 'bg-orange-800' },
-                  { from: 'from-purple-500', via: 'via-violet-600', to: 'to-indigo-700', spine: 'bg-purple-800' },
-                  { from: 'from-pink-500', via: 'via-rose-500', to: 'to-red-600', spine: 'bg-pink-800' },
-                  { from: 'from-cyan-500', via: 'via-blue-500', to: 'to-indigo-600', spine: 'bg-cyan-800' },
-                  { from: 'from-amber-500', via: 'via-orange-500', to: 'to-red-500', spine: 'bg-amber-800' },
-                  { from: 'from-lime-500', via: 'via-green-500', to: 'to-emerald-600', spine: 'bg-lime-800' },
+              // Generate gradient color for placeholder
+              const getGradient = (str: string) => {
+                const gradients = [
+                  'from-blue-500 to-indigo-600',
+                  'from-emerald-500 to-teal-600',
+                  'from-orange-500 to-red-500',
+                  'from-purple-500 to-pink-500',
+                  'from-cyan-500 to-blue-500',
+                  'from-amber-500 to-orange-500',
+                  'from-green-500 to-emerald-600',
+                  'from-rose-500 to-pink-600',
                 ]
                 let hash = 0
                 for (let i = 0; i < str.length; i++) {
                   hash = str.charCodeAt(i) + ((hash << 5) - hash)
                 }
-                return colors[Math.abs(hash) % colors.length]
+                return gradients[Math.abs(hash) % gradients.length]
               }
 
-              const bookColor = getColorFromString(book.description || 'kitob')
-              const initials = (book.description || 'K').split(' ').slice(0, 2).map(w => w[0]?.toUpperCase()).join('')
+              const gradient = getGradient(book.description || 'kitob')
 
               return (
                 <motion.div
                   key={book.id}
                   variants={cardVariants}
-                  whileHover={{ y: -6, scale: 1.02 }}
-                  className="group cursor-pointer"
+                  className="group"
                 >
-                  {/* Realistic 3D Book */}
-                  <div className="relative" style={{ aspectRatio: '3/4', perspective: '1000px' }}>
-                    {/* Book pages (side) */}
-                    <div
-                      className="absolute left-0 top-[3px] bottom-[3px] w-5 bg-gradient-to-r from-gray-100 via-gray-50 to-gray-200 rounded-l-[2px]"
-                      style={{
-                        transform: 'rotateY(-15deg) translateX(-2px)',
-                        boxShadow: 'inset -2px 0 4px rgba(0,0,0,0.1)'
-                      }}
-                    >
-                      {/* Page lines */}
-                      {[...Array(20)].map((_, i) => (
-                        <div key={i} className="h-[1px] bg-gray-300/60" style={{ marginTop: `${4 + i * 5}%` }} />
-                      ))}
-                    </div>
-
-                    {/* Main book cover */}
-                    <div
-                      className="relative w-full h-full overflow-hidden rounded-r-md rounded-l-[3px]"
-                      style={{
-                        boxShadow: '6px 6px 20px rgba(0,0,0,0.4), 2px 2px 6px rgba(0,0,0,0.2), inset -2px 0 4px rgba(0,0,0,0.1)',
-                        transform: 'translateX(3px)'
-                      }}
-                    >
-                    {hasImage ? (
-                      <>
+                  {/* Card */}
+                  <motion.div
+                    whileHover={{ y: -8, scale: 1.03 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                    className={`relative rounded-2xl overflow-hidden ${
+                      isDark ? 'bg-[#1a1a1a]' : 'bg-white'
+                    } shadow-lg hover:shadow-2xl transition-shadow duration-300`}
+                  >
+                    {/* Image Container */}
+                    <div className="relative aspect-[3/4] overflow-hidden">
+                      {hasImage ? (
                         <img
                           src={book.image}
                           alt={book.description}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                           onError={() => {
                             setFailedImages(prev => new Set(prev).add(book.id || ''))
                           }}
                         />
-                        {/* Bottom buttons - always visible */}
-                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pt-8 pb-3 flex items-end justify-center gap-3">
+                      ) : (
+                        <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+                          <FiBook className="w-12 h-12 text-white/80" />
+                        </div>
+                      )}
+
+                      {/* Price Badge */}
+                      <div className={`absolute top-3 right-3 px-3 py-1.5 rounded-xl text-xs font-bold shadow-lg backdrop-blur-sm ${
+                        book.price > 0
+                          ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white'
+                          : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                      }`}>
+                        {book.price > 0 ? (
+                          <span className="flex items-center gap-1">
+                            {book.price.toLocaleString()}
+                            <span className="opacity-80">so'm</span>
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-1">
+                            <span>Bepul</span>
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-3 sm:p-4">
+                      <h3 className={`text-sm font-semibold line-clamp-2 mb-3 ${
+                        isDark ? 'text-white' : 'text-gray-800'
+                      }`}>
+                        {book.description}
+                      </h3>
+
+                      {/* Action Buttons */}
+                      <div className="flex items-center gap-2">
+                        {book.price > 0 ? (
+                          <motion.button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setBuyConfirm(book)
+                            }}
+                            className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-medium shadow-lg shadow-green-500/25"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            <FiShoppingCart className="w-4 h-4" />
+                            Sotib olish
+                          </motion.button>
+                        ) : (
                           <motion.a
                             href={book.image}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2.5 rounded-full bg-white/90 text-gray-800 shadow-lg backdrop-blur-sm"
                             onClick={(e) => e.stopPropagation()}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
+                            className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium shadow-lg shadow-blue-500/25"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                           >
-                            <FiEye className="w-4 h-4" />
+                            <FiDownload className="w-4 h-4" />
+                            Yuklab olish
                           </motion.a>
-                          {canManageLibrary && (
-                            <motion.button
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                setDeleteConfirm(book)
-                              }}
-                              className="p-2.5 rounded-full bg-red-500/90 text-white shadow-lg backdrop-blur-sm"
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                            >
-                              <FiTrash2 className="w-4 h-4" />
-                            </motion.button>
-                          )}
-                        </div>
-                      </>
-                    ) : (
-                      /* Dynamic Generated Book Cover */
-                      <div className={`w-full h-full flex flex-col relative bg-gradient-to-br ${bookColor.from} ${bookColor.via} ${bookColor.to} overflow-hidden`}>
-                        {/* Leather/Paper texture */}
-                        <div className="absolute inset-0 opacity-10" style={{
-                          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
-                        }} />
-
-                        {/* Embossed frame */}
-                        <div className="absolute inset-3 border border-white/20 rounded-sm pointer-events-none shadow-inner" />
-                        <div className="absolute inset-4 border border-black/10 rounded-sm pointer-events-none" />
-
-                        {/* Corner ornaments */}
-                        <div className="absolute top-2 left-6 text-amber-200/50 text-[10px]">❧</div>
-                        <div className="absolute top-2 right-2 text-amber-200/50 text-[10px] rotate-90">❧</div>
-                        <div className="absolute bottom-8 left-6 text-amber-200/50 text-[10px] rotate-[-90deg]">❧</div>
-                        <div className="absolute bottom-8 right-2 text-amber-200/50 text-[10px] rotate-180">❧</div>
-
-                        {/* Main content */}
-                        <div className="flex-1 flex flex-col items-center justify-center p-4 relative z-10">
-                          {/* Embossed initials */}
-                          <div className="w-14 h-14 rounded-lg flex items-center justify-center mb-3 border-2 border-white/30 shadow-lg"
-                            style={{
-                              background: 'linear-gradient(145deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%)',
-                              boxShadow: 'inset 2px 2px 4px rgba(255,255,255,0.2), inset -2px -2px 4px rgba(0,0,0,0.2)'
-                            }}>
-                            <span className="text-white font-bold text-xl" style={{
-                              textShadow: '1px 1px 2px rgba(0,0,0,0.5), -1px -1px 1px rgba(255,255,255,0.3)'
-                            }}>
-                              {initials || 'K'}
-                            </span>
-                          </div>
-
-                          {/* Decorative divider */}
-                          <div className="flex items-center gap-1 mb-2">
-                            <div className="w-6 h-[1px] bg-gradient-to-r from-transparent via-amber-200/60 to-transparent" />
-                            <div className="w-2 h-2 rotate-45 border border-amber-200/60" />
-                            <div className="w-6 h-[1px] bg-gradient-to-r from-transparent via-amber-200/60 to-transparent" />
-                          </div>
-
-                          {/* Title */}
-                          <h3 className="text-white font-semibold text-center text-[11px] leading-snug line-clamp-3 px-2"
-                            style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
-                            {book.description || 'Kitob'}
-                          </h3>
-                        </div>
-
-                        {/* Bottom buttons - always visible */}
-                        <div className="bg-black/40 backdrop-blur-sm px-2 py-2.5 relative z-10 flex items-center justify-center gap-3">
-                          {book.image ? (
-                            <motion.a
-                              href={book.image}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="p-2.5 rounded-full bg-white/90 text-gray-800 shadow-lg backdrop-blur-sm"
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                            >
-                              <FiEye className="w-4 h-4" />
-                            </motion.a>
-                          ) : (
-                            <motion.button
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                toast.error('Fayl mavjud emas')
-                              }}
-                              className="p-2.5 rounded-full bg-white/50 text-gray-500 cursor-not-allowed shadow-lg backdrop-blur-sm"
-                              whileHover={{ scale: 1.05 }}
-                            >
-                              <FiEye className="w-4 h-4" />
-                            </motion.button>
-                          )}
-                          {canManageLibrary && (
-                            <motion.button
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                setDeleteConfirm(book)
-                              }}
-                              className="p-2.5 rounded-full bg-red-500/90 text-white shadow-lg backdrop-blur-sm"
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                            >
-                              <FiTrash2 className="w-4 h-4" />
-                            </motion.button>
-                          )}
-                        </div>
+                        )}
+                        {canManageLibrary && (
+                          <motion.button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setDeleteConfirm(book)
+                            }}
+                            className="p-2 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <FiTrash2 className="w-4 h-4" />
+                          </motion.button>
+                        )}
                       </div>
-                    )}
-
-                    {/* Cover spine highlight */}
-                    <div className="absolute left-0 top-0 bottom-0 w-[6px] bg-gradient-to-r from-black/30 via-white/10 to-transparent pointer-events-none" />
-
-                    {/* Top/Bottom book edge */}
-                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-b from-white/20 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-t from-black/20 to-transparent" />
                     </div>
-                  </div>
-
-                  {/* Title below */}
-                  <p className={`mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-center line-clamp-2 ${
-                    isDark ? 'text-gray-300' : 'text-gray-700'
-                  }`}>
-                    {book.description}
-                  </p>
+                  </motion.div>
                 </motion.div>
               )
             })}
@@ -751,6 +811,128 @@ export const LibraryPage = () => {
             </div>
           </motion.div>
         )}
+          </>
+        )}
+
+        {/* Content - Purchased Books Tab */}
+        {activeTab === 'purchased' && (
+          <>
+            {isLoadingMyBooks ? (
+              <div className="flex items-center justify-center py-12 sm:py-20">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 border-4 rounded-full animate-spin border-green-500 border-t-transparent`} />
+              </div>
+            ) : myBooks.length === 0 ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center justify-center py-12 sm:py-20"
+              >
+                <div className="text-center px-4">
+                  <motion.div
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <FiShoppingBag
+                      className={`w-12 h-12 sm:w-20 sm:h-20 mx-auto mb-3 sm:mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+                    />
+                  </motion.div>
+                  <p className={`text-lg sm:text-xl mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Sotib olingan kitoblar yo'q
+                  </p>
+                  <p className={`text-sm sm:text-base ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                    Kitoblar sotib olganingizda bu yerda ko'rinadi
+                  </p>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6"
+              >
+                {myBooks.map((book, index) => {
+                  const bookDesc = book.description || book.Description || 'kitob'
+
+                  // Generate gradient color
+                  const getGradient = (str: string) => {
+                    const gradients = [
+                      'from-green-500 to-emerald-600',
+                      'from-emerald-500 to-teal-600',
+                      'from-teal-500 to-cyan-600',
+                      'from-cyan-500 to-blue-600',
+                    ]
+                    let hash = 0
+                    for (let i = 0; i < str.length; i++) {
+                      hash = str.charCodeAt(i) + ((hash << 5) - hash)
+                    }
+                    return gradients[Math.abs(hash) % gradients.length]
+                  }
+
+                  const gradient = getGradient(bookDesc)
+
+                  return (
+                    <motion.div
+                      key={index}
+                      variants={cardVariants}
+                      className="group"
+                    >
+                      {/* Card */}
+                      <motion.div
+                        whileHover={{ y: -8, scale: 1.03 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                        className={`relative rounded-2xl overflow-hidden ${
+                          isDark ? 'bg-[#1a1a1a]' : 'bg-white'
+                        } shadow-lg hover:shadow-2xl transition-shadow duration-300`}
+                      >
+                        {/* Image Container */}
+                        <div className="relative aspect-[3/4] overflow-hidden">
+                          <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+                            <FiBook className="w-12 h-12 text-white/80" />
+                          </div>
+
+                          {/* Hover Overlay with Download */}
+                          {book.path && (
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                              <motion.a
+                                href={book.path}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-3 rounded-full bg-green-500 text-white shadow-xl"
+                                onClick={(e) => e.stopPropagation()}
+                                whileHover={{ scale: 1.15 }}
+                                whileTap={{ scale: 0.95 }}
+                                initial={{ y: 20, opacity: 0 }}
+                                whileInView={{ y: 0, opacity: 1 }}
+                              >
+                                <FiDownload className="w-5 h-5" />
+                              </motion.a>
+                            </div>
+                          )}
+
+                          {/* Purchased Badge */}
+                          <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-bold shadow-lg bg-green-500 text-white flex items-center gap-1">
+                            <FiShoppingBag className="w-3 h-3" />
+                            Sotib olingan
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="p-3 sm:p-4">
+                          <h3 className={`text-sm font-semibold line-clamp-2 ${
+                            isDark ? 'text-white' : 'text-gray-800'
+                          }`}>
+                            {bookDesc}
+                          </h3>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )
+                })}
+              </motion.div>
+            )}
+          </>
+        )}
       </div>
 
       {/* Create Modal */}
@@ -793,6 +975,25 @@ export const LibraryPage = () => {
                       setForm({ ...form, description: e.target.value })
                     }
                     placeholder="Kitob nomi yoki tavsifi"
+                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-blue-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+                  />
+                </div>
+
+                {/* Price */}
+                <div>
+                  <label
+                    className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+                  >
+                    Narxi (so'm)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={form.price}
+                    onChange={(e) =>
+                      setForm({ ...form, price: e.target.value })
+                    }
+                    placeholder="0 = Bepul"
                     className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-blue-500' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
                   />
                 </div>
@@ -954,6 +1155,72 @@ export const LibraryPage = () => {
                   }`}
                 >
                   {isSubmitting ? 'O\'chirilmoqda...' : 'O\'chirish'}
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Buy Confirmation Modal */}
+      <AnimatePresence>
+        {buyConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setBuyConfirm(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className={`w-full max-w-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border ${isDark ? 'bg-[#151515] border-gray-600/30 text-gray-400' : 'bg-white border-gray-200 text-gray-600'}`}
+            >
+              <div className="text-center">
+                <div
+                  className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full flex items-center justify-center ${isDark ? 'bg-green-500/20' : 'bg-green-100'}`}
+                >
+                  <FiShoppingCart
+                    className={`w-6 h-6 sm:w-8 sm:h-8 ${isDark ? 'text-green-400' : 'text-green-600'}`}
+                  />
+                </div>
+                <h3
+                  className={`text-base sm:text-lg font-bold mb-2 ${
+                    (isDark ? 'text-white' : 'text-gray-700')
+                  }`}
+                >
+                  Sotib olishni tasdiqlang
+                </h3>
+                <p className={`text-sm sm:text-base mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  "{buyConfirm.description}" kitobini sotib olmoqchimisiz?
+                </p>
+                <p className={`text-lg sm:text-xl font-bold ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                  {buyConfirm.price.toLocaleString()} so'm
+                </p>
+              </div>
+
+              <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setBuyConfirm(null)}
+                  className={`flex-1 py-2.5 sm:py-3 rounded-xl font-medium text-sm sm:text-base ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                >
+                  Bekor qilish
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleBuyBook}
+                  disabled={isBuying}
+                  className={`flex-1 py-2.5 sm:py-3 rounded-xl font-medium bg-green-500 text-white hover:bg-green-600 text-sm sm:text-base ${
+                    isBuying ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  {isBuying ? 'Sotib olinmoqda...' : 'Sotib olish'}
                 </motion.button>
               </div>
             </motion.div>

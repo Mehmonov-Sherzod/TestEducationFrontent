@@ -7,11 +7,11 @@ export enum QuestionLevel {
 }
 
 export interface Question {
-  id: number
+  id: string
   questionText: string
   image?: string
   questionLevel: QuestionLevel
-  topicId?: number
+  topicId?: string
   topicName?: string
   subjectName?: string
   translate?: QuestionTranslate[]
@@ -19,23 +19,23 @@ export interface Question {
 }
 
 export interface Answer {
-  id?: number
+  id?: string
   answerText: string
   isCorrect: boolean
   translate?: AnswerTranslate[]
 }
 
 export interface QuestionTranslate {
-  id?: number
-  questionId?: number
+  id?: string
+  questionId?: string
   languageId?: number
   columnName: string
   translateText: string
 }
 
 export interface AnswerTranslate {
-  id?: number
-  answerId?: number
+  id?: string
+  answerId?: string
   languageId?: number
   columnName: string
   translateText: string
@@ -44,9 +44,9 @@ export interface AnswerTranslate {
 export interface CreateQuestionData {
   questionText: string
   topicId: string
+  subjectId: string
   image?: File
   level: QuestionLevel
-  translate?: CreateQuestionTranslate[]
   answers: CreateAnswerData[]
 }
 
@@ -59,7 +59,6 @@ export interface CreateQuestionTranslate {
 export interface CreateAnswerData {
   text: string
   isCorrect: boolean
-  translate?: CreateAnswerTranslate[]
 }
 
 export interface CreateAnswerTranslate {
@@ -75,15 +74,15 @@ export interface UpdateQuestionData {
 }
 
 export interface UpdateAnswerData {
-  id?: number
+  id?: string
   text: string
   isCorrect: boolean
 }
 
 // Backend response model
 export interface QuestionResponse {
-  id?: number // lowercase from backend
-  Id?: number // PascalCase fallback
+  id?: string // lowercase from backend (Guid)
+  Id?: string // PascalCase fallback
   QuestionText: string
   Image?: string
   QuestionLevel: QuestionLevel
@@ -92,8 +91,8 @@ export interface QuestionResponse {
 }
 
 export interface AnswerResponse {
-  id?: number // lowercase from backend
-  Id?: number // PascalCase fallback
+  id?: string // lowercase from backend (Guid)
+  Id?: string // PascalCase fallback
   AnswerText: string
   IsCorrect?: boolean
   isCorrect?: boolean // lowercase fallback

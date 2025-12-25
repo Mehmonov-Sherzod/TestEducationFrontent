@@ -189,13 +189,11 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
               'flex items-center relative z-10 w-full',
               isCollapsed ? 'justify-center' : 'gap-3'
             )}>
-            <motion.div
+            <div
               className={cn(
                 'flex items-center',
                 isCollapsed ? 'justify-center' : 'gap-3'
               )}
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 15 }}
             >
               {/* Logo */}
               <div className={cn(
@@ -223,7 +221,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                   </p>
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
 
 

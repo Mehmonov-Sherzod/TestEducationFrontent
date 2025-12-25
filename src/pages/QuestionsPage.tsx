@@ -56,7 +56,7 @@ export const QuestionsPage = () => {
   const [editForm, setEditForm] = useState({
     questionText: '',
     level: QuestionLevel.Easy,
-    answers: [] as { id: number; text: string; isCorrect: boolean }[],
+    answers: [] as { id: string; text: string; isCorrect: boolean }[],
   })
 
   // Check permissions
@@ -217,8 +217,8 @@ export const QuestionsPage = () => {
 
   // Create question
   const handleCreateQuestion = async () => {
-    if (!questionForm.questionText || !questionForm.topicId) {
-      toast.error('Please fill question text and select a topic')
+    if (!questionForm.questionText || !questionForm.topicId || !questionForm.subjectId) {
+      toast.error('Please fill question text and select subject and topic')
       return
     }
 
@@ -238,6 +238,7 @@ export const QuestionsPage = () => {
       const response = await questionService.create({
         questionText: questionForm.questionText,
         topicId: questionForm.topicId,
+        subjectId: questionForm.subjectId,
         level: questionForm.level,
         image: questionForm.image || undefined,
         answers: questionForm.answers,
@@ -286,7 +287,7 @@ export const QuestionsPage = () => {
       questionText: question.QuestionText,
       level: question.QuestionLevel as QuestionLevel,
       answers: question.Answers.map((a) => ({
-        id: a.id || a.Id || 0,
+        id: a.id || a.Id || '',
         text: a.AnswerText,
         isCorrect: a.isCorrect ?? a.IsCorrect ?? false,
       })),
