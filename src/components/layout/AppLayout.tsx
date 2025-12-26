@@ -10,7 +10,7 @@ export const AppLayout = () => {
   const isDark = theme === 'dark'
 
   return (
-    <div className={`relative min-h-screen overflow-hidden ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#f9fafb]'}`}>
+    <div className={`relative min-h-screen overflow-hidden ${isDark ? 'bg-[#0a0a0a]' : 'bg-gray-100'}`}>
 
       {/* Sidebar */}
       <Sidebar
@@ -20,15 +20,15 @@ export const AppLayout = () => {
 
       {/* Main Content */}
       <motion.div
-        className="relative z-10"
-        animate={{ marginLeft: isSidebarCollapsed ? 80 : 256 }}
+        className={`relative z-10 min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-gray-100'}`}
+        animate={{ marginLeft: isSidebarCollapsed ? 96 : 272 }}
         transition={{ duration: 0 }}
       >
         <motion.main
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="container mx-auto p-8"
+          className="p-4"
         >
           <Outlet />
         </motion.main>

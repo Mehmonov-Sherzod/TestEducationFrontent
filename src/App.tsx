@@ -16,6 +16,7 @@ import { UserBalancesPage } from '@pages/UserBalancesPage'
 import { BalanceSettingsPage } from '@pages/BalanceSettingsPage'
 import { ChangePasswordPage } from '@pages/ChangePasswordPage'
 import { MyBalancePage } from '@pages/MyBalancePage'
+import { SettingsPage } from '@pages/SettingsPage'
 import { AppLayout } from '@components/layout/AppLayout'
 import { ProtectedRoute } from '@components/layout/ProtectedRoute'
 import { PublicRoute } from '@components/layout/PublicRoute'
@@ -81,7 +82,7 @@ function AppContent() {
   const isDark = theme === 'dark'
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-[#0a0a0a]' : 'bg-gray-100'}`}>
       <Routes>
         {/* Public Route - Auth Page (Landing) */}
         <Route
@@ -124,6 +125,7 @@ function AppContent() {
           <Route path={ROUTES.BALANCE_SETTINGS} element={<BalanceSettingsPage />} />
           <Route path={ROUTES.CHANGE_PASSWORD} element={<ChangePasswordPage />} />
           <Route path={ROUTES.MY_BALANCE} element={<MyBalancePage />} />
+          <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
         </Route>
 
         {/* Redirect any unknown routes to auth */}

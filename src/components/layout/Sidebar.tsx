@@ -16,6 +16,7 @@ import {
   FiChevronLeft,
   FiChevronDown,
   FiDollarSign,
+  FiSettings,
 } from 'react-icons/fi'
 import { useAuth } from '@hooks/useAuth'
 import { ROUTES } from '@utils/constants'
@@ -24,8 +25,9 @@ import { ThemeToggle } from '@components/shared/ThemeToggle'
 import { useTheme } from '@contexts/ThemeContext'
 
 interface NavSubItem {
-  path: string
+  path?: string
   label: string
+  action?: 'theme-toggle' | 'logout'
 }
 
 interface NavItem {
@@ -35,6 +37,7 @@ interface NavItem {
   requiredPermissions?: string[]
   category?: string
   children?: NavSubItem[]
+  dividerBefore?: boolean
 }
 
 interface SidebarProps {
@@ -90,7 +93,6 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
       path: ROUTES.TESTS,
       label: 'Testlar',
       icon: <FiClipboard size={20} />,
-      requiredPermissions: ['ManageTests', 'TakeTest'],
       category: 'testing',
     },
     {
@@ -112,6 +114,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
       icon: <FiUsers size={20} />,
       requiredPermissions: ['ManageUsersStudent', 'ManageUsers', 'ManageAdmins'],
       category: 'admin',
+      dividerBefore: true,
     },
     {
       label: 'Balans sozlamalari',
@@ -129,9 +132,19 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
       category: 'user',
       children: [
         { path: ROUTES.PROFILE, label: 'Profil' },
-        { path: ROUTES.CHANGE_PASSWORD, label: 'Parolni o\'zgartirish' },
         { path: ROUTES.MY_BALANCE, label: 'Balans' },
       ],
+    },
+    {
+      path: ROUTES.SETTINGS,
+      label: 'Sozlamalar',
+      icon: <FiSettings size={20} />,
+      category: 'settings',
+    },
+    {
+      label: 'Collapse',
+      icon: <FiChevronLeft size={20} />,
+      category: 'collapse',
     },
   ]
 
@@ -141,43 +154,38 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
 
   return (
     <motion.aside
-      animate={{ width: isCollapsed ? 80 : 256 }}
+      animate={{ width: isCollapsed ? 96 : 272 }}
       transition={{ duration: 0 }}
-      className={cn(
-        'fixed left-0 top-0 h-screen z-40',
-        isDark
-          ? 'bg-[#111111]'
-          : 'bg-white'
-      )}
+      className="fixed left-0 top-0 z-40 p-3 pb-6"
     >
-
-      {/* Border Line */}
       <div className={cn(
-        'absolute right-0 top-0 h-full w-px',
+        'relative rounded-2xl border shadow-sm overflow-hidden',
         isDark
-          ? 'bg-gradient-to-b from-transparent via-gray-700 to-transparent'
-          : 'bg-gradient-to-b from-transparent via-gray-200 to-transparent'
-      )} />
-
-      <div className="relative flex flex-col h-full">
-        {/* Logo Section with New Year Theme */}
-        <div className="p-5 relative overflow-hidden">
+          ? 'bg-[#111111] border-gray-800'
+          : 'bg-white border-gray-200'
+      )}>
+        <motion.div
+          animate={{ width: isCollapsed ? 72 : 248 }}
+          transition={{ duration: 0 }}
+          className="flex flex-col"
+        >
+        {/* Logo Section */}
+        <div className="p-4 m-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 relative overflow-hidden">
           {/* Falling Snowflakes */}
-          {[...Array(12)].map((_, i) => (
+          {[...Array(8)].map((_, i) => (
             <motion.span
               key={i}
-              className="absolute pointer-events-none select-none"
+              className="absolute pointer-events-none select-none text-white/40"
               style={{
-                left: `${5 + i * 8}%`,
-                fontSize: `${6 + (i % 4) * 2}px`,
-                opacity: 0.7,
+                left: `${5 + i * 12}%`,
+                fontSize: `${8 + (i % 3) * 2}px`,
               }}
               initial={{ y: -10 }}
-              animate={{ y: 100 }}
+              animate={{ y: 80 }}
               transition={{
-                duration: 4 + (i % 3),
+                duration: 3 + (i % 3),
                 repeat: Infinity,
-                delay: i * 0.4,
+                delay: i * 0.3,
                 ease: 'linear',
               }}
             >
@@ -196,39 +204,26 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
               )}
             >
               {/* Logo */}
-              <div className={cn(
-                'w-10 h-10 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0',
-                isDark
-                  ? 'bg-blue-500'
-                  : 'bg-blue-600'
-              )}>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/20 backdrop-blur-sm flex-shrink-0">
                 <span className="text-white font-bold text-lg">P</span>
               </div>
 
               {!isCollapsed && (
                 <div>
-                  <h1 className={cn(
-                    'text-lg font-bold tracking-tight',
-                    isDark ? 'text-white' : 'text-gray-900'
-                  )}>
+                  <h1 className="text-lg font-bold tracking-tight text-white">
                     ProExam
                   </h1>
-                  <p className={cn(
-                    'text-[10px] font-medium uppercase tracking-wider',
-                    isDark ? 'text-gray-500' : 'text-gray-400'
-                  )}>
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-white/70">
                     Test Platform
                   </p>
                 </div>
               )}
             </div>
           </div>
-
-
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 overflow-y-auto scrollbar-thin">
+        <nav className="px-3 pb-3">
           <ul className="space-y-1.5">
             {filteredNavItems.map((item, index) => {
               const isActive = item.path ? location.pathname === item.path :
@@ -243,6 +238,13 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
+                  {/* Divider Line */}
+                  {item.dividerBefore && (
+                    <div className={cn(
+                      'mb-3 mx-2',
+                      isDark ? 'border-t border-gray-800' : 'border-t border-gray-200'
+                    )} />
+                  )}
                   {hasChildren ? (
                     // Dropdown menu item
                     <>
@@ -252,10 +254,8 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                         className={cn(
                           'w-full group relative flex items-center rounded-xl transition-all duration-200',
                           isCollapsed ? 'justify-center px-3 py-3' : 'gap-3 px-4 py-3',
-                          isActive
-                            ? isDark
-                              ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
-                              : 'bg-gray-100 text-gray-900'
+                          (isActive || isDropdownOpen)
+                            ? 'text-blue-500'
                             : isDark
                               ? 'text-gray-400 hover:text-white hover:bg-white/5'
                               : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
@@ -304,7 +304,54 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                             )}
                           >
                             {item.children?.map((child) => {
-                              const isChildActive = location.pathname === child.path
+                              const isChildActive = child.path ? location.pathname === child.path : false
+
+                              // Handle action items (theme-toggle, logout)
+                              if (child.action === 'theme-toggle') {
+                                return (
+                                  <motion.li
+                                    key="theme-toggle"
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                  >
+                                    <div className={cn(
+                                      'flex items-center justify-between py-2 px-3 rounded-lg text-sm',
+                                      isDark
+                                        ? 'text-gray-400'
+                                        : 'text-gray-600'
+                                    )}>
+                                      <div className="flex items-center gap-2">
+                                        <span>{isDark ? '🌙' : '☀️'}</span>
+                                        <span>{isDark ? 'Tungi' : 'Kunduzgi'} rejim</span>
+                                      </div>
+                                      <ThemeToggle size="sm" />
+                                    </div>
+                                  </motion.li>
+                                )
+                              }
+
+                              if (child.action === 'logout') {
+                                return (
+                                  <motion.li
+                                    key="logout"
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                  >
+                                    <button
+                                      onClick={logout}
+                                      className={cn(
+                                        'w-full flex items-center gap-2 py-2 px-3 rounded-lg text-sm transition-colors text-left',
+                                        'text-red-500 hover:bg-red-500/10'
+                                      )}
+                                    >
+                                      <FiLogOut size={14} />
+                                      <span>Chiqish</span>
+                                    </button>
+                                  </motion.li>
+                                )
+                              }
+
+                              // Regular link items
                               return (
                                 <motion.li
                                   key={child.path}
@@ -312,7 +359,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                                   animate={{ opacity: 1, x: 0 }}
                                 >
                                   <Link
-                                    to={child.path}
+                                    to={child.path!}
                                     className={cn(
                                       'block py-2 px-3 rounded-lg text-sm transition-colors',
                                       isChildActive
@@ -333,6 +380,34 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                         )}
                       </AnimatePresence>
                     </>
+                  ) : item.category === 'collapse' ? (
+                    // Collapse button
+                    <button
+                      onClick={onToggle}
+                      title={isCollapsed ? 'Menyuni kengaytirish' : 'Menyuni yig\'ish'}
+                      className={cn(
+                        'w-full group relative flex items-center rounded-xl transition-all duration-200',
+                        isCollapsed ? 'justify-center px-3 py-3' : 'gap-3 px-4 py-3',
+                        isDark
+                          ? 'text-gray-400 hover:text-white hover:bg-white/5'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                      )}
+                    >
+                      {/* Icon */}
+                      <span className={cn(
+                        'relative transition-transform duration-200',
+                        'group-hover:scale-110'
+                      )}>
+                        {isCollapsed ? <FiChevronRight size={20} /> : <FiChevronLeft size={20} />}
+                      </span>
+
+                      {/* Label */}
+                      {!isCollapsed && (
+                        <span className="text-[15px] font-medium flex-1 text-left">
+                          Collapse
+                        </span>
+                      )}
+                    </button>
                   ) : (
                     // Regular menu item
                     <Link
@@ -342,9 +417,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                         'group relative flex items-center rounded-xl transition-all duration-200',
                         isCollapsed ? 'justify-center px-3 py-3' : 'gap-3 px-4 py-3',
                         isActive
-                          ? isDark
-                            ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
-                            : 'bg-gray-100 text-gray-900'
+                          ? 'text-blue-500'
                           : isDark
                             ? 'text-gray-400 hover:text-white hover:bg-white/5'
                             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
@@ -389,36 +462,7 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
         </nav>
 
         {/* Bottom Section */}
-        <div className={cn('p-3 space-y-2', isCollapsed && 'px-2')}>
-          {/* Theme Toggle Card */}
-          <div className={cn(
-            'rounded-xl p-3 transition-colors',
-            isDark ? 'bg-white/5' : 'bg-gray-100/80',
-            isCollapsed && 'p-2 flex justify-center'
-          )}>
-            {isCollapsed ? (
-              <ThemeToggle size="sm" />
-            ) : (
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className={cn(
-                    'w-8 h-8 rounded-lg flex items-center justify-center',
-                    isDark ? 'bg-gray-700' : 'bg-white shadow-sm'
-                  )}>
-                    <span className="text-lg">{isDark ? '🌙' : '☀️'}</span>
-                  </div>
-                  <span className={cn(
-                    'text-xs font-medium',
-                    isDark ? 'text-gray-400' : 'text-gray-600'
-                  )}>
-                    {isDark ? 'Tungi' : 'Kunduzgi'} rejim
-                  </span>
-                </div>
-                <ThemeToggle size="sm" />
-              </div>
-            )}
-          </div>
-
+        <div className={cn('p-3', isCollapsed && 'px-2')}>
           {/* User Card */}
           <div className={cn(
             'rounded-xl p-3 transition-colors',
@@ -465,41 +509,8 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
               )}
             </div>
           </div>
-
-          {/* Toggle Sidebar Button */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={onToggle}
-            title={isCollapsed ? 'Menyuni kengaytirish' : 'Menyuni yig\'ish'}
-            className={cn(
-              'w-full flex items-center justify-center rounded-xl font-medium transition-all',
-              isDark
-                ? 'bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white border border-gray-700'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900 border border-gray-200',
-              isCollapsed ? 'p-2.5' : 'gap-2 px-4 py-2.5'
-            )}
-          >
-            {isCollapsed ? <FiChevronRight size={16} /> : <FiChevronLeft size={16} />}
-            {!isCollapsed && <span className="text-sm">Collapse</span>}
-          </motion.button>
-
-          {/* Logout Button */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={logout}
-            title={isCollapsed ? 'Chiqish' : undefined}
-            className={cn(
-              'w-full flex items-center justify-center rounded-xl font-medium transition-all',
-              'bg-red-500 hover:bg-red-600 text-white',
-              isCollapsed ? 'p-2.5' : 'gap-2 px-4 py-2.5'
-            )}
-          >
-            <FiLogOut size={16} />
-            {!isCollapsed && <span className="text-sm">Chiqish</span>}
-          </motion.button>
         </div>
+        </motion.div>
       </div>
     </motion.aside>
   )

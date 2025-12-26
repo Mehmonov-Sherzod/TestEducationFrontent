@@ -27,6 +27,7 @@ import {
   FiPlay,
 } from 'react-icons/fi'
 import { FaTelegram } from 'react-icons/fa'
+import { EarthOrbitAnimation } from '@components/shared/EarthOrbitAnimation'
 
 export const AuthPage = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -178,36 +179,14 @@ export const AuthPage = () => {
                 })}
               </div>
             </motion.div>
-            {/* Right Content - Images */}
+            {/* Right Content - Earth Orbit Animation */}
             <motion.div
-              className="relative hidden lg:block"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
+              className="relative hidden lg:flex items-center justify-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="relative flex justify-center -space-x-12">
-                <motion.img
-                  src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=90"
-                  alt="Online test"
-                  className="w-56 h-72 object-cover rounded-2xl shadow-2xl border-4 border-white -rotate-6"
-                  whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
-                  style={{ zIndex: 1 }}
-                />
-                <motion.img
-                  src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=90"
-                  alt="Books"
-                  className="w-56 h-72 object-cover rounded-2xl shadow-2xl border-4 border-white rotate-3"
-                  whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
-                  style={{ zIndex: 2 }}
-                />
-                <motion.img
-                  src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=600&q=90"
-                  alt="Student"
-                  className="w-56 h-72 object-cover rounded-2xl shadow-2xl border-4 border-white -rotate-3"
-                  whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
-                  style={{ zIndex: 3 }}
-                />
-              </div>
+              <EarthOrbitAnimation />
             </motion.div>
           </div>
         </div>

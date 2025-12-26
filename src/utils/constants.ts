@@ -85,4 +85,5 @@ export const ROUTES = {
   BALANCE_SETTINGS: '/balance-settings',
   CHANGE_PASSWORD: '/change-password',
   MY_BALANCE: '/my-balance',
+  SETTINGS: '/settings',
 } as const

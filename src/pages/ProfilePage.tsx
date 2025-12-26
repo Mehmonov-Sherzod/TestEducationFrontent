@@ -142,8 +142,8 @@ export const ProfilePage = () => {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <div className="max-w-4xl">
+    <div className="px-1 py-6">
+      <div className="w-full">
         {/* Profile Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

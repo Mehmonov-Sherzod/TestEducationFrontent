@@ -13,24 +13,45 @@ export interface StartTestMixed30Request {
 }
 
 export interface StartTestMixed30Response {
-  TestProcsessId: string
-  TotalQuestions: number
+  Id: string
+  UserId: string
+  StartedAt: string
+  EndsAt: string
   UserQuestions: UserQuestionResponse[]
 }
 
 export interface UserQuestionResponse {
   Id: string
-  QuestionId: string
+  UserQuestionId: string
   QuestionText: string
-  TextProcessId: string
   UserQuestionAnswers: UserQuestionAnswerResponse[]
 }
 
 export interface UserQuestionAnswerResponse {
-  Id: string
-  UserQuestionId: string
-  IsMarked: boolean
+  UserQuestionAnswerId: string
   AnswerText: string
+  IsCorrect: boolean
+  IsMarked: boolean
+}
+
+// FinishTest API types
+export interface FinishTestRequest {
+  TestProcessId: string
+  userQuestionFinishes: UserQuestionFinish[]
+}
+
+export interface UserQuestionFinish {
+  UserQuestionId: string
+  MarkedAnsewrId: string
+}
+
+// FinishTest Response
+export interface FinishTestResult {
+  TotalQuestions: number
+  Correct: number
+  Incorrect: number
+  PercentageOfCorrectAnswers: number
+  TotalScore: number
 }
 
 export interface UserTest {

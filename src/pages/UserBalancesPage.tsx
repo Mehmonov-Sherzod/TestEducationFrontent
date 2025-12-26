@@ -177,7 +177,7 @@ export const UserBalancesPage = () => {
   const totalPages = Math.ceil(totalCount / pageSize)
 
   return (
-    <div className="py-4 sm:py-8 px-2 sm:px-4 max-w-7xl mx-auto">
+    <div className="py-6 px-1 w-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 sm:mb-8">
         <div>
