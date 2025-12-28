@@ -79,13 +79,15 @@ export const SettingsPage = () => {
             <button
               onClick={() => setTheme(isDark ? 'light' : 'dark')}
               className={cn(
-                'px-4 py-2 rounded-lg text-sm font-medium transition-all',
-                isDark
-                  ? 'bg-[#1a1a1a] hover:bg-[#222] text-white border border-gray-700'
-                  : 'bg-white hover:bg-gray-50 text-gray-700 border border-gray-300'
+                'relative w-12 h-7 rounded-full transition-all duration-300',
+                isDark ? 'bg-blue-500' : 'bg-gray-300'
               )}
             >
-              {isDark ? 'Kunduzgi rejim' : 'Tungi rejim'}
+              <motion.div
+                className="absolute top-1 w-5 h-5 rounded-full bg-white shadow-md"
+                animate={{ left: isDark ? '26px' : '4px' }}
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              />
             </button>
           </div>
         </motion.div>

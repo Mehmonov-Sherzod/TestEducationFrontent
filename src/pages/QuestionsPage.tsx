@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   FiHelpCircle,
@@ -19,6 +19,9 @@ import { useTheme } from '@contexts/ThemeContext'
 import toast from 'react-hot-toast'
 import { questionService } from '@api/question.service'
 import { QuestionResponse, QuestionLevel, CreateAnswerData } from '@appTypes/question.types'
+import { MathToolbar } from '@components/MathToolbar'
+import { MathRenderer } from '@components/MathRenderer'
+import { MathInput, MathInputRef } from '@components/MathInput'
 
 interface Subject {
   Id: string
@@ -64,6 +67,13 @@ export const QuestionsPage = () => {
 
   // Modal topics (separate from filter topics)
   const [modalTopics, setModalTopics] = useState<Topic[]>([])
+
+  // Math input state
+  const [activeInput, setActiveInput] = useState<'question' | `answer-${number}` | `edit-answer-${number}` | 'edit-question' | null>(null)
+  const questionInputRef = useRef<MathInputRef>(null)
+  const answerInputRefs = useRef<(MathInputRef | null)[]>([])
+  const editQuestionInputRef = useRef<MathInputRef>(null)
+  const editAnswerInputRefs = useRef<(MathInputRef | null)[]>([])
 
   // Create form state
   const [questionForm, setQuestionForm] = useState({
@@ -374,6 +384,24 @@ export const QuestionsPage = () => {
     setQuestionForm({ ...questionForm, answers: newAnswers })
   }
 
+  // Insert LaTeX into active input using refs
+  const handleInsertLatex = (latex: string) => {
+    // If no active input, default to question
+    const target = activeInput || 'question'
+
+    if (target === 'question') {
+      questionInputRef.current?.insertAtCursor(latex)
+    } else if (target === 'edit-question') {
+      editQuestionInputRef.current?.insertAtCursor(latex)
+    } else if (target.startsWith('answer-')) {
+      const index = parseInt(target.split('-')[1])
+      answerInputRefs.current[index]?.insertAtCursor(latex)
+    } else if (target.startsWith('edit-answer-')) {
+      const index = parseInt(target.split('-')[2])
+      editAnswerInputRefs.current[index]?.insertAtCursor(latex)
+    }
+  }
+
   const totalPages = Math.ceil(totalCount / pageSize)
 
   const getLevelColor = (level: QuestionLevel) => {
@@ -390,7 +418,7 @@ export const QuestionsPage = () => {
   }
 
   return (
-    <div className="py-4 sm:py-8 px-2 sm:px-4 max-w-7xl mx-auto">
+    <div className="w-full py-2">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
@@ -540,9 +568,9 @@ export const QuestionsPage = () => {
                           {question.Answers.length} javob
                         </span>
                       </div>
-                      <h3 className={`text-sm sm:text-base font-medium line-clamp-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {question.QuestionText}
-                      </h3>
+                      <div className={`text-sm sm:text-base font-medium line-clamp-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        <MathRenderer text={question.QuestionText} />
+                      </div>
                     </div>
                     <motion.div
                       animate={{ rotate: expandedQuestion === index ? 180 : 0 }}
@@ -616,7 +644,7 @@ export const QuestionsPage = () => {
                                 <span className={`font-semibold flex-shrink-0 ${isDark ? 'text-cyan-400' : 'text-blue-600'}`}>
                                   {String.fromCharCode(65 + aIndex)}.
                                 </span>
-                                <span>{answer.AnswerText}</span>
+                                <MathRenderer text={answer.AnswerText} />
                               </div>
                             ))}
                           </div>
@@ -733,15 +761,28 @@ export const QuestionsPage = () => {
                 </div>
                 </div>
 
-                {/* Question Text */}
+                {/* Question Text with Math Toolbar */}
                 <div>
-                  <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Question Text *</label>
-                  <textarea
+                  <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+                    <label className={`text-xs sm:text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      Savol matni * <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>(Formulalar avtomatik chiroyli ko'rinadi)</span>
+                    </label>
+                  </div>
+
+                  {/* Math Toolbar */}
+                  <div className="mb-2">
+                    <MathToolbar onInsert={handleInsertLatex} isDark={isDark} />
+                  </div>
+
+                  <MathInput
+                    ref={questionInputRef}
                     value={questionForm.questionText}
-                    onChange={(e) => setQuestionForm({ ...questionForm, questionText: e.target.value })}
+                    onChange={(value) => setQuestionForm({ ...questionForm, questionText: value })}
+                    onFocus={() => setActiveInput('question')}
+                    placeholder="Savolingizni kiriting... (Matematik formula uchun: $x^2 + y^2 = z^2$)"
+                    isDark={isDark}
+                    multiline
                     rows={3}
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
-                    placeholder="Enter your question..."
                   />
                 </div>
 
@@ -783,7 +824,9 @@ export const QuestionsPage = () => {
 
                 {/* Answers */}
                 <div>
-                  <label className={`block text-xs sm:text-sm font-medium mb-2 sm:mb-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Answers * (Select correct answer)</label>
+                  <label className={`block text-xs sm:text-sm font-medium mb-2 sm:mb-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    Javoblar * (To'g'ri javobni tanlang)
+                  </label>
                   <div className="space-y-2 sm:space-y-3">
                     {questionForm.answers.map((answer, index) => (
                       <div key={index} className="flex items-center gap-2 sm:gap-3">
@@ -807,13 +850,16 @@ export const QuestionsPage = () => {
                             {String.fromCharCode(65 + index)}
                           </span>
                         </div>
-                        <input
-                          type="text"
-                          value={answer.text}
-                          onChange={(e) => handleAnswerChange(index, 'text', e.target.value)}
-                          placeholder={`Answer ${String.fromCharCode(65 + index)}`}
-                          className={`flex-1 min-w-0 px-3 sm:px-4 py-2 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${isDark ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:ring-cyan-500/50 focus:border-cyan-500' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-blue-500'}`}
-                        />
+                        <div className="flex-1 min-w-0">
+                          <MathInput
+                            ref={(el) => (answerInputRefs.current[index] = el)}
+                            value={answer.text}
+                            onChange={(value) => handleAnswerChange(index, 'text', value)}
+                            onFocus={() => setActiveInput(`answer-${index}`)}
+                            placeholder={`Javob ${String.fromCharCode(65 + index)} (masalan: $\\frac{1}{2}$)`}
+                            isDark={isDark}
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>

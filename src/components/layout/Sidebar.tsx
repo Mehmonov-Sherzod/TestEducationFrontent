@@ -99,7 +99,6 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
       path: ROUTES.RESULTS,
       label: 'Natijalar',
       icon: <FiBarChart2 size={20} />,
-      requiredPermissions: ['ViewResults', 'ViewOwnResults'],
       category: 'testing',
     },
     {

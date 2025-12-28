@@ -264,7 +264,7 @@ export const SubjectsPage = () => {
   const totalPages = Math.ceil(totalCount / pageSize)
 
   return (
-    <div className="py-4 sm:py-8 px-2 sm:px-4 max-w-7xl mx-auto">
+    <div className="w-full py-2">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>

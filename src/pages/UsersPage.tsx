@@ -14,13 +14,14 @@ import {
   FiChevronRight,
   FiShield,
   FiKey,
+  FiEdit2,
 } from 'react-icons/fi'
 import { useAuthStore } from '@store/authStore'
 import { useTheme } from '@contexts/ThemeContext'
 import toast from 'react-hot-toast'
 
 interface User {
-  Id: number
+  Id: string
   FullName: string
   Email: string
   PhoneNumber: string
@@ -36,6 +37,13 @@ interface PaginationResult {
   HasNext: boolean
 }
 
+// Role GUIDs
+const ROLES = {
+  SuperAdmin: '00000011-0000-0000-0000-000000000001',
+  Admin: '00000012-0000-0000-0000-000000000001',
+  Student: '00000013-0000-0000-0000-000000000001',
+}
+
 export const UsersPage = () => {
   const { token, user } = useAuthStore()
   const { theme } = useTheme()
@@ -49,6 +57,11 @@ export const UsersPage = () => {
   const [totalCount, setTotalCount] = useState(0)
   const [hasPrevious, setHasPrevious] = useState(false)
   const [hasNext, setHasNext] = useState(false)
+
+  // Role edit state
+  const [isEditingRole, setIsEditingRole] = useState(false)
+  const [editingUser, setEditingUser] = useState<User | null>(null)
+  const [selectedRoleId, setSelectedRoleId] = useState('')
 
   // Check user role and permissions
   // SuperAdmin has: ALL permissions (ManageUsers, ManageAdmins, SystemSettings, etc.)
@@ -238,7 +251,7 @@ export const UsersPage = () => {
   }
 
   // Delete user
-  const handleDeleteUser = async (userId: number, userName: string) => {
+  const handleDeleteUser = async (userId: string, userName: string) => {
     if (!canAccessUsers) {
       toast.error('No permission to delete users')
       return
@@ -272,6 +285,51 @@ export const UsersPage = () => {
       console.error('Failed to delete user:', error)
       toast.error('An error occurred while deleting user')
     }
+  }
+
+  // Update user role
+  const handleUpdateRole = async () => {
+    if (!editingUser || !selectedRoleId) {
+      toast.error('Iltimos, rol tanlang')
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/User/${editingUser.Id}-Update-Role-User`, {
+        method: 'PUT',
+        headers: {
+          'accept': '*/*',
+          'Accept-Language': 'en-US',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ RoleId: selectedRoleId, UserId: editingUser.Id }),
+      })
+
+      const data = await response.json()
+      console.log('=== Update Role Response ===', data)
+
+      if (data.Succeeded) {
+        toast.success('Rol muvaffaqiyatli yangilandi!')
+        setIsEditingRole(false)
+        setEditingUser(null)
+        setSelectedRoleId('')
+        fetchUsers()
+      } else {
+        const errorMessage = data.Errors?.join(', ') || 'Rolni yangilashda xatolik'
+        toast.error(errorMessage)
+      }
+    } catch (error) {
+      console.error('Failed to update role:', error)
+      toast.error('Rolni yangilashda xatolik yuz berdi')
+    }
+  }
+
+  // Open role edit modal
+  const openRoleEditModal = (u: User) => {
+    setEditingUser(u)
+    setSelectedRoleId(ROLES.Student) // Default to Student
+    setIsEditingRole(true)
   }
 
   const totalPages = Math.ceil(totalCount / pageSize)
@@ -390,13 +448,24 @@ export const UsersPage = () => {
                         {u.PhoneNumber || 'N/A'}
                       </td>
                       <td className="px-4 lg:px-6 py-3 lg:py-4 text-right">
-                        <button
-                          onClick={() => handleDeleteUser(u.Id, u.FullName)}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm ${isDark ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' : 'bg-red-100 hover:bg-red-200 text-red-600'}`}
-                        >
-                          <FiTrash2 className="w-4 h-4" />
-                          Delete
-                        </button>
+                        <div className="flex items-center justify-end gap-2">
+                          {isSuperAdmin && (
+                            <button
+                              onClick={() => openRoleEditModal(u)}
+                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm ${isDark ? 'bg-blue-500/20 hover:bg-blue-500/30 text-blue-400' : 'bg-blue-100 hover:bg-blue-200 text-blue-600'}`}
+                            >
+                              <FiEdit2 className="w-4 h-4" />
+                              Rol
+                            </button>
+                          )}
+                          <button
+                            onClick={() => handleDeleteUser(u.Id, u.FullName)}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm ${isDark ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' : 'bg-red-100 hover:bg-red-200 text-red-600'}`}
+                          >
+                            <FiTrash2 className="w-4 h-4" />
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </motion.tr>
                   ))}
@@ -434,12 +503,22 @@ export const UsersPage = () => {
                         </p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => handleDeleteUser(u.Id, u.FullName)}
-                      className={`p-2 rounded-lg transition-colors flex-shrink-0 ${isDark ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' : 'bg-red-100 hover:bg-red-200 text-red-600'}`}
-                    >
-                      <FiTrash2 className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      {isSuperAdmin && (
+                        <button
+                          onClick={() => openRoleEditModal(u)}
+                          className={`p-2 rounded-lg transition-colors ${isDark ? 'bg-blue-500/20 hover:bg-blue-500/30 text-blue-400' : 'bg-blue-100 hover:bg-blue-200 text-blue-600'}`}
+                        >
+                          <FiEdit2 className="w-4 h-4" />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDeleteUser(u.Id, u.FullName)}
+                        className={`p-2 rounded-lg transition-colors ${isDark ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' : 'bg-red-100 hover:bg-red-200 text-red-600'}`}
+                      >
+                        <FiTrash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -601,6 +680,76 @@ export const UsersPage = () => {
                     Yaratish
                   </button>
                 </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Role Modal */}
+      <AnimatePresence>
+        {isEditingRole && editingUser && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={() => setIsEditingRole(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className={`rounded-xl shadow-2xl border p-6 max-w-sm w-full ${isDark ? 'bg-[#151515] border-gray-600/30' : 'bg-white border-gray-200'}`}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h2 className={`text-lg font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <FiShield className={`w-5 h-5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+                  Rolni o'zgartirish
+                </h2>
+                <button
+                  onClick={() => setIsEditingRole(false)}
+                  className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-white/10' : 'hover:bg-gray-100'}`}
+                >
+                  <FiX className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
+                </button>
+              </div>
+
+              <div className="mb-4">
+                <p className={`text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Foydalanuvchi:</p>
+                <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{editingUser.FullName}</p>
+                <p className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{editingUser.Email}</p>
+              </div>
+
+              <div className="mb-6">
+                <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Yangi rol</label>
+                <select
+                  value={selectedRoleId}
+                  onChange={(e) => setSelectedRoleId(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${isDark ? 'bg-[#1a1a1a] border-gray-600/30 text-white focus:ring-blue-500/50' : 'bg-gray-50 border-gray-200 text-gray-900 focus:ring-blue-500'}`}
+                >
+                  <option value="" disabled>Rol tanlang</option>
+                  <option value={ROLES.Student}>Student</option>
+                  <option value={ROLES.Admin}>Admin</option>
+                  <option value={ROLES.SuperAdmin}>SuperAdmin</option>
+                </select>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setIsEditingRole(false)}
+                  className={`flex-1 py-2.5 rounded-lg font-medium transition-colors ${isDark ? 'bg-[#1a1a1a] text-gray-300 hover:bg-[#252525]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                >
+                  Bekor qilish
+                </button>
+                <button
+                  onClick={handleUpdateRole}
+                  disabled={!selectedRoleId}
+                  className={`flex-1 py-2.5 rounded-lg font-medium text-white transition-colors disabled:opacity-50 ${isDark ? 'bg-blue-500 hover:bg-blue-600' : 'bg-blue-600 hover:bg-blue-700'}`}
+                >
+                  Saqlash
+                </button>
               </div>
             </motion.div>
           </motion.div>

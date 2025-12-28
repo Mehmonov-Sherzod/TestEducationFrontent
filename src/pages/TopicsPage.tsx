@@ -324,7 +324,7 @@ export const TopicsPage = () => {
   const totalPages = Math.ceil(totalCount / pageSize)
 
   return (
-    <div className="py-4 sm:py-8 px-2 sm:px-4 max-w-7xl mx-auto">
+    <div className="w-full py-2">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}

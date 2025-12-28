@@ -141,4 +141,14 @@ export const userService = {
       NewPassword: data.newPassword,
     })
   },
+
+  /**
+   * Update user role
+   * PUT /api/User/{userId}-Update-Role-User
+   */
+  updateUserRole: async (userId: string, roleId: string): Promise<ApiResponse<any>> => {
+    return api.put(`/api/User/${userId}-Update-Role-User`, {
+      RoleId: roleId,
+    })
+  },
 }
