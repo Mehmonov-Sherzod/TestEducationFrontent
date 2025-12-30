@@ -11,32 +11,16 @@ import {
   FiShield,
   FiKey,
   FiUser,
-  FiGlobe,
   FiAlertTriangle,
 } from 'react-icons/fi'
 import { useAuthStore } from '@store/authStore'
 import { useTheme } from '@contexts/ThemeContext'
 import toast from 'react-hot-toast'
 
-interface SubjectTranslate {
-  ColumnName: string
-  TranslateText: string
-}
-
 interface Subject {
   Id?: number
   SubjectName: string
-  Translates?: SubjectTranslate[]
 }
-
-
-type Language = 'uz' | 'rus' | 'eng'
-
-const LANGUAGES = [
-  { code: 'uz' as Language, label: 'O\'zbekcha', flag: '🇺🇿' },
-  { code: 'rus' as Language, label: 'Русский', flag: '🇷🇺' },
-  { code: 'eng' as Language, label: 'English', flag: '🇬🇧' },
-]
 
 export const SubjectsPage = () => {
   const { token, user } = useAuthStore()
@@ -52,7 +36,6 @@ export const SubjectsPage = () => {
   const [totalCount, setTotalCount] = useState(0)
   const [_hasPrevious, setHasPrevious] = useState(false)
   const [_hasNext, setHasNext] = useState(false)
-  const [selectedLanguage, setSelectedLanguage] = useState<Language>('uz')
   const [deletingSubject, setDeletingSubject] = useState<{ Id: number; Name: string } | null>(null)
 
   // Check permissions
@@ -65,31 +48,33 @@ export const SubjectsPage = () => {
 
   // Create/Edit form state
   const [subjectForm, setSubjectForm] = useState({
-    name_uz: '',
-    name_rus: '',
-    name_eng: '',
+    name: '',
   })
 
-  // All subjects (for client-side pagination)
-  const [allSubjects, setAllSubjects] = useState<Subject[]>([])
-
-  // Fetch all subjects
+  // Fetch subjects with pagination
   const fetchSubjects = async () => {
     try {
       setIsLoading(true)
-      const response = await fetch(`/api/Subject/get-all`, {
-        method: 'GET',
+      const response = await fetch(`/api/Subject/get-all-page`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
-          'lang': selectedLanguage,
         },
+        body: JSON.stringify({
+          PageNumber: currentPage,
+          PageSize: pageSize,
+          Search: searchQuery.trim(),
+        }),
       })
 
       const data = await response.json()
 
       if (data.Succeeded && data.Result) {
-        setAllSubjects(data.Result)
+        setSubjects(data.Result.Values || [])
+        setTotalCount(data.Result.TotalCount || 0)
+        setHasPrevious(data.Result.HasPrevious || false)
+        setHasNext(data.Result.HasNext || false)
       } else {
         toast.error('Failed to fetch subjects')
       }
@@ -101,37 +86,9 @@ export const SubjectsPage = () => {
     }
   }
 
-  // Apply client-side filtering and pagination
-  useEffect(() => {
-    let filtered = allSubjects
-
-    // Filter by search query
-    if (searchQuery.trim()) {
-      filtered = allSubjects.filter(subject =>
-        subject.SubjectName.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    }
-
-    setTotalCount(filtered.length)
-
-    // Apply pagination
-    const startIndex = (currentPage - 1) * pageSize
-    const endIndex = startIndex + pageSize
-    setSubjects(filtered.slice(startIndex, endIndex))
-
-    // Update pagination state
-    setHasPrevious(currentPage > 1)
-    setHasNext(endIndex < filtered.length)
-  }, [allSubjects, searchQuery, currentPage, pageSize])
-
   useEffect(() => {
     fetchSubjects()
-  }, [selectedLanguage])
-
-  // Reset to page 1 when search changes
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [searchQuery])
+  }, [currentPage, pageSize, searchQuery])
 
   // Create subject
   const handleCreateSubject = async () => {
@@ -140,8 +97,8 @@ export const SubjectsPage = () => {
       return
     }
 
-    if (!subjectForm.name_uz || !subjectForm.name_rus || !subjectForm.name_eng) {
-      toast.error('Please enter subject name in all 3 languages')
+    if (!subjectForm.name.trim()) {
+      toast.error('Please enter subject name')
       return
     }
 
@@ -153,12 +110,7 @@ export const SubjectsPage = () => {
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
-          Name: subjectForm.name_uz,
-          SubjectTranslates: [
-            { LanguageId: 0, ColumnName: 'SubjectName', TranslateText: subjectForm.name_uz },
-            { LanguageId: 1, ColumnName: 'SubjectName', TranslateText: subjectForm.name_rus },
-            { LanguageId: 2, ColumnName: 'SubjectName', TranslateText: subjectForm.name_eng },
-          ],
+          Name: subjectForm.name.trim(),
         }),
       })
 
@@ -167,7 +119,7 @@ export const SubjectsPage = () => {
       if (data.Succeeded) {
         toast.success('Subject created successfully!')
         setIsCreating(false)
-        setSubjectForm({ name_uz: '', name_rus: '', name_eng: '' })
+        setSubjectForm({ name: '' })
         fetchSubjects()
       } else {
         const errorMessage = data.Errors?.join(', ') || 'Failed to create subject'
@@ -186,8 +138,8 @@ export const SubjectsPage = () => {
       return
     }
 
-    if (!subjectForm.name_uz || !subjectForm.name_rus || !subjectForm.name_eng) {
-      toast.error('Please enter subject name in all 3 languages')
+    if (!subjectForm.name.trim()) {
+      toast.error('Please enter subject name')
       return
     }
 
@@ -199,12 +151,7 @@ export const SubjectsPage = () => {
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
-          SubjectNmae: subjectForm.name_uz,
-          UpdateSubjectTranslateModels: [
-            { Id: 0, LanguageId: 0, ColumnName: 'SubjectName', TranslateText: subjectForm.name_uz },
-            { Id: 0, LanguageId: 1, ColumnName: 'SubjectName', TranslateText: subjectForm.name_rus },
-            { Id: 0, LanguageId: 2, ColumnName: 'SubjectName', TranslateText: subjectForm.name_eng },
-          ],
+          SubjectNmae: subjectForm.name.trim(),
         }),
       })
 
@@ -213,7 +160,7 @@ export const SubjectsPage = () => {
       if (data.Succeeded) {
         toast.success('Subject updated successfully!')
         setEditingSubject(null)
-        setSubjectForm({ name_uz: '', name_rus: '', name_eng: '' })
+        setSubjectForm({ name: '' })
         fetchSubjects()
       } else {
         const errorMessage = data.Errors?.join(', ') || 'Failed to update subject'
@@ -313,33 +260,6 @@ export const SubjectsPage = () => {
         )}
       </div>
 
-      {/* Language Selector */}
-      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-        <div className="flex items-center gap-2">
-          <FiGlobe className={isDark ? 'text-blue-400' : 'text-gray-600'} />
-          <span className={`font-medium text-sm sm:text-base ${isDark ? 'text-white' : 'text-gray-700'}`}>Language:</span>
-        </div>
-        <div className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-1">
-          {LANGUAGES.map((lang) => (
-            <button
-              key={lang.code}
-              onClick={() => setSelectedLanguage(lang.code)}
-              className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm whitespace-nowrap ${
-                selectedLanguage === lang.code
-                  ? isDark
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-blue-600 text-white'
-                  : isDark
-                    ? 'bg-[#151515] text-gray-300 hover:bg-[#1a1a1a] border border-gray-600/30'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-              }`}
-            >
-              {lang.flag} <span className="hidden sm:inline">{lang.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Search */}
       <div className="mb-4 sm:mb-6">
         <div className="relative w-full sm:max-w-md">
@@ -347,7 +267,10 @@ export const SubjectsPage = () => {
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value)
+              setCurrentPage(1)
+            }}
             placeholder="Search subjects..."
             className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all text-sm sm:text-base ${
               isDark
@@ -387,7 +310,7 @@ export const SubjectsPage = () => {
                 #
               </div>
               <div className={`col-span-8 text-sm font-semibold ${isDark ? 'text-blue-400' : 'text-gray-600'}`}>
-                Subject Name ({selectedLanguage === 'uz' ? "O'zbekcha" : selectedLanguage === 'rus' ? 'Русский' : 'English'})
+                Subject Name
               </div>
               {canManageSubjects && (
                 <div className={`col-span-3 text-sm font-semibold text-right ${isDark ? 'text-blue-400' : 'text-gray-600'}`}>
@@ -420,9 +343,7 @@ export const SubjectsPage = () => {
                         onClick={() => {
                           setEditingSubject(subject)
                           setSubjectForm({
-                            name_uz: subject.SubjectName,
-                            name_rus: subject.SubjectName,
-                            name_eng: subject.SubjectName,
+                            name: subject.SubjectName,
                           })
                         }}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -484,9 +405,7 @@ export const SubjectsPage = () => {
                       onClick={() => {
                         setEditingSubject(subject)
                         setSubjectForm({
-                          name_uz: subject.SubjectName,
-                          name_rus: subject.SubjectName,
-                          name_eng: subject.SubjectName,
+                          name: subject.SubjectName,
                         })
                       }}
                       className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
@@ -647,53 +566,19 @@ export const SubjectsPage = () => {
 
               <div className="space-y-3 sm:space-y-4">
                 <div>
-                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇺🇿 O'zbekcha *
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Subject Name *
                   </label>
                   <input
                     type="text"
-                    value={subjectForm.name_uz}
-                    onChange={(e) => setSubjectForm({ ...subjectForm, name_uz: e.target.value })}
+                    value={subjectForm.name}
+                    onChange={(e) => setSubjectForm({ ...subjectForm, name: e.target.value })}
                     className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
                       isDark
                         ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-gray-500/50 focus:border-gray-500'
                         : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
                     }`}
                     placeholder="Matematika"
-                  />
-                </div>
-
-                <div>
-                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇷🇺 Русский *
-                  </label>
-                  <input
-                    type="text"
-                    value={subjectForm.name_rus}
-                    onChange={(e) => setSubjectForm({ ...subjectForm, name_rus: e.target.value })}
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
-                      isDark
-                        ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-gray-500/50 focus:border-gray-500'
-                        : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
-                    }`}
-                    placeholder="Математика"
-                  />
-                </div>
-
-                <div>
-                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇬🇧 English *
-                  </label>
-                  <input
-                    type="text"
-                    value={subjectForm.name_eng}
-                    onChange={(e) => setSubjectForm({ ...subjectForm, name_eng: e.target.value })}
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
-                      isDark
-                        ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-gray-500/50 focus:border-gray-500'
-                        : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
-                    }`}
-                    placeholder="Mathematics"
                   />
                 </div>
 
@@ -819,53 +704,19 @@ export const SubjectsPage = () => {
 
               <div className="space-y-3 sm:space-y-4">
                 <div>
-                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇺🇿 O'zbekcha *
+                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Subject Name *
                   </label>
                   <input
                     type="text"
-                    value={subjectForm.name_uz}
-                    onChange={(e) => setSubjectForm({ ...subjectForm, name_uz: e.target.value })}
+                    value={subjectForm.name}
+                    onChange={(e) => setSubjectForm({ ...subjectForm, name: e.target.value })}
                     className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
                       isDark
                         ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-gray-500/50 focus:border-gray-500'
                         : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
                     }`}
                     placeholder="Matematika"
-                  />
-                </div>
-
-                <div>
-                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇷🇺 Русский *
-                  </label>
-                  <input
-                    type="text"
-                    value={subjectForm.name_rus}
-                    onChange={(e) => setSubjectForm({ ...subjectForm, name_rus: e.target.value })}
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
-                      isDark
-                        ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-gray-500/50 focus:border-gray-500'
-                        : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
-                    }`}
-                    placeholder="Математика"
-                  />
-                </div>
-
-                <div>
-                  <label className={`block text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    🇬🇧 English *
-                  </label>
-                  <input
-                    type="text"
-                    value={subjectForm.name_eng}
-                    onChange={(e) => setSubjectForm({ ...subjectForm, name_eng: e.target.value })}
-                    className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border focus:outline-none focus:ring-2 text-sm sm:text-base ${
-                      isDark
-                        ? 'bg-[#1a1a1a] border-gray-600/30 text-white placeholder-gray-500 focus:ring-gray-500/50 focus:border-gray-500'
-                        : 'bg-gray-50 border-gray-200 text-black placeholder-gray-400 focus:ring-blue-500'
-                    }`}
-                    placeholder="Mathematics"
                   />
                 </div>
 
