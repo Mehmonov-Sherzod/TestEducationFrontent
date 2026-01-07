@@ -93,15 +93,21 @@ export const QuestionsPage = () => {
   // Fetch subjects
   const fetchSubjects = async () => {
     try {
-      const response = await fetch(`/api/Subject/get-all`, {
+      const response = await fetch(`/api/Subject/get-all-page`, {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
-          'lang': selectedLanguage,
         },
+        body: JSON.stringify({
+          PageNumber: 1,
+          PageSize: 1000,
+          Search: '',
+        }),
       })
       const data = await response.json()
-      if (data.Succeeded && data.Result) {
-        setSubjects(data.Result)
+      if (data.Succeeded && data.Result?.Values) {
+        setSubjects(data.Result.Values)
       }
     } catch (error) {
       console.error('Failed to fetch subjects:', error)

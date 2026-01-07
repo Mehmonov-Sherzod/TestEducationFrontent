@@ -17,6 +17,7 @@ import {
   FiChevronDown,
   FiDollarSign,
   FiSettings,
+  FiTarget,
 } from 'react-icons/fi'
 import { useAuth } from '@hooks/useAuth'
 import { ROUTES } from '@utils/constants'
@@ -93,6 +94,12 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
       path: ROUTES.TESTS,
       label: 'Testlar',
       icon: <FiClipboard size={20} />,
+      category: 'testing',
+    },
+    {
+      path: ROUTES.DTM_TEST,
+      label: 'DTM Test',
+      icon: <FiTarget size={20} />,
       category: 'testing',
     },
     {

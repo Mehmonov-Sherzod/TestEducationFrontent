@@ -77,6 +77,7 @@ export const ROUTES = {
   TOPICS: '/topics',
   QUESTIONS: '/questions',
   TESTS: '/tests',
+  DTM_TEST: '/dtm-test',
   RESULTS: '/results',
   USERS: '/users',
   PROFILE: '/profile',

@@ -45,15 +45,16 @@ export const ResultsPage = () => {
       console.log('Results API Response:', response)
 
       if (response.Succeeded && response.Result) {
-        // Handle both PascalCase and camelCase
-        const values = response.Result.Values || response.Result.values || []
-        const total = response.Result.TotalCount || response.Result.totalCount || values.length
+        // Handle both PascalCase and camelCase - cast to any for runtime fallback
+        const result = response.Result as any
+        const values = result.Values || result.values || []
+        const total = result.TotalCount || result.totalCount || values.length
         setResults(values)
         setTotalCount(total)
-        setHasNext(response.Result.HasNext || false)
-        setHasPrevious(response.Result.HasPrevious || false)
+        setHasNext(result.HasNext || false)
+        setHasPrevious(result.HasPrevious || false)
 
-        console.log('Pagination info:', { total, hasNext: response.Result.HasNext, hasPrevious: response.Result.HasPrevious })
+        console.log('Pagination info:', { total, hasNext: result.HasNext, hasPrevious: result.HasPrevious })
       }
     } catch (error) {
       console.error('Failed to fetch results:', error)
@@ -67,7 +68,8 @@ export const ResultsPage = () => {
     fetchResults()
   }, [currentPage, searchQuery])
 
-  const totalPages = Math.ceil(totalCount / pageSize)
+  // Total pages calculated but not needed for current pagination UI (uses hasNext/hasPrevious)
+  void Math.ceil(totalCount / pageSize)
 
   const getScoreColor = (percentage: number) => {
     if (percentage >= 70) return isDark ? 'text-green-400' : 'text-green-600'

@@ -7,7 +7,6 @@ import {
   FiSearch,
   FiX,
   FiUpload,
-  FiEye,
   FiFilter,
   FiChevronLeft,
   FiChevronRight,
@@ -98,7 +97,7 @@ export const LibraryPage = () => {
   // Fetch subjects
   const fetchSubjects = useCallback(async () => {
     try {
-      const response = await subjectService.getAll('uz')
+      const response = await subjectService.getAll()
       if (response.Succeeded && response.Result) {
         const values = Array.isArray(response.Result) ? response.Result : []
         setSubjects(

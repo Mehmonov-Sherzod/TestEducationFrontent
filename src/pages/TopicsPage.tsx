@@ -134,7 +134,7 @@ export const TopicsPage = () => {
   // Fetch subjects for dropdown
   const fetchSubjects = useCallback(async () => {
     try {
-      const response = await subjectService.getAll('uz')
+      const response = await subjectService.getAll()
       if (response.Succeeded && response.Result) {
         const subjectOptions: SubjectOption[] = response.Result.map((s: any) => ({
           id: s.Id,

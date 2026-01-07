@@ -7,6 +7,7 @@ import { EnhancedDashboard } from '@pages/EnhancedDashboard'
 import { SubjectsPage } from '@pages/SubjectsPage'
 import { QuestionsPage } from '@pages/QuestionsPage'
 import { TestsPage } from '@pages/TestsPage'
+import { DTMTestPage } from '@pages/DTMTestPage'
 import { ResultsPage } from '@pages/ResultsPage'
 import { UsersPage } from '@pages/UsersPage'
 import { ProfilePage } from '@pages/ProfilePage'
@@ -116,6 +117,7 @@ function AppContent() {
           <Route path={ROUTES.SUBJECTS} element={<SubjectsPage />} />
           <Route path={ROUTES.QUESTIONS} element={<QuestionsPage />} />
           <Route path={ROUTES.TESTS} element={<TestsPage />} />
+          <Route path={ROUTES.DTM_TEST} element={<DTMTestPage />} />
           <Route path={ROUTES.RESULTS} element={<ResultsPage />} />
           <Route path={ROUTES.USERS} element={<UsersPage />} />
           <Route path={ROUTES.PROFILE} element={<ProfilePage />} />

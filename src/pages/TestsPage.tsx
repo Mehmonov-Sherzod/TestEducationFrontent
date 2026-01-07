@@ -6,15 +6,11 @@ import {
   FiPlay,
   FiChevronLeft,
   FiChevronRight,
-  FiChevronDown,
   FiCheck,
   FiClock,
   FiX,
-  FiBook,
-  FiLayers,
   FiAward,
   FiTarget,
-  FiXCircle,
   FiRefreshCw,
 } from 'react-icons/fi'
 import { useTheme } from '@contexts/ThemeContext'
@@ -34,69 +30,9 @@ interface Topic {
   topicName: string
 }
 
-// Separate component for answers to avoid re-render issues
-interface AnswersListProps {
-  currentQuestion: any
-  selectedAnswers: Map<string, string>
-  onSelectAnswer: (questionId: string, answerId: string) => void
-  isDark: boolean
-}
-
-const AnswersList = ({ currentQuestion, selectedAnswers, onSelectAnswer, isDark }: AnswersListProps) => {
-  const questionId = String(currentQuestion.userQuestionId || currentQuestion.UserQuestionId || currentQuestion.id || currentQuestion.Id || 'q')
-  const answers = currentQuestion.userQuestionAnswers || currentQuestion.UserQuestionAnswers || []
-  const selectedIndex = selectedAnswers.get(questionId)
-
-  return (
-    <div className="space-y-2">
-      {answers.map((answer: any, idx: number) => {
-        const answerText = answer.answerText || answer.AnswerText || ''
-        const isSelected = selectedIndex === String(idx)
-
-        return (
-          <button
-            key={idx}
-            onClick={() => onSelectAnswer(questionId, String(idx))}
-            className={`w-full p-4 rounded-xl text-left flex items-center gap-3 transition-all ${
-              isSelected
-                ? isDark
-                  ? 'bg-blue-500/20 border border-blue-500'
-                  : 'bg-blue-50 border border-blue-500'
-                : isDark
-                  ? 'bg-[#111] border border-gray-800 hover:border-gray-700'
-                  : 'bg-white border border-gray-200 hover:border-gray-300'
-            }`}
-          >
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-semibold text-sm flex-shrink-0 ${
-              isSelected
-                ? 'bg-blue-500 text-white'
-                : isDark
-                  ? 'bg-gray-800 text-gray-400'
-                  : 'bg-gray-100 text-gray-500'
-            }`}>
-              {String.fromCharCode(65 + idx)}
-            </div>
-            <span className={`flex-1 ${
-              isSelected
-                ? isDark ? 'text-white' : 'text-gray-900'
-                : isDark ? 'text-gray-300' : 'text-gray-700'
-            }`}>
-              {answerText}
-            </span>
-            {isSelected && (
-              <FiCheck className={isDark ? 'text-blue-400' : 'text-blue-500'} size={18} />
-            )}
-          </button>
-        )
-      })}
-    </div>
-  )
-}
-
 export const TestsPage = () => {
-  const { theme } = useTheme()
+  useTheme() // Theme context available if needed
   const { token } = useAuthStore()
-  const isDark = theme === 'dark'
 
   // Selection state
   const [subjects, setSubjects] = useState<Subject[]>([])
@@ -117,15 +53,21 @@ export const TestsPage = () => {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const response = await fetch('/api/Subject/get-all', {
+        const response = await fetch('/api/Subject/get-all-page', {
+          method: 'POST',
           headers: {
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
-            'lang': 'uz',
           },
+          body: JSON.stringify({
+            PageNumber: 1,
+            PageSize: 1000,
+            Search: '',
+          }),
         })
         const data = await response.json()
-        if (data.Succeeded && data.Result) {
-          setSubjects(data.Result)
+        if (data.Succeeded && data.Result?.Values) {
+          setSubjects(data.Result.Values)
         }
       } catch (error) {
         console.error('Failed to fetch subjects:', error)
@@ -277,7 +219,7 @@ export const TestsPage = () => {
       const userQuestionFinishes: { UserQuestionId: string; MarkedAnsewrId: string }[] = []
 
       questions.forEach((q: any, qIdx: number) => {
-        // Get the question ID we used in AnswersList
+        // Get the question ID
         const questionId = String(q.userQuestionId || q.UserQuestionId || q.id || q.Id || '')
         const selectedIdx = selectedAnswers.get(questionId)
 
