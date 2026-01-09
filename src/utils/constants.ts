@@ -1,5 +1,5 @@
-// API Base URL - Use environment variable or default to localhost:5001
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://localhost:5001'
+// API Base URL - Use environment variable or default to localhost:5000
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
 
 // API endpoints
 export const API_ENDPOINTS = {
@@ -14,6 +14,9 @@ export const API_ENDPOINTS = {
     VERIFY_OTP: '/api/User/verify-otp',
     FORGOT_PASSWORD: '/api/User/Forget-Password',
     UPDATE_PASSWORD: '/api/User/{id}-Update-password',
+  },
+  AI: {
+    GET_MEANING: '/api/Ai/get-meaning',
   },
 } as const
 
@@ -87,4 +90,5 @@ export const ROUTES = {
   CHANGE_PASSWORD: '/change-password',
   MY_BALANCE: '/my-balance',
   SETTINGS: '/settings',
+  AI: '/ai',
 } as const

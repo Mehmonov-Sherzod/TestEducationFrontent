@@ -648,26 +648,34 @@ export const DTMTestPage = () => {
           </div>
 
           {/* Question content */}
-          <div className="flex-1 overflow-auto p-8">
-            <div className="max-w-3xl mx-auto">
-              <div className="mb-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
+          <div className="flex-1 overflow-auto p-6 lg:p-10">
+            <div className="max-w-2xl mx-auto">
+              {/* Question Card */}
+              <div className={`rounded-3xl p-6 lg:p-8 mb-6 ${
+                isDark
+                  ? 'bg-gradient-to-br from-[#12192b] to-[#0d1321] border border-gray-800/50'
+                  : 'bg-white shadow-xl shadow-gray-200/50 border border-gray-100'
+              }`}>
+                {/* Question Header */}
+                <div className="flex items-center gap-3 mb-6">
+                  <div className={`px-4 py-2 rounded-2xl text-sm font-bold ${
                     isDark
-                      ? 'bg-blue-500/10 border border-blue-500/30 text-blue-400'
-                      : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
+                      : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white'
                   }`}>
-                    Savol {currentQuestionIndex + 1} / {totalQuestions}
-                  </span>
-                  <span className={`px-3 py-1.5 rounded-full text-xs font-medium ${
+                    {currentQuestionIndex + 1} / {totalQuestions}
+                  </div>
+                  <div className={`px-3 py-1.5 rounded-xl text-xs font-semibold ${
                     isDark
-                      ? 'bg-purple-500/10 text-purple-400'
-                      : 'bg-purple-100 text-purple-600'
+                      ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                      : 'bg-indigo-50 text-indigo-600 border border-indigo-100'
                   }`}>
                     {currentQuestion?.subjectName}
-                  </span>
+                  </div>
                 </div>
-                <div className={`text-2xl leading-relaxed font-medium ${isDark ? 'text-white' : 'text-gray-800'}`}>
+
+                {/* Question Text */}
+                <div className={`text-lg lg:text-xl leading-relaxed ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>
                   <MathRenderer text={currentQuestion?.questionText || ''} />
                 </div>
               </div>
@@ -676,45 +684,54 @@ export const DTMTestPage = () => {
               <div className="space-y-3">
                 {currentQuestion?.userQuestionAnswers?.map((answer: DTMAnswer, idx: number) => {
                   const isSelected = selectedAnswers.get(currentQuestion.userQuestionId) === String(idx)
-                  const optionColors = isDark
-                    ? ['bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-orange-500']
-                    : ['bg-blue-500', 'bg-purple-500', 'bg-emerald-500', 'bg-orange-500']
+                  const letterColors = [
+                    { bg: 'from-blue-500 to-blue-600', light: 'bg-blue-500' },
+                    { bg: 'from-violet-500 to-purple-600', light: 'bg-violet-500' },
+                    { bg: 'from-emerald-500 to-green-600', light: 'bg-emerald-500' },
+                    { bg: 'from-amber-500 to-orange-600', light: 'bg-amber-500' },
+                  ]
                   return (
-                    <button
+                    <motion.button
                       key={idx}
                       onClick={() => handleSelectAnswer(currentQuestion.userQuestionId, String(idx))}
-                      className={`w-full p-5 rounded-2xl text-left flex items-center gap-4 transition-all transform hover:scale-[1.01] ${
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                      className={`w-full p-4 lg:p-5 rounded-2xl text-left flex items-center gap-4 transition-all duration-200 ${
                         isSelected
                           ? isDark
-                            ? 'bg-blue-500/15 border-2 border-blue-500 shadow-lg shadow-blue-500/20'
-                            : 'bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-400 shadow-lg shadow-blue-200/50'
+                            ? 'bg-gradient-to-r from-blue-600/20 to-indigo-600/20 border-2 border-blue-500 shadow-lg shadow-blue-500/10'
+                            : 'bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-400 shadow-lg shadow-blue-100'
                           : isDark
-                            ? 'bg-[#0d1321] border border-gray-700/50 hover:border-gray-600 hover:bg-[#111827]'
-                            : 'bg-white/80 backdrop-blur-sm border border-white hover:border-blue-200 hover:bg-white shadow-md hover:shadow-lg'
+                            ? 'bg-[#111827]/80 border border-gray-700/50 hover:border-gray-600 hover:bg-[#1a2332]'
+                            : 'bg-white border-2 border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-md'
                       }`}
                     >
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg flex-shrink-0 transition-all ${
+                      <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-bold text-base flex-shrink-0 transition-all ${
                         isSelected
-                          ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg'
+                          ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md'
                           : isDark
-                            ? 'bg-[#1a2234] text-gray-400'
-                            : `${optionColors[idx]} text-white shadow-md`
+                            ? `bg-gradient-to-br ${letterColors[idx].bg} text-white/90`
+                            : `${letterColors[idx].light} text-white shadow-sm`
                       }`}>
                         {String.fromCharCode(65 + idx)}
                       </div>
-                      <span className={`flex-1 text-base font-medium ${
+                      <span className={`flex-1 text-base ${
                         isSelected
-                          ? isDark ? 'text-white' : 'text-blue-900'
+                          ? isDark ? 'text-white font-medium' : 'text-blue-900 font-medium'
                           : isDark ? 'text-gray-300' : 'text-gray-700'
                       }`}>
                         <MathRenderer text={answer.answerText} />
                       </span>
-                      {isSelected && (
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-                          <FiCheck className="text-white" size={18} />
-                        </div>
-                      )}
-                    </button>
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                        isSelected
+                          ? 'bg-blue-500 border-blue-500'
+                          : isDark
+                            ? 'border-gray-600'
+                            : 'border-gray-300'
+                      }`}>
+                        {isSelected && <FiCheck className="text-white" size={14} />}
+                      </div>
+                    </motion.button>
                   )
                 })}
               </div>

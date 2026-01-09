@@ -1229,8 +1229,3 @@ export const LibraryPage = () => {
     </div>
   )
 }
-
-export default LibraryPage
-
-
-

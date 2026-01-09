@@ -18,6 +18,7 @@ import { BalanceSettingsPage } from '@pages/BalanceSettingsPage'
 import { ChangePasswordPage } from '@pages/ChangePasswordPage'
 import { MyBalancePage } from '@pages/MyBalancePage'
 import { SettingsPage } from '@pages/SettingsPage'
+import { AiPage } from '@pages/AiPage'
 import { AppLayout } from '@components/layout/AppLayout'
 import { ProtectedRoute } from '@components/layout/ProtectedRoute'
 import { PublicRoute } from '@components/layout/PublicRoute'
@@ -128,6 +129,7 @@ function AppContent() {
           <Route path={ROUTES.CHANGE_PASSWORD} element={<ChangePasswordPage />} />
           <Route path={ROUTES.MY_BALANCE} element={<MyBalancePage />} />
           <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
+          <Route path={ROUTES.AI} element={<AiPage />} />
         </Route>
 
         {/* Redirect any unknown routes to auth */}

@@ -102,13 +102,6 @@ export const UsersPage = () => {
 
   // Fetch users with pagination (All roles use this)
   const fetchUsers = async () => {
-    console.log('=== Fetching Users (Paginated) ===')
-    console.log('Using proxy for API calls')
-    console.log('Current page:', currentPage)
-    console.log('Page size:', pageSize)
-    console.log('Search query:', searchQuery)
-    console.log('Token:', token ? `${token.substring(0, 20)}...` : 'null')
-
     try {
       setIsLoading(true)
 
@@ -118,9 +111,6 @@ export const UsersPage = () => {
         PageSize: pageSize,
         Search: searchQuery,
       }
-
-      console.log('URL:', url)
-      console.log('Request body:', requestBody)
 
       const response = await fetch(url, {
         method: 'POST',
@@ -133,59 +123,34 @@ export const UsersPage = () => {
         body: JSON.stringify(requestBody),
       })
 
-      console.log('Response status:', response.status)
-      console.log('Response ok:', response.ok)
-
       if (!response.ok) {
-        const errorText = await response.text()
-        console.error('=== Response Error ===')
-        console.error('Status:', response.status)
-        console.error('Error text:', errorText)
         toast.error(`Failed to fetch users. Status: ${response.status}`)
         return
       }
 
       const data = await response.json()
-      console.log('=== Response Data ===', data)
 
-      // Backend returns PascalCase: Succeeded, Result, Errors
       if (data.Succeeded && data.Result) {
         const pagination: PaginationResult = data.Result
-        console.log('Pagination data:', pagination)
-        console.log('Users count:', pagination.Values?.length)
-
-        // Backend PaginationResult also uses PascalCase
         setUsers(pagination.Values || [])
         setTotalCount(pagination.TotalCount || 0)
         setHasPrevious(pagination.HasPrevious || false)
         setHasNext(pagination.HasNext || false)
       } else {
-        console.error('Response not successful:', data)
         const errorMessage = data.Errors?.join(', ') || data.message || 'Failed to fetch users'
         toast.error(errorMessage)
       }
     } catch (error) {
-      console.error('=== Fetch Users Exception ===', error)
       toast.error('Failed to load users')
     } finally {
       setIsLoading(false)
     }
   }
 
-  // This function is no longer used - all roles use pagination now
-
   useEffect(() => {
-    console.log('=== Users Page useEffect ===')
-    console.log('isSuperAdmin:', isSuperAdmin)
-    console.log('isAdmin:', isAdmin)
-    console.log('canAccessUsers:', canAccessUsers)
-    console.log('User permissions:', user?.permissions)
-
     if (canAccessUsers) {
-      console.log('Fetching paginated users')
-      fetchUsers() // All roles use pagination
+      fetchUsers()
     } else {
-      console.log('No permissions to fetch users')
       setIsLoading(false)
     }
   }, [currentPage, searchQuery])
@@ -212,9 +177,6 @@ export const UsersPage = () => {
         RoleIds: createForm.roleIds,
       }
 
-      console.log('=== Creating User ===')
-      console.log('Request body:', requestBody)
-
       const response = await fetch(`/api/User/Create`, {
         method: 'POST',
         headers: {
@@ -227,7 +189,6 @@ export const UsersPage = () => {
       })
 
       const data = await response.json()
-      console.log('=== Create User Response ===', data)
 
       if (data.Succeeded) {
         toast.success('User created successfully!')
@@ -272,7 +233,6 @@ export const UsersPage = () => {
       })
 
       const data = await response.json()
-      console.log('=== Delete User Response ===', data)
 
       if (data.Succeeded) {
         toast.success('User deleted successfully!')
@@ -307,7 +267,6 @@ export const UsersPage = () => {
       })
 
       const data = await response.json()
-      console.log('=== Update Role Response ===', data)
 
       if (data.Succeeded) {
         toast.success('Rol muvaffaqiyatli yangilandi!')

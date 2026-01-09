@@ -18,6 +18,7 @@ import {
   FiDollarSign,
   FiSettings,
   FiTarget,
+  FiCpu,
 } from 'react-icons/fi'
 import { useAuth } from '@hooks/useAuth'
 import { ROUTES } from '@utils/constants'
@@ -113,6 +114,12 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
       label: 'Kutubxona',
       icon: <FiBookOpen size={20} />,
       category: 'resources',
+    },
+    {
+      path: ROUTES.AI,
+      label: 'AI Yordamchi',
+      icon: <FiCpu size={20} />,
+      category: 'tools',
     },
     {
       path: ROUTES.USERS,
